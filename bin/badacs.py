@@ -179,6 +179,7 @@ class req(PersistentServerConnectionApplication):
             return {'payload': json.dumps(output, separators=(',', ':')), 'status': 200}
 
         if form['a'] == "getnetwork" and form['server']:
+            server = form['server'].split('.')[0]
             output = {}
             for feature in ['search-api','hec','s2s','search-ui','idm-ui','idm-api']:
                 try:
