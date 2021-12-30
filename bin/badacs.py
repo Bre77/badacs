@@ -183,12 +183,12 @@ class req(PersistentServerConnectionApplication):
             output = {}
             for feature in ['search-api','hec','s2s','search-ui','idm-ui','idm-api']:
                 try:
-                    serverResponse, resConfig = simpleRequest(f"https://admin.splunk.com/{form['server']}/adminconfig/v2/access/{feature}/ipallowlists", sessionKey=token, method='GET')
+                    serverResponse, resConfig = simpleRequest(f"https://admin.splunk.com/{server}/adminconfig/v2/access/{feature}/ipallowlists", sessionKey=token, method='GET')
                     output[feature] = json.loads(resConfig)
                 except Exception as e:
                     output[feature] = False
             try:
-                serverResponse, resConfig = simpleRequest(f"https://admin.splunk.com/{form['server']}/adminconfig/v2/access/outbound-ports", sessionKey=token, method='GET')
+                serverResponse, resConfig = simpleRequest(f"https://admin.splunk.com/{server}/adminconfig/v2/access/outbound-ports", sessionKey=token, method='GET')
                 output['outbound-ports'] = json.loads(resConfig)
             except Exception as e:
                 output['outbound-ports'] = False
