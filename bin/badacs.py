@@ -181,9 +181,9 @@ class req(PersistentServerConnectionApplication):
         if form['a'] == "getnetwork" and form['server']:
             output = {}
             for feature in ['search-api','hec','s2s','search-ui','idm-ui','idm-api']:
-                serverResponse, resConfig = simpleRequest(f"https://admin.splunk.com/{form['server']}/adminconfig/v2/access/{feature}/ipallowlists", sessionKey=token, method='GET', raiseAllErrors=True)
+                serverResponse, resConfig = simpleRequest(f"https://admin.splunk.com/{form['server']}/adminconfig/v2/access/{feature}/ipallowlists", sessionKey=token, method='GET')
                 output[feature] = json.loads(resConfig)
-            serverResponse, resConfig = simpleRequest(f"https://admin.splunk.com/{form['server']}/adminconfig/v2/access/outbound-ports", sessionKey=token, method='GET', raiseAllErrors=True)
+            serverResponse, resConfig = simpleRequest(f"https://admin.splunk.com/{form['server']}/adminconfig/v2/access/outbound-ports", sessionKey=token, method='GET')
             output['outbound-ports'] = json.loads(resConfig)
             return {'payload': json.dumps(output, separators=(',', ':')), 'status': 200}
 
