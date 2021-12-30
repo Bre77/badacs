@@ -1,6 +1,7 @@
 from splunk.persistconn.application import PersistentServerConnectionApplication
 from splunk.clilib.cli_common import getMergedConf
 from splunk.rest import simpleRequest
+import requests
 import os, json
 import logging
 from distutils.util import strtobool
