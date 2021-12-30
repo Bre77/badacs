@@ -185,7 +185,7 @@ class req(PersistentServerConnectionApplication):
                     serverResponse, resConfig = simpleRequest(f"https://admin.splunk.com/{form['server']}/adminconfig/v2/access/{feature}/ipallowlists", sessionKey=token, method='GET')
                     output[feature] = json.loads(resConfig)
                 except Exception as e:
-                    output[feature] = false
+                    output[feature] = False
             serverResponse, resConfig = simpleRequest(f"https://admin.splunk.com/{form['server']}/adminconfig/v2/access/outbound-ports", sessionKey=token, method='GET')
             output['outbound-ports'] = json.loads(resConfig)
             return {'payload': json.dumps(output, separators=(',', ':')), 'status': 200}
