@@ -200,6 +200,16 @@ class req(PersistentServerConnectionApplication):
             
             return {'payload': json.dumps(output, separators=(',', ':')), 'status': 200}
 
+        if form['a'] == "gethec" and form['server']:
+            server = form['server'].split('.')[0]
+            
+            output = {}
+            try:
+                r = requests.get(f"https://admin.splunk.com/{server}/adminconfig/v2/inputs/http-event-collectors", headers=headers)
+                return {'payload': json.dumps(r.json(), separators=(',', ':')), 'status': 200}
+            except Exception as e:
+                return {'payload': json.dumps(e, separators=(',', ':')), 'status': 400}
+
 
         return {'payload': "No Action Requested", 'status': 400}
         #except Exception as ex:
