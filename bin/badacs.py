@@ -186,8 +186,12 @@ class req(PersistentServerConnectionApplication):
                     output[feature] = json.loads(resConfig)
                 except Exception as e:
                     output[feature] = False
-            serverResponse, resConfig = simpleRequest(f"https://admin.splunk.com/{form['server']}/adminconfig/v2/access/outbound-ports", sessionKey=token, method='GET')
-            output['outbound-ports'] = json.loads(resConfig)
+            try:
+                serverResponse, resConfig = simpleRequest(f"https://admin.splunk.com/{form['server']}/adminconfig/v2/access/outbound-ports", sessionKey=token, method='GET')
+                output['outbound-ports'] = json.loads(resConfig)
+            except Exception as e:
+                output['outbound-ports'] = False
+            
             return {'payload': json.dumps(output, separators=(',', ':')), 'status': 200}
 
 
