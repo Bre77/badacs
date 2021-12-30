@@ -181,18 +181,19 @@ class req(PersistentServerConnectionApplication):
 
         if form['a'] == "getnetwork" and form['server']:
             server = form['server'].split('.')[0]
+            headers = {"Authorization": f"Bearer {token}"}
             output = {}
             for feature in ['search-api','hec','s2s','search-ui','idm-ui','idm-api']:
                 try:
-                    serverResponse, resConfig = simpleRequest(f"https://admin.splunk.com/{server}/adminconfig/v2/access/{feature}/ipallowlists", sessionKey=token, method='GET')
-                    output[feature] = json.loads(resConfig)
+                    r = requests.get(f"https://admin.splunk.com/{server}/adminconfig/v2/access/{feature}/ipallowlists", headers=headers)
+                    output[feature] = r.json()
                 except Exception as e:
                     output[feature] = e
             try:
-                serverResponse, resConfig = simpleRequest(f"https://admin.splunk.com/{server}/adminconfig/v2/access/outbound-ports", sessionKey=token, method='GET')
-                output['outbound-ports'] = json.loads(resConfig)
+                r = requests.get(f"https://admin.splunk.com/{server}/adminconfig/v2/access/outbound-ports", headers=headers)
+                output['outbound-ports'] = r.json()
             except Exception as e:
-                output['outbound-ports'] = False
+                output['outbound-ports'] = e
             
             return {'payload': json.dumps(output, separators=(',', ':')), 'status': 200}
 
