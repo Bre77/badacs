@@ -287,6 +287,8 @@
                 </ui-confirm>
             </ui-tab>
             <ui-tab id="netw" title="Network Allowlists">
+                <ui-select :options="Object.keys(conf_servers)" :disabled="Object.keys(conf_servers) == 0" v-model="netw_server" @change="ConfCheckColumnOptions(c); ConfChangeOptions(c)" placeholder="Not selected">Server</ui-select>
+                    
                 S2S IP Allowlist<br>Outbound Port Allowlist
             </ui-tab>
             <ui-tab id="idxs" title="Indexes">
@@ -388,8 +390,9 @@
                 SHARING_ICON: SHARING_ICON,
                 BTNTYP: ['primary','secondary'],
                 BTNICO: ['arrow_drop_up','arrow_drop_down'],
-                SPLUNKD_PATH: `/${window.$C.LOCALE}/splunkd/__raw/servicesNS/${window.$C.USERNAME}`
-                
+                SPLUNKD_PATH: `/${window.$C.LOCALE}/splunkd/__raw/servicesNS/${window.$C.USERNAME}`,
+                //netw
+                netw_server: "",
             },
             computed: {
                 conf_setting_apps_names(){
