@@ -179,9 +179,12 @@ class req(PersistentServerConnectionApplication):
             output = [f['name'] for f in json.loads(resConfig)['entry']]
             return {'payload': json.dumps(output, separators=(',', ':')), 'status': 200}
 
+        # ACS Endpoints
+        headers = {"Authorization": f"Bearer {token}"}
+
         if form['a'] == "getnetwork" and form['server']:
             server = form['server'].split('.')[0]
-            headers = {"Authorization": f"Bearer {token}"}
+            
             output = {}
             for feature in ['search-api','hec','s2s','search-ui','idm-ui','idm-api']:
                 try:
