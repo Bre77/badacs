@@ -1,0 +1,787 @@
+<html>
+
+<head>
+    <title>BADACS</title>
+    <link href="{{SPLUNKWEB_URL_PREFIX}}/static/app/badacs/keen-ui.min.css" rel="stylesheet" type="text/css" />
+    <!--<link href="{{SPLUNKWEB_URL_PREFIX}}/static/app/badacs/vuetify.min.css" rel="stylesheet" type="text/css" />-->
+    
+    
+    <!--<script src="{{SPLUNKWEB_URL_PREFIX}}/i18ncatalog?autoload=1"></script>
+    <script src="{{SPLUNKWEB_URL_PREFIX}}/static/build/simplexml/index.js"></script>
+    -->
+    <!--<link href="{{SPLUNKWEB_URL_PREFIX}}/static/build/css/bootstrap-enterprise.css" rel="stylesheet" type="text/css"/>
+    <link href="{{SPLUNKWEB_URL_PREFIX}}/static/build/css/splunkjs-dashboard.css" rel="stylesheet" type="text/css"/>-->
+    
+    
+    
+    <style>
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+        }
+
+        html {
+            font-size: 100%;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica, Arial, sans-serif;
+        }
+
+        /* Material Icons */
+        @font-face {
+            font-family: 'Material Icons';
+            font-style: normal;
+            font-weight: 400;
+            src: local('Material Icons'),
+                local('MaterialIcons-Regular'),
+                url({{SPLUNKWEB_URL_PREFIX}}/static/app/badacs/material-icons.woff2) format('woff2');
+        }
+        .material-icons {
+            font-family: 'Material Icons';
+            font-weight: normal;
+            font-style: normal;
+            font-size: 24px;
+            display: inline-block;
+            line-height: 1;
+            text-transform: none;
+            letter-spacing: normal;
+            word-wrap: normal;
+            white-space: nowrap;
+            direction: ltr;
+            -webkit-font-smoothing: antialiased;
+            text-rendering: optimizeLegibility;
+            -moz-osx-font-smoothing: grayscale;
+            font-feature-settings: 'liga';
+        }
+
+        .settings {
+            /*grid-template-rows: repeat(auto-fill, minmax(1.5em, 1fr));*/
+        }
+
+        .buttons {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            grid-gap: 0.5em;
+        }
+
+        /* Use disabled Tab as title */
+        .ui-tab-header-item.is-disabled {
+            opacity: 1;
+        }
+
+        /* CONF GRID */
+        #conf {
+            display: grid;
+            column-gap: 1rem;
+            align-items: center;
+            /*grid-auto-rows: 2rem;*/
+            font-family: Consolas, ui-monospace, monospace;
+        }
+        #conf > .ui-select{
+            margin-bottom: 0;
+        }
+        .conf {
+            height: 1.5rem;
+            line-height: 1.5rem;
+            vertical-align: middle;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+        .conf-sub-image {
+            height: inherit;
+            line-height: inherit;
+            vertical-align: middle;
+        }
+        .conf-sub-text {
+            height: inherit;
+            line-height: inherit;
+            vertical-align: middle;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+
+        .conf-loading {
+            
+        }
+        .conf-file {
+            font-style: italics;
+        }
+        .conf-app {
+            font-weight: bold;
+            height: 36px !important;
+            line-height: 36px !important;
+            margin-top: 0.5em;
+        }
+        .conf-app-details{
+            /*height: 36px;
+            line-height: 36px;*/
+        }
+        .conf-acl {
+        }
+        .conf-acl-icon{
+            /*height: 1.5rem;
+            line-height: 1.5rem;
+            vertical-align: middle;*/
+        }
+        .conf-stanza {
+            font-weight:bold;
+            color: #E00000;
+            /*overflow: hidden;
+            white-space: nowrap;*/
+        }
+        .conf-attr {
+            height: 2rem !important;
+            line-height: 2rem !important;
+            color: #863B00;
+            text-align: right;
+            justify-content: center;
+            padding: 0 0.5rem;
+            margin: 0 -0.5rem;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+        .conf-value {
+            height: 2rem;
+            padding: 0 0.5rem;
+            margin: 0 -0.5rem;
+        }
+        .conf-same {
+            background-color: #d1ffd1;
+        }
+
+        .conf-diff {
+            background-color: #ffd1d1;
+        }
+
+        .row1 {
+            grid-row: 1;
+        }
+        .row2 {
+            grid-row: 2;
+        }
+        .row3 {
+            grid-row: 3;
+        }
+        .row4 {
+            grid-row: 4;
+        }
+        .row5 {
+            grid-row: 5;
+            height: .25rem;
+        }
+        .col1 {
+            grid-column: 1;
+        }
+
+    </style>
+</head>
+
+<body>
+    <!--<header>
+        <a class="navSkip" href="#navSkip" tabindex="1"></a>
+        <div class="header splunk-header">
+            <div id="placeholder-splunk-bar">
+                <a href="{{SPLUNKWEB_URL_PREFIX}}/app/launcher/home" class="brand" title="splunk &gt; listen to your data">splunk<strong>&gt;</strong></a>
+            </div>
+        </div>
+    </header>-->
+    <div id="vue" class="main-section-body" data-role="main">
+        <ui-tabs>
+            <ui-tab disabled>
+                <div slot="header" style="color:black;">Brett Adams' Dangerous Admin Configuration Service</div>
+            </ui-tab>
+            <ui-tab id="home" title="Home" selected>
+                <h1>Welcome</h1>
+                <p>This tool is a work in progress.</p>
+                <p>Created and supported by <a href="https://splunkbase.splunk.com/apps/#/author/s7orm">Brett Adams</a></p>
+            </ui-tab>
+            <ui-tab id="conf" title="Config" @select="TabConfig()" :style="conf_grid_style">
+                <!-- Conf Page Settings -->
+                <ui-select class="settings col1 row1" multiple has-search :options="conf_files" v-model="conf_setting_files" @change="ConfChangeOptions()">Config Files</ui-select>
+                <ui-select class="settings col1 row2" multiple has-search :options="conf_apps_options" v-model="conf_setting_apps" :keys="{label: conf_app_label}" :loading="conf_loading > 0" placeholder="All Apps">Apps</ui-select>
+                <ui-select class="settings col1 row3" :options="conf_setting_show_options" v-model="conf_setting_show">Show</ui-select>
+                <ui-select class="settings col1 row4" :options="conf_setting_columns_options" v-model="conf_setting_columns_option">Columns</ui-select>
+                <div class="settings col1 row5"><ui-progress-linear  v-show="conf_loading" class="conf-loading"></ui-progress-linear></div>
+                <!-- Column Settings -->
+                <template v-for="c,i of conf_columns.slice(0,conf_setting_columns)">
+                    <ui-select class="settings row1" :style="{'grid-column':i+2}" :options="Object.keys(conf_servers)" :loading="conf_loading > 0" :disabled="Object.keys(conf_servers) == 0" v-model="c.server" @change="ConfCheckColumnOptions(c); ConfChangeColumnOptions(c)" placeholder="Not selected">Server</ui-select>
+                    <ui-select has-search class="settings row2" :style="{'grid-column':i+2}" :options="conf_servers.hasOwnProperty(c.server) ? [DEFAULT_APP_CONTEXT, SYSTEM_APP_CONTEXT, ...conf_servers[c.server].apps.filter(a => a.visable)] : [DEFAULT_APP_CONTEXT]" v-model="c.app" :disabled="!conf_servers.hasOwnProperty(c.server)" :keys="{label: conf_app_label}" @change="ConfChangeColumnOptions(c)">App Context</ui-select>
+                    <ui-select has-search class="settings row3" :style="{'grid-column':i+2}" :options="conf_servers.hasOwnProperty(c.server) ? [DEFAULT_USER_CONTEXT, ...conf_servers[c.server].users] : [DEFAULT_USER_CONTEXT]" v-model="c.user" :disabled="!conf_servers.hasOwnProperty(c.server)" :keys="{label: conf_user_label}" @change="ConfChangeColumnOptions(c)">User Context</ui-select>
+                    <div class="settings row4 buttons" :style="{'grid-column':i+2}">
+                        <ui-button disabled icon="content_copy" class="action" color="primary">Copy</ui-button>
+                        <ui-button disabled @click="$refs['new'].open()" icon="post_add" class="action" color="green">Add Config</ui-button>
+                        <ui-button disabled @click="$refs['remove'].open()" icon="backspace" class="action" color="red">Remove Stanza</ui-button>
+                    </div>
+                    <div class="settings col1 row5" :style="{'grid-column':i+2}"><ui-progress-linear v-show="c.loading"></ui-progress-linear></div>
+                </template>
+                <!-- Config Grid -->
+                <template v-for="x of conf_grid">
+                    <ui-checkbox v-if="x.level == 'value' && x.type=='boolean'" :style="x.style" :class="x.classes" v-model="conf_data[x.key][x.app][x.stanza].attr[x.attr]" :title="x.alt" :disabled="x.disabled" @change="ConfChange(x)"></ui-checkbox>
+                    <ui-textbox v-else-if="x.level == 'value'" type="text" :style="x.style" :class="x.classes" v-model.lazy="conf_data[x.key][x.app][x.stanza].attr[x.attr]" :title="x.alt" :disabled="x.disabled" @change="ConfChange(x)"></ui-textbox>
+                    <div v-else :style="x.style" :class="x.classes" :title="x.alt"><img class="conf-sub-image" v-if="x.img" :src="x.img" onerror="this.parentNode.removeChild(this)"/> <span class="conf-sub-text"  v-html="x.text"></span></div>
+                    <!--<div v-else :style="x.style" :class="x.classes" :title="x.alt" v-html="x.text"></div>-->
+                </template>
+            </ui-tab>
+            <ui-tab id="netw" title="Network Allowlists">
+                S2S IP Allowlist<br>Outbound Port Allowlist
+            </ui-tab>
+            <ui-tab id="idxs" title="Indexes">
+                Indexes
+            </ui-tab>
+            <ui-tab id="apps" title="Private Apps">
+                Private Apps
+            </ui-tab>
+            <ui-tab id="adds" title="Add Server">
+                <ui-textbox label="Hostname" placeholder="sh.splunkcloud.com" v-model="addserver_host"
+                    :invalid="addserver_host !== ''" :error="addserver_host_error"></ui-textbox>
+                <ui-textbox label="Auth Token" v-model="addserver_auth" :invalid="addserver_auth !== ''"
+                    :error="addserver_auth_error"></ui-textbox>
+                <ui-button @click="AddServer">Submit</button>
+            </ui-tab>
+        </ui-tabs>
+    </div>
+    <!--<script src="{{SPLUNKWEB_URL_PREFIX}}/config?autoload=1" crossorigin="use-credentials"></script>-->
+    <!--<script src="{{SPLUNKWEB_URL_PREFIX}}/static/js/i18n.js"></script>-->
+    <!--<script src="{{SPLUNKWEB_URL_PREFIX}}/i18ncatalog?autoload=1"></script>-->
+    <!--<script src="{{SPLUNKWEB_URL_PREFIX}}/static/build/simplexml/index.js"></script>-->
+    
+    <!--<script src="{{SPLUNKWEB_URL_PREFIX}}/static/app/badacs/badacs.js"></script>-->
+    <script>
+        function i18n_register(catalog) {return}
+    </script>
+    <script src="{{SPLUNKWEB_URL_PREFIX}}/config?autoload=1" crossorigin="use-credentials"></script>
+    <script src="{{SPLUNKWEB_URL_PREFIX}}/static/app/badacs/vue.js"></script>
+    <script src="{{SPLUNKWEB_URL_PREFIX}}/static/app/badacs/keen-ui.js"></script>
+    <script>
+        const CSRF = /splunkweb_csrf_token_\d+=(\d+)/.exec(document.cookie)[1]
+        const DEFAULT_APP_CONTEXT = {name:'-', label:"All"}
+        const SYSTEM_APP_CONTEXT = {name:'system', label:"System"}
+        const DEFAULT_USER_CONTEXT = {name:'nobody', realname:"Nobody"}
+        const SHOW_OPTIONS = ['All','Different','Missing']
+        const CONF_COLUMNS_MAX = 8
+        const SHARING_ICON = {
+            'global':'{{SPLUNKWEB_URL_PREFIX}}/static/app/badacs/earth.svg',
+            'app':'{{SPLUNKWEB_URL_PREFIX}}/static/app/badacs/application-array-outline.svg',
+            'user':'{{SPLUNKWEB_URL_PREFIX}}/static/app/badacs/account-circle.svg',
+            'system':'{{SPLUNKWEB_URL_PREFIX}}/static/app/badacs/cog.svg'
+        }
+
+        Vue.prototype.localStorage = window.localStorage
+        Vue.use(KeenUI);
+        const vue = new Vue({
+            el: '#vue',
+            data: {
+                config: {},
+                servers: {},
+                conf_loading: 1,
+                conf_setting_columns_option: "2",
+                conf_data: {},
+                conf_model: {},
+                conf_servers: {},
+                conf_files: ['props', 'inputs', 'outputs', 'transforms', 'app', 'server', 'authentication', 'authorize', 'badacs', 'collections', 'commands', 'datamodels', 'eventtypes', 'fields', 'global-banner', 'health', 'indexes', 'limits', 'macros', 'passwords', 'savedsearches', 'serverclass', 'tags', 'web'],
+                conf_setting_apps: [],
+                conf_setting_files: ['props'],
+                conf_setting_show: SHOW_OPTIONS[0],
+                conf_setting_show_options: SHOW_OPTIONS,
+                conf_columns: Array.from({length:CONF_COLUMNS_MAX}, u => ({
+                    server: '',
+                    app: DEFAULT_APP_CONTEXT,
+                    user: DEFAULT_USER_CONTEXT,
+                    loading: 0,
+                })),
+                conf_app_label: 'label',
+                conf_user_label: 'realname',
+                addserver_host: "",
+                addserver_host_error: "",
+                addserver_auth: "",
+                addserver_auth_error: "",
+                valid_line: RegExp('^[^#=]+=[^=]+$'),
+                DEFAULT_APP_CONTEXT: DEFAULT_APP_CONTEXT,
+                SYSTEM_APP_CONTEXT: SYSTEM_APP_CONTEXT,
+                DEFAULT_USER_CONTEXT: DEFAULT_USER_CONTEXT,
+                CONF_COLUMNS_MAX: CONF_COLUMNS_MAX,
+                SHARING_ICON: SHARING_ICON,
+                CONF_MISS: Symbol(),
+                CONF_DIFF: Symbol(),
+            },
+            computed: {
+                conf_apps_active(){
+                    // App names in a sorted list that are active
+                    return this.Afus(Object.values(this.conf_columns_ready).map(f => Object.values(f || {}).map(k => Object.keys(this.conf_data[k] || {})).flat()).flat())
+                },
+                conf_apps(){
+                    // Definitive list of all known apps, grouped together
+                    let apps = {
+                        'system': {'name': 'system', 'label':{}, 'details':{}, 'version':{}, 'visable': {}}
+                    }
+                    for (const [server,data] of Object.entries(this.conf_servers)){
+                        for (const app of data.apps){
+                            
+                            if(!apps.hasOwnProperty(app.name)){
+                                apps[app.name] = {'name': app.name, 'label':{}, 'details':{}, 'version':{}, 'visable': {}}
+                            } 
+                            if(app.label){
+                                apps[app.name].label[server] = app.label
+                            }
+                            if(app.details){
+                                apps[app.name].details[server] = app.details
+                            }
+                            if(app.version){
+                                apps[app.name].version[server] = app.version
+                            }
+                            if(app.visable){
+                                apps[app.name].visable[server] = app.visable
+                            }
+                        }
+                    }
+                    return apps
+                },
+                conf_apps_options(){
+                    return this.conf_apps_active.map(a => ({
+                        'name': a,
+                        'label': this.Afus(this.conf_servers_active.map(s => this.conf_apps[a].label ? this.conf_apps[a].label[s] : a).filter(l => l)).join(' / ')
+                    }))
+                },
+                conf_columns_ready(){
+                    // A validated and visable list of config payloads mapped to their file and column number
+                    console.time('conf_columns_ready')
+                    const columns = this.conf_columns.slice(0,this.conf_setting_columns)
+                    let output = this.conf_setting_files.reduce((x,f) => {
+                        x[f] = columns.reduce((x,c,i) => {
+                            const key = this.ConfKey(c,f)
+                            if(this.conf_data.hasOwnProperty(key)){
+                                x[i] = key
+                            }
+                            return x
+                        },{})
+                        return x
+                    },{})
+                    console.timeEnd('conf_columns_ready')
+                    return output
+                },
+                conf_servers_active(){
+                    return this.Afus(this.conf_columns.slice(0,this.conf_setting_columns).map(c => c.server).filter(s => this.conf_servers.hasOwnProperty(s)))
+                },
+                conf_grid_style(){
+                    return {'grid-template-columns': `repeat(${this.conf_setting_columns+1}, 1fr)`}
+                },
+                conf_grid(){
+                    console.time('conf_grid')
+                    output = []
+                    row = 6
+                    col = 1
+
+                    
+                    for (const [file,keys] of Object.entries(this.conf_columns_ready)){
+                        output.push({
+                            text: `${file}.conf`,
+                            level: "file",
+                            style: {'grid-column': `1 / ${this.conf_columns+1}`, 'grid-row': row},
+                            classes: ['conf','conf-file']
+                        })
+                        row++
+                        
+                        //let keys = this.conf_columns.slice(0,this.conf_setting_columns).map(c => this.ConfKey(c,file))
+                        //
+                        let clean_keys = Object.entries(keys)
+                        let data = Object.values(keys).map(key => this.conf_data[key])
+
+                        // Get all apps with config, or use the requested list
+                        //let apps = this.conf_setting_apps.length == 0 ? this.Afus(data.map(d => Object.keys(d))) : this.conf_setting_apps.map(a => a.name); REPLACED BY this.conf_apps_active
+                        for (const app of this.conf_apps_active){
+                            output.push({
+                                text: app, // / ${this.conf_apps[app].label}
+                                img: `/${window.$C.LOCALE}/splunkd/__raw/servicesNS/${window.$C.USERNAME}/${app}/static/appIcon.png`,
+                                alt: app,
+                                level: "app",
+                                style: {'grid-column': `1 / ${this.conf_columns+1}`, 'grid-row': row},
+                                classes: ['conf','conf-app']
+                            })
+
+                            for (const [index, key] of clean_keys){
+                                let server = key.split('/')[0]
+                                if(server in this.conf_apps[app].version){
+                                    let x = this.conf_apps[app]
+                                    output.push({
+                                        text: (x.details[server] ? `<a href="${x.details[server]}">${x.version[server]}</a>` : x.version[server]),
+                                        alt: `Version ${x.version[server]}`,
+                                        level: "app-details",
+                                        style: {'grid-column': 2+Number(index), 'grid-row': row},
+                                        classes: ['conf','conf-app-details']
+                                    })
+                                }
+                            }
+
+                            row++
+                            let stanzas = this.Afus(data.map(d => Object.keys(d[app] || {})).flat())
+                            for (const stanza of stanzas){
+                                output.push({
+                                    text: `[${stanza}]`,
+                                    alt: stanza,
+                                    level: "stanza",
+                                    style: {'grid-column': 1, 'grid-row': row},
+                                    classes: ['conf','conf-stanza']
+                                })
+
+                                // Put sharing and ACL data here
+                                for (const [index, key] of clean_keys){
+                                    if(this.CheckChild(this.conf_data[key],[app,stanza,'acl'])){
+                                        output.push({
+                                            acl: this.conf_data[key][app][stanza]['acl'],
+                                            text: this.conf_data[key][app][stanza]['acl'].owner,
+                                            img: SHARING_ICON[this.conf_data[key][app][stanza]['acl'].sharing],
+                                            alt: "ACLS",
+                                            level: "acl",
+                                            style: {'grid-column': 2+Number(index), 'grid-row': row},
+                                            classes: ['conf','conf-acl']
+                                        })
+                                    }
+                                }
+
+
+                                row++
+                                let attrs = this.Afus(data.map(d => Object.keys(this.GetChild(d,[app,stanza,'attr'],{})).flat()))
+                                for (const attr of attrs){
+
+                                    let elems = []
+                                    let miss = false
+                                    let diff = false
+                                    let first
+
+                                    elems.push({
+                                        text: `${attr} =`,
+                                        alt: attr,
+                                        level: "attr",
+                                        style: {'grid-column': 1, 'grid-row': row},
+                                        //miss: miss,
+                                        //diff: diff,
+                                        classes: {'conf-attr':true, 'conf-diff':diff, 'conf-same':!miss && !diff}
+                                    })                                
+
+                                    for (const [index, key] of clean_keys){
+                                        if(this.CheckChild(this.conf_data[key],[app,stanza,'attr',attr])){
+                                            let value = this.conf_data[key][app][stanza].attr[attr]
+                                            if(first === undefined){
+                                                first = value
+                                            } else {
+                                                diff = diff || first !== value
+                                            }
+
+                                            elems.push({
+                                                alt: String(value),
+                                                type: typeof(value),
+                                                level: "value",
+                                                style: {'grid-column': 2+Number(index), 'grid-row': row},
+                                                key: key, //local
+                                                app: app, //local
+                                                file: file, //remote
+                                                stanza: stanza, //both
+                                                attr: attr, //both
+                                                context: this.conf_columns[index], //remote (server,user,app)
+                                                classes: {'conf-value':true, 'conf-diff':diff, 'conf-same':!miss && !diff},
+                                                disabled: !this.conf_data[key][app][stanza].acl.can_write
+                                            })
+
+                                        } else {
+                                            miss = true
+                                        }
+                                    }
+
+                                    // Fix display classes
+                                    for(const o of elems){
+                                        //Get All Values
+                                        if(this.conf_setting_show==SHOW_OPTIONS[2] && !miss){
+                                            continue //Only wanted missing
+                                        }
+
+                                        if(this.conf_setting_show==SHOW_OPTIONS[1] && !diff){
+                                            continue //Only wanted different
+                                        }
+                                        //o.miss = miss
+                                        //o.diff = diff
+                                        o.classes['conf-diff'] = diff
+                                        o.classes['conf-same'] = (!miss && !diff)
+                                        output.push(o)
+                                    }
+                                    row++
+                                }
+                            }
+                        }
+                    }
+                    console.timeEnd('conf_grid')
+                    return output
+                },
+                conf_servers_select(){
+                    return Object.keys(this.conf_servers)
+                },
+                conf_setting_columns_options() {
+                    let start = 2
+                    let end = CONF_COLUMNS_MAX
+                    return [...Array(end-start+1).keys()].map(i => String(i + start));
+                },
+                conf_setting_columns() {
+                    return Number(this.conf_setting_columns_option)
+                }
+            },
+            methods: {
+                Afus(a){ //Arrays Flat Unique Sorted 
+                    return Array.from(new Set(a.flat())).sort() // Remove .flat() eventually
+                },
+                Request(action,data={}) {
+                    let form = new URLSearchParams()
+                    form.append('a', action)
+                    for (x in data){
+                        form.append(x, data[x]) //encodeURIComponent
+                    }
+                    console.log(form.toString())
+                    return fetch(`/${window.$C.LOCALE}/splunkd/__raw/services/badacs?output_mode=json`, {
+                        method: 'POST',
+                        //redirect: 'follow',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded',
+                            'X-Requested-With': 'XMLHttpRequest',
+                            'X-Splunk-Form-Key': CSRF,
+                        },
+                        body: form
+                    })
+                    .catch(e => {
+                        console.warn(e)
+                        return Promise.reject({ cause: 'host', message: e.message });
+                    })
+                    .then(resp => resp.json())
+                    .catch(e => {
+                        console.warn(e)
+                        return Promise.reject({ cause: 'parse', message: e.message });
+                    })
+                },
+                AddServer(){
+                    this.Request('addserver',{server:this.addserver_host,token:this.addserver_auth}).then(resp => {
+                        console.log(resp)
+                        this.addserver_host = ""
+                        this.addserver_auth = ""
+                        //return this.TabConfig() // Can likely do this locally
+                    })
+                },
+                TabConfig(){
+                    this.conf_loading = 1
+                    this.Request('getservers').then(resp => {
+                        console.log(resp)
+                        this.$set(this,'conf_servers',resp)
+                        this.conf_loading = 0
+                    })
+                },
+                ConfChange(x){
+                    //form['file'] and form['server'] and form['stanza'] and form['attr'] and form['value']
+                    // All Apps uses confs own app, not context
+                    let options = {server: x.context.server, user: x.context.user.name, app: (x.context.app.name == "-" ? x.app : x.context.app.name), file: x.file, stanza: x.stanza, attr: x.attr, value: this.conf_data[x.key][x.app][x.stanza][x.attr]}
+                    this.Request('setconf',options).then(resp => {
+                        console.log(resp)
+                        //this.$set(this.conf_data[x.key][x.stanza],resp[0]) // Output from badacs.py isnt normalised
+
+                        // For all active columns of the same file not including this one
+                        let promises = []
+                        for (const [server, app, user, file] of Object.keys(this.conf_data).filter(k => k !== x.key).map(k => k.split('/')).filter(k => k[0] == x.context.server && k[3] == x.file)){
+                            console.log(x.context.server,server,app,user,file,x.file,x.stanza)
+                            promises.push(this.Request('getconf',{'file': file, 'server': server, 'app': app, 'user': user, 'stanza':x.stanza}).then(resp => {
+                                console.log(resp)
+                                for (const respapp in resp){
+                                    this.$set(this.conf_data[`${server}/${app}/${user}/${file}`][respapp][x.stanza],resp[respapp][x.stanza])
+                                }
+                            }))
+                        }
+                        return Promise.all(promises)
+                    }).then(()=>{
+                        this.ConfModelUpdate()
+                    })
+                    
+                },
+                ConfModelUpdate(){
+                    console.time('ConfModelUpdate')
+                    let model = {}
+
+                    const columns = Object.entries(this.conf_columns.slice(0,this.conf_setting_columns))
+                    
+                    for (const [_,file] of this.conf_setting_files){
+                        // Get all data
+                        let data = []
+                        for (const column of columns){
+                            const cd = this.ConfData(column,file)
+                            if (!cd) continue
+                            data.push(cd)
+                        }
+                        if (data.length === 0) continue
+
+                        // Create file parent
+                        model[file] = {
+                            show: true,
+                            tick: false,
+                            apps: {}
+                        }
+                            
+                        // Get all apps
+                        const apps = this.Afus(data.map(d => Object.keys(d)))
+                        for (const app of apps){
+                            // Create app parent
+                            model[file].apps[app] = {
+                                show: true,
+                                tick: false,
+                                stanzas: {},
+                                cols: {}
+                            }
+
+                            // Get app columns
+                            for (const [index, column] of columns){
+                                const x = this.conf_apps[app].version[column.server]
+                                if (x) model[file].apps[app].cols[index] = x
+                            }
+
+                            // Get all stanzas
+                            const stanzas = this.Afus(data.map(d => Object.keys(d[app] || {})))
+                            for (const stanza of stanzas){
+                                // Create stanza parent
+                                model[file].apps[app].stanzas[stanza] = {
+                                    show: true,
+                                    tick: false,
+                                    attrs: {},
+                                    cols: {}
+                                }
+
+                                // Get stanza columns
+                                for (const [index, column] of columns){
+                                    const x = this.conf_data[this.ConfData(column,file)][app][stanza].acl
+                                    if (x) model[file].apps[app].cols[index] = x
+                                }
+
+                                // Get all attributes
+                                const attrs = this.Afus(data.map(d => Object.keys(this.GetChild(d,[app,stanza,'attr'],{}))))
+                                for (const attr of attrs){
+
+                                    // Create attribute parent
+                                    model[file].apps[app].stanzas[stanza].attrs[attr] = {
+                                        tick: false,
+                                        state: null,
+                                        cols: {}
+                                    }
+
+                                    let miss = false
+                                    let diff = false
+                                    let first                             
+
+                                    // Get all values
+
+                                    for (const [index, column] of columns){
+                                        value = this.GetChild(this.ConfData(column,file),[app,stanza,'attr',attr])
+                                        if(value){
+                                            if(first === undefined){
+                                                first = value
+                                            } else {
+                                                diff = diff || first !== value
+                                            }
+                                            // Get attribute columns (values)
+                                            model[file].apps[app].stanzas[stanza].attrs[attr].cols[index] = {
+                                                value: value,
+                                                edit: this.ConfData(column,file)[app][stanza].acl.can_write
+                                            }
+                                        } else {
+                                            miss = true
+                                        }
+                                    }
+                                    if (diff) model[file].apps[app].stanzas[stanza].attrs[attr].state = CONF_DIFF
+                                    else if (miss) model[file].apps[app].stanzas[stanza].attrs[attr].state = CONF_MISS
+                                }
+                            }
+                        }
+                    }
+                    console.timeEnd('ConfModelUpdate')
+                    this.$set(this,'conf_model',model)
+                },
+                ConfCheckColumnOptions(c){
+                    if(!c.server || !this.conf_servers.hasOwnProperty(c.server)){
+                        c.app = DEFAULT_APP_CONTEXT
+                        c.user = DEFAULT_USER_CONTEXT
+                    } else {
+                        if(c.app != DEFAULT_APP_CONTEXT && !this.conf_servers[c.server].apps.hasOwnProperty(c.app)){
+                            console.warn(`${c.app.name || c.app} wasnt found in ${c.server} apps, changing to ${DEFAULT_APP_CONTEXT}`)
+                            c.app = DEFAULT_APP_CONTEXT
+                        }
+                        if(c.user != DEFAULT_USER_CONTEXT && !this.conf_servers[c.server].users.hasOwnProperty(c.user)){
+                            console.warn(`${c.user.name || c.user} wasnt found in ${c.server} apps, changing to ${DEFAULT_USER_CONTEXT}`)
+                            c.user = DEFAULT_USER_CONTEXT
+                        }
+                    }
+                },
+                ConfKey(c,f){
+                    return `${c.server}/${c.app.name || c.app}/${c.user.name || c.user}/${f}`
+                },
+                ConfData(c,f){
+                    return this.conf_data[`${c.server}/${c.app.name}/${c.user.name}/${f}`]
+                },
+                ConfChangeOptions(){
+                    for(const c of this.conf_columns){
+                        this.ConfChangeColumnOptions(c)
+                    }
+                },
+                ConfChangeColumnOptions(c){
+                    if(!c.server){
+                        return // Ignore unselected
+                    }
+                    for(const file of this.conf_setting_files){
+                        const key = this.ConfKey(c,file)
+                        if(this.conf_data.hasOwnProperty(key)){
+                            continue // Have data already
+                        }
+
+                        let options = {
+                            file: file,
+                            server: c.server,
+                            app: c.app.name,
+                            user: c.user.name,
+                        }
+                        
+                        c.loading += 1
+                        console.log(options)
+                        this.Request('getconf',options).then(resp => {
+                            console.log(resp)
+                            this.$set(this.conf_data,key,resp)
+                            c.loading -= 1
+                        })
+                    }
+                },
+                /*SafeObject(object, key) {
+                    if (!(key in object)) {
+                        this.$set(object, key, {})
+                    }
+                    return object[key]
+                },*/
+                GetChild(object, keys, def=false) {
+                    for (const key of keys){
+                        if (object.hasOwnProperty(key)){
+                            object = object[key]
+                        } else return def
+                    }
+                    return object
+                },
+                CheckChild(object, keys) {
+                    for (const key of keys){
+                        if (object.hasOwnProperty(key)){
+                            object = object[key]
+                        } else return false
+                    }
+                    return true
+                },
+            },
+            mounted() {
+                this.Request('config').then(resp => {
+                    console.log(resp)
+                    this.$set(this,'config',resp)
+                })
+            },
+            watch: {
+
+            }
+        })
+    </script>
+</body>
+</html>
