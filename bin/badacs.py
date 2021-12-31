@@ -173,6 +173,8 @@ class req(PersistentServerConnectionApplication):
             else:
                 uri = f"https://{form['server']}:8089"
                 token = self.gettoken(LOCAL_URI,AUTHTOKEN,form['server'])
+        else:
+            return {'payload': "Invalid Request", 'status': 400}
 
         # Get config of a single server
         if form['a'] == "getconf" and 'file' in form and 'server' in form and 'user' in form and 'app' in form:
