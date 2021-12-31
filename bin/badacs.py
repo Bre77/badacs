@@ -99,7 +99,7 @@ class req(PersistentServerConnectionApplication):
     #    return output
 
     def handle(self, in_string):
-        
+        global badacscount
         #try:
         args = json.loads(in_string)
 
