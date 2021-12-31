@@ -120,6 +120,7 @@ class req(PersistentServerConnectionApplication):
             form[x[0]] = x[1]
 
         if "a" not in form:
+            self.logger.warn("Received request with no 'a' parameter")
             return {'payload': {'message': "No action."}, 'status': 200 }
 
         # Tester
