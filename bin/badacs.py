@@ -30,7 +30,7 @@ def setup_logger(level):
 
 logger = setup_logger(logging.DEBUG)
 
-counta = 0
+badacscount = 0
 
 class req(PersistentServerConnectionApplication):
     countb = 0
