@@ -37,6 +37,7 @@ class req(PersistentServerConnectionApplication):
 
     def __init__(self, command_line, command_arg):
         PersistentServerConnectionApplication.__init__(self)
+        self.counta = counta
 
     def fixval(self,value):
         if type(value) is str:
