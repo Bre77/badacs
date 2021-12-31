@@ -16,7 +16,7 @@ def setup_logger(level):
     Setup a logger for the REST handler
     """
 
-    logger = logging.getLogger('splunk.appserver.lookup_editor.rest_handler')
+    logger = logging.getLogger('splunk.appserver.badacs.badacs')
     logger.propagate = False # Prevent the log messages from being duplicated in the python.log file
     logger.setLevel(level)
 
