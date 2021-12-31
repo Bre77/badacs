@@ -30,7 +30,10 @@ def setup_logger(level):
 
 logger = setup_logger(logging.DEBUG)
 
+countera = 0
+
 class req(PersistentServerConnectionApplication):
+    counterb = 0
 
     def __init__(self, command_line, command_arg):
         PersistentServerConnectionApplication.__init__(self)
