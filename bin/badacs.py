@@ -141,8 +141,6 @@ class req(PersistentServerConnectionApplication):
         if form['a'] == "config":
             c = dict(CONF)
             del c['default']
-            for stanza in c:
-                c[stanza]['token'] = 'token' in c[stanza]
             return {'payload': json.dumps(c, separators=(',', ':')), 'status': 200}
         
         # Get metadata for all configured servers
