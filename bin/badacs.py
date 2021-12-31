@@ -106,7 +106,6 @@ class req(PersistentServerConnectionApplication):
         if args['method'] != "POST":
             return {'payload': {'message': "Service running."}, 'status': 200 }
 
-        CONF = getMergedConf(APP_NAME)
         output = {}
 
         USER = args['session']['user']
@@ -140,7 +139,7 @@ class req(PersistentServerConnectionApplication):
 
         # Dump the config
         if form['a'] == "config":
-            c = dict(CONF)
+            c = getMergedConf(APP_NAME)
             del c['default']
             return {'payload': json.dumps(c, separators=(',', ':')), 'status': 200}
         
@@ -149,7 +148,7 @@ class req(PersistentServerConnectionApplication):
             output = {
                 args['server']['hostname']: self.getserver(LOCAL_URI,AUTHTOKEN) 
             }
-            for host in CONF:
+            for host in getMergedConf(APP_NAME):
                 if host == "default":
                     continue
                 token = self.gettoken(LOCAL_URI,AUTHTOKEN,host)
