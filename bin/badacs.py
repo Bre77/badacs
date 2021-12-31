@@ -1,6 +1,7 @@
 from splunk.persistconn.application import PersistentServerConnectionApplication
 from splunk.clilib.cli_common import getMergedConf
 from splunk.rest import simpleRequest
+from splunk.clilib.bundle_paths import make_splunkhome_path
 import requests
 import os, json
 import logging
@@ -10,16 +11,24 @@ import urllib.parse
 APP_NAME = "badacs"
 ATTR_BLACKLIST = ['eai:acl', 'eai:appName', 'eai:userName', 'maxDist', 'priority', 'sourcetype', 'termFrequencyWeightedDist']
 
-logger = logging.getLogger('splunk.appserver.badacs')
-logger.propagate = False # Prevent the log messages from being duplicated in the python.log file
-#logger.setLevel(level)
+def setup_logger(level):
+    """
+    Setup a logger for the REST handler
+    """
 
-#log_file_path = make_splunkhome_path(['var', 'log', 'splunk', 'badacs_rest.log'])
-#file_handler = logging.handlers.RotatingFileHandler(log_file_path, maxBytes=25000000,backupCount=5)
+    logger = logging.getLogger('splunk.appserver.lookup_editor.rest_handler')
+    logger.propagate = False # Prevent the log messages from being duplicated in the python.log file
+    logger.setLevel(level)
 
-#formatter = logging.Formatter('%(asctime)s %(levelname)s %(message)s')
-#file_handler.setFormatter(formatter)
-#logger.addHandler(file_handler)
+    log_file_path = make_splunkhome_path(['var', 'log', 'splunk', 'badacs.log'])
+    file_handler = logging.handlers.RotatingFileHandler(log_file_path, maxBytes=25000000, backupCount=5)
+
+    formatter = logging.Formatter('%(asctime)s %(levelname)s %(message)s')
+    file_handler.setFormatter(formatter)
+    logger.addHandler(file_handler)
+    return logger
+
+logger = setup_logger(logging.DEBUG)
 
 class req(PersistentServerConnectionApplication):
 
