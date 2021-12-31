@@ -128,7 +128,7 @@ class req(PersistentServerConnectionApplication):
         if form['a'] == "count":
             badacscount = badacscount+1
             self.countb += 1
-            return {'payload': {'message': f"{self.counta} {self.countb}"}, 'status': 200 }
+            return {'payload': {'message': f"{badacscount} {self.countb}"}, 'status': 200 }
 
         # Helpful crash for debugging
         if form['a'] == "crash":
