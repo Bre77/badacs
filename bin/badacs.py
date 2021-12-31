@@ -122,7 +122,11 @@ class req(PersistentServerConnectionApplication):
         if "a" not in form:
             return {'payload': {'message': "No action."}, 'status': 200 }
 
-        
+        # Tester
+        if form['a'] == "count":
+            counta += 1
+            self.countb += 1
+            return {'payload': {'message': f"{counta} {self.countb}"}, 'status': 200 }
 
         # Helpful crash for debugging
         if form['a'] == "crash":
