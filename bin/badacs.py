@@ -197,7 +197,10 @@ class req(PersistentServerConnectionApplication):
 
             return self.handleConf(configs)
 
-        if form['a'] == "getfiles" and form['server']:
+        if form['a'] == "getfiles":
+            if 'server' not in form:
+                logger.warn(f"Request to 'getfiles' was missing 'server' parameter")
+                return {'payload': "Missing 'server' parameter"), 'status': 400}
             serverResponse, resConfig = simpleRequest(f"{uri}/services/properties?output_mode=json", sessionKey=token, method='GET', raiseAllErrors=True)
             output = [f['name'] for f in json.loads(resConfig)['entry']]
             return {'payload': json.dumps(output, separators=(',', ':')), 'status': 200}
@@ -205,7 +208,10 @@ class req(PersistentServerConnectionApplication):
         # ACS Endpoints
         headers = {"Authorization": f"Bearer {token}"}
 
-        if form['a'] == "getnetwork" and form['server']:
+        if form['a'] == "getnetwork":
+            if 'server' not in form:
+                logger.warn(f"Request to 'getnetwork' was missing 'server' parameter")
+                return {'payload': "Missing 'server' parameter"), 'status': 400}
             server = form['server'].split('.')[0]
             
             output = {}
