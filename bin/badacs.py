@@ -119,7 +119,7 @@ class req(PersistentServerConnectionApplication):
             form[x[0]] = x[1]
 
         if "a" not in form:
-            logger.warn("Request wwas missing 'a' parameter")
+            logger.warn("Request was missing 'a' parameter")
             return {'payload': {'message': "Missing 'a' parameter"}, 'status': 200 }
 
         # Helpful crash for debugging
