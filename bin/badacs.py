@@ -176,7 +176,7 @@ class req(PersistentServerConnectionApplication):
 
         # Get config of a single server
         if form['a'] == "getconf" and 'file' in form and 'server' in form and 'user' in form and 'app' in form:
-            for x in ['file','server','user','app']:
+            for x in ['server','file','user','app']:
                 if x not in form:
                     logger.warn(f"Request to 'getconf' was missing '{x}' parameter")
                     return {'payload': "Missing '{x}' parameter"), 'status': 400}
