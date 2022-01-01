@@ -62,14 +62,15 @@ class req(PersistentServerConnectionApplication):
         return json.loads(resPasswords)['entry'][0]['content']['clear_password']
 
     def handleConf(self,configs):
-        try:
-            serverResponse, resDefault = simpleRequest(f"{uri}/services/properties/{form['file']}/default?output_mode=json&count=0", sessionKey=token, method='GET', raiseAllErrors=False)
-            defaults = {}
-            for default in json.loads(resDefault)['entry']:
-                defaults[default['name']] = self.fixval(default['content'])
-        except Exception:
-            defaults = {}
+        #try:
+        #    serverResponse, resDefault = simpleRequest(f"{uri}/services/properties/{form['file']}/default?output_mode=json&count=0", sessionKey=token, method='GET', raiseAllErrors=False)
+        #    defaults = {}
+        #    for default in json.loads(resDefault)['entry']:
+        #        defaults[default['name']] = self.fixval(default['content'])
+        #except Exception:
+        #    defaults = {}
 
+        defaults = {}
         output = {}
 
         for stanza in configs:
@@ -151,7 +152,7 @@ class req(PersistentServerConnectionApplication):
             cached_servers = output
             return {'payload': json.dumps(output, separators=(',', ':')), 'status': 200}
 
-        if form['a'] == "getserverscache":
+        if form['a'] == "getcachedservers":
             return {'payload': json.dumps(cached_servers, separators=(',', ':')), 'status': 200}
 
         # Add a new server and get its base metadata
