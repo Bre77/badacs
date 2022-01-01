@@ -30,7 +30,9 @@ def setup_logger(level):
 
 logger = setup_logger(logging.DEBUG)
 
-badacscount = 0
+# Cached data
+cached_servers = {}
+cached_defaults = {}
 
 class req(PersistentServerConnectionApplication):
     countb = 0
@@ -98,7 +100,7 @@ class req(PersistentServerConnectionApplication):
     #    return output
 
     def handle(self, in_string):
-        global badacscount
+        global cached_servers, cached_defaults
         #try:
         args = json.loads(in_string)
 
@@ -146,7 +148,11 @@ class req(PersistentServerConnectionApplication):
                     continue
                 token = self.gettoken(LOCAL_URI,AUTHTOKEN,host)
                 output[host] = self.getserver(f"https://{host}:8089",token)
+            cached_servers = output
             return {'payload': json.dumps(output, separators=(',', ':')), 'status': 200}
+
+        if form['a'] == "getserverscache":
+            return {'payload': json.dumps(cached_servers, separators=(',', ':')), 'status': 200}
 
         # Add a new server and get its base metadata
         if form['a'] == "addserver"
