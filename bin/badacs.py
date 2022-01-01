@@ -152,10 +152,10 @@ class req(PersistentServerConnectionApplication):
         if form['a'] == "addserver"
             if 'server' not in form:
                 logger.warn("Request to 'addserver' was missing 'server' parameter")
-                return {'payload': "Missing parameter 'server'"), 'status': 400}
+                return {'payload': "Missing 'server' parameter"), 'status': 400}
             if 'token' not in form:
                 logger.warn("Request to 'addserver' was missing 'token' parameter")
-                return {'payload': "Missing parameter 'token'"), 'status': 400}
+                return {'payload': "Missing 'token' parameter"), 'status': 400}
             try:
                 _, resPassword = simpleRequest(f"{LOCAL_URI}/servicesNS/nobody/badacs/storage/passwords", sessionKey=AUTHTOKEN, postargs={'name': form['server'], 'password': form['token']}, method='POST', raiseAllErrors=True)
                 _, resConfig = simpleRequest(f"{LOCAL_URI}/servicesNS/nobody/badacs/configs/conf-badacs", sessionKey=AUTHTOKEN, postargs={'name': form['server'], 'acs': False}, method='POST', raiseAllErrors=True)
