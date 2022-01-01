@@ -150,7 +150,7 @@ class req(PersistentServerConnectionApplication):
 
         # Add a new server and get its base metadata
         if form['a'] == "addserver"
-            for x in ['server','token']:
+            for x in ['server','token']: # Check required parameters
                 if x not in form:
                     logger.warn(f"Request to 'addserver' was missing '{x}' parameter")
                     return {'payload': "Missing '{x}' parameter"), 'status': 400}
@@ -175,8 +175,8 @@ class req(PersistentServerConnectionApplication):
             return {'payload': "Missing 'server' parameter", 'status': 400}
 
         # Get config of a single server
-        if form['a'] == "getconf" and 'file' in form and 'server' in form and 'user' in form and 'app' in form:
-            for x in ['server','file','user','app']:
+        if form['a'] == "getconf":
+            for x in ['server','file','user','app']: # Check required parameters
                 if x not in form:
                     logger.warn(f"Request to 'getconf' was missing '{x}' parameter")
                     return {'payload': "Missing '{x}' parameter"), 'status': 400}
@@ -186,7 +186,11 @@ class req(PersistentServerConnectionApplication):
             return self.handleConf(configs)
         
         # Change a config and process the response
-        if form['a'] == "setconf" and form['file'] and form['server'] and form['stanza'] and form['attr'] and 'value' in form:
+        if form['a'] == "setconf":
+            for x in ['server','file','stanza','attr','value']: # Check required parameters
+                if x not in form:
+                    logger.warn(f"Request to 'setconf' was missing '{x}' parameter")
+                    return {'payload': "Missing '{x}' parameter"), 'status': 400}
             postargs = {form['attr']: form['value']}
             serverResponse, resConfig = simpleRequest(f"{uri}/servicesNS/{form['user']}/{form['app']}/configs/conf-{form['file']}/{form['stanza']}?output_mode=json", sessionKey=token, method='POST', raiseAllErrors=True, postargs=postargs)
             configs = json.loads(resConfig)['entry']
