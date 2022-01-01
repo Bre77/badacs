@@ -119,14 +119,8 @@ class req(PersistentServerConnectionApplication):
             form[x[0]] = x[1]
 
         if "a" not in form:
-            logger.warn("Received request with no 'a' parameter")
-            return {'payload': {'message': "No action."}, 'status': 200 }
-
-        # Tester
-        if form['a'] == "count":
-            badacscount = badacscount+1
-            self.countb += 1
-            return {'payload': {'message': f"{badacscount} {self.countb}"}, 'status': 200 }
+            logger.warn("Request wwas missing 'a' parameter")
+            return {'payload': {'message': "Missing parameter 'a'"}, 'status': 200 }
 
         # Helpful crash for debugging
         if form['a'] == "crash":
@@ -155,7 +149,13 @@ class req(PersistentServerConnectionApplication):
             return {'payload': json.dumps(output, separators=(',', ':')), 'status': 200}
 
         # Add a new server and get its base metadata
-        if form['a'] == "addserver" and form['server'] and form['token']:
+        if form['a'] == "addserver"
+            if 'server' not in form:
+                logger.warn("Request to 'addserver' was missing 'server' parameter")
+                return {'payload': "Missing parameter 'server'"), 'status': 400}
+            if 'token' not in form:
+                logger.warn("Request to 'addserver' was missing 'token' parameter")
+                return {'payload': "Missing parameter 'token'"), 'status': 400}
             try:
                 _, resPassword = simpleRequest(f"{LOCAL_URI}/servicesNS/nobody/badacs/storage/passwords", sessionKey=AUTHTOKEN, postargs={'name': form['server'], 'password': form['token']}, method='POST', raiseAllErrors=True)
                 _, resConfig = simpleRequest(f"{LOCAL_URI}/servicesNS/nobody/badacs/configs/conf-badacs", sessionKey=AUTHTOKEN, postargs={'name': form['server'], 'acs': False}, method='POST', raiseAllErrors=True)
