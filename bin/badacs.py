@@ -150,12 +150,10 @@ class req(PersistentServerConnectionApplication):
 
         # Add a new server and get its base metadata
         if form['a'] == "addserver"
-            if 'server' not in form:
-                logger.warn("Request to 'addserver' was missing 'server' parameter")
-                return {'payload': "Missing 'server' parameter"), 'status': 400}
-            if 'token' not in form:
-                logger.warn("Request to 'addserver' was missing 'token' parameter")
-                return {'payload': "Missing 'token' parameter"), 'status': 400}
+            for x in ['server','token']:
+                if x not in form:
+                    logger.warn(f"Request to 'addserver' was missing '{x}' parameter")
+                    return {'payload': "Missing '{x}' parameter"), 'status': 400}
             try:
                 _, resPassword = simpleRequest(f"{LOCAL_URI}/servicesNS/nobody/badacs/storage/passwords", sessionKey=AUTHTOKEN, postargs={'name': form['server'], 'password': form['token']}, method='POST', raiseAllErrors=True)
                 _, resConfig = simpleRequest(f"{LOCAL_URI}/servicesNS/nobody/badacs/configs/conf-badacs", sessionKey=AUTHTOKEN, postargs={'name': form['server'], 'acs': False}, method='POST', raiseAllErrors=True)
@@ -173,10 +171,15 @@ class req(PersistentServerConnectionApplication):
                 uri = f"https://{form['server']}:8089"
                 token = self.gettoken(LOCAL_URI,AUTHTOKEN,form['server'])
         else:
-            return {'payload': "Invalid Request", 'status': 400}
+            logger.warn("Request was missing 'server' parameter")
+            return {'payload': "Missing 'server' parameter", 'status': 400}
 
         # Get config of a single server
         if form['a'] == "getconf" and 'file' in form and 'server' in form and 'user' in form and 'app' in form:
+            for x in ['file','server','user','app']:
+                if x not in form:
+                    logger.warn(f"Request to 'getconf' was missing '{x}' parameter")
+                    return {'payload': "Missing '{x}' parameter"), 'status': 400}
             serverResponse, resConfig = simpleRequest(f"{uri}/servicesNS/{form['user']}/{form['app']}/configs/conf-{form['file']}/{form.get('stanza','')}?output_mode=json&count=0", sessionKey=token, method='GET', raiseAllErrors=True)
             configs = json.loads(resConfig)['entry']
 
