@@ -156,7 +156,7 @@ class req(PersistentServerConnectionApplication):
             return {'payload': json.dumps(cached_servers, separators=(',', ':')), 'status': 200}
 
         # Add a new server and get its base metadata
-        if form['a'] == "addserver"
+        if form['a'] == "addserver":
             for x in ['server','token']: # Check required parameters
                 if x not in form:
                     logger.warn(f"Request to 'addserver' was missing '{x}' parameter")
