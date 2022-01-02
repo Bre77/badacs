@@ -160,7 +160,7 @@ class req(PersistentServerConnectionApplication):
             for x in ['server','token']: # Check required parameters
                 if x not in form:
                     logger.warn(f"Request to 'addserver' was missing '{x}' parameter")
-                    return {'payload': "Missing '{x}' parameter"), 'status': 400}
+                    return {'payload': "Missing '{x}' parameter"}, 'status': 400}
             try:
                 _, resPassword = simpleRequest(f"{LOCAL_URI}/servicesNS/nobody/badacs/storage/passwords", sessionKey=AUTHTOKEN, postargs={'name': form['server'], 'password': form['token']}, method='POST', raiseAllErrors=True)
                 _, resConfig = simpleRequest(f"{LOCAL_URI}/servicesNS/nobody/badacs/configs/conf-badacs", sessionKey=AUTHTOKEN, postargs={'name': form['server'], 'acs': False}, method='POST', raiseAllErrors=True)
@@ -186,7 +186,7 @@ class req(PersistentServerConnectionApplication):
             for x in ['server','file','user','app']: # Check required parameters
                 if x not in form:
                     logger.warn(f"Request to 'getconf' was missing '{x}' parameter")
-                    return {'payload': "Missing '{x}' parameter"), 'status': 400}
+                    return {'payload': "Missing '{x}' parameter"}, 'status': 400}
             serverResponse, resConfig = simpleRequest(f"{uri}/servicesNS/{form['user']}/{form['app']}/configs/conf-{form['file']}/{form.get('stanza','')}?output_mode=json&count=0", sessionKey=token, method='GET', raiseAllErrors=True)
             configs = json.loads(resConfig)['entry']
 
@@ -197,7 +197,7 @@ class req(PersistentServerConnectionApplication):
             for x in ['server','file','stanza','attr','value']: # Check required parameters
                 if x not in form:
                     logger.warn(f"Request to 'setconf' was missing '{x}' parameter")
-                    return {'payload': "Missing '{x}' parameter"), 'status': 400}
+                    return {'payload': "Missing '{x}' parameter"}, 'status': 400}
             postargs = {form['attr']: form['value']}
             serverResponse, resConfig = simpleRequest(f"{uri}/servicesNS/{form['user']}/{form['app']}/configs/conf-{form['file']}/{form['stanza']}?output_mode=json", sessionKey=token, method='POST', raiseAllErrors=True, postargs=postargs)
             configs = json.loads(resConfig)['entry']
@@ -207,7 +207,7 @@ class req(PersistentServerConnectionApplication):
         if form['a'] == "getfiles":
             if 'server' not in form:
                 logger.warn(f"Request to 'getfiles' was missing 'server' parameter")
-                return {'payload': "Missing 'server' parameter"), 'status': 400}
+                return {'payload': "Missing 'server' parameter"}, 'status': 400}
             serverResponse, resConfig = simpleRequest(f"{uri}/services/properties?output_mode=json", sessionKey=token, method='GET', raiseAllErrors=True)
             output = [f['name'] for f in json.loads(resConfig)['entry']]
             return {'payload': json.dumps(output, separators=(',', ':')), 'status': 200}
@@ -218,7 +218,7 @@ class req(PersistentServerConnectionApplication):
         if form['a'] == "getnetwork":
             if 'server' not in form:
                 logger.warn(f"Request to 'getnetwork' was missing 'server' parameter")
-                return {'payload': "Missing 'server' parameter"), 'status': 400}
+                return {'payload': "Missing 'server' parameter"}, 'status': 400}
             server = form['server'].split('.')[0]
             
             output = {}
