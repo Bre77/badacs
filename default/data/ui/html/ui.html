@@ -779,6 +779,14 @@
 
                 },
                 //
+                // Networks Tab
+                //
+                NetwGet(s){
+                    this.Request('getnetwork',{server:s}).then(resp => {
+                        this.$set(this.netw_data,s,resp)
+                    })
+                }
+                //
                 // Generic Helpers
                 //
                 Afus(a){ //Arrays Flat Unique Sorted 
