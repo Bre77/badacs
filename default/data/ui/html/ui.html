@@ -287,7 +287,7 @@
                 </ui-confirm>
             </ui-tab>
             <ui-tab id="netw" title="Network Allowlists">
-                <ui-select :options="Object.keys(conf_servers)" :disabled="Object.keys(conf_servers) == 0" @change="ConfCheckColumnOptions(c); ConfChangeOptions(c)" placeholder="Not selected">Server</ui-select>
+                <ui-select :options="Object.keys(conf_servers)" :disabled="Object.keys(conf_servers) == 0"  @change="ConfCheckColumnOptions(c); ConfChangeOptions(c)" placeholder="Not selected">Server</ui-select>
                     
                 S2S IP Allowlist<br>Outbound Port Allowlist
             </ui-tab>
