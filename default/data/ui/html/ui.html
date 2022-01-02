@@ -286,8 +286,9 @@
                     Do you want to confirm this?
                 </ui-confirm>
             </ui-tab>
-            <ui-tab id="netw" title="Network Allowlists">
-                <ui-select :options="Object.keys(conf_servers)" :disabled="Object.keys(conf_servers) == 0"  @change="ConfCheckColumnOptions(c); ConfChangeOptions(c)" placeholder="Not selected">Server</ui-select>
+            <ui-tab id="netw" title="Network Allowlists" :style="{'grid-template-columns': `24px repeat(${this.conf_setting_columns}, 1fr)`}">
+                <template v-for="c,i of acs_columns.slice(0,conf_setting_columns)">
+                    <ui-select class="settings row1" :options="Object.keys(servers)" :disabled="Object.keys(servers) == 0" placeholder="Not selected" v-model="acs_columns[i]">Server</ui-select>
                     
                 S2S IP Allowlist<br>Outbound Port Allowlist
             </ui-tab>
@@ -357,7 +358,7 @@
                 conf_hide: {}, // Hidden - persist to local storage
                 conf_setting_apps: [],
                 conf_setting_apps_options: [],
-                conf_setting_columns_option: "2",
+                conf_setting_columns: "2",
                 conf_setting_files: [CONF_FILES[0]],
                 conf_setting_files_options: CONF_FILES,
                 conf_setting_show: SHOW_OPTIONS[0],
@@ -392,7 +393,7 @@
                 BTNICO: ['arrow_drop_up','arrow_drop_down'],
                 SPLUNKD_PATH: `/${window.$C.LOCALE}/splunkd/__raw/servicesNS/${window.$C.USERNAME}`,
                 //netw
-                netw_columns: Array.from({length:CONF_COLUMNS_MAX}, u => ({
+                acs_columns: Array.from({length:CONF_COLUMNS_MAX}, u => ({
                     server: '',
                     loading: 0,
                 })),
