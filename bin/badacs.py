@@ -123,7 +123,7 @@ class req(PersistentServerConnectionApplication):
 
         if "a" not in form:
             logger.warn("Request was missing 'a' parameter")
-            return {'payload': {'message': "Missing 'a' parameter", 'status': 200 }
+            return {'payload': "Missing 'a' parameter", 'status': 200 }
 
         # Helpful crash for debugging
         if form['a'] == "crash":
