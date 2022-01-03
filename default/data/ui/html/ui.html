@@ -301,8 +301,12 @@
                 <template v-for="aspect in ['search-api','hec','s2s','search-ui','idm-ui','idm-api']">
                     <div class="colall"><b>{{aspect}}</b></div>
                     <template v-for="(c,i) in acs_columns.slice(0,conf_setting_columns)" v-if="netw_data.hasOwnProperty(c.server)">
-                        <div v-for="(_,group) in netw_data[c.server][aspect]" :style="{'grid-column':i+1}" class="flex">
-                            <div v-for="(entry,x) of netw_data[c.server][aspect][group]">{{entry}} <ui-icon-button size="mini" type="secondary" icon="backspace" color="red"/></div>
+                        <div v-for="(entries,group) in netw_data[c.server][aspect]" :style="{'grid-column':i+1}" class="flex">
+                            <div v-for="(entry,x) of entries">
+                                {{entry}} 
+                                <ui-icon-button size="mini" type="secondary" icon="backspace" color="red"/>
+                                <ui-icon-button size="mini" type="secondary" icon="add" color="green" v-if="x+1 == entries.length" />
+                            </div>
                         </div>
                     </template>
                 </template>
