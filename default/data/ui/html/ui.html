@@ -302,7 +302,7 @@
                     <div class="colall">{{aspect}}</div>
                     <template v-for="(c,i) in acs_columns.slice(0,conf_setting_columns)" v-if="netw_data.hasOwnProperty(c.server)">
                         <div v-for="(_,group) in netw_data[c.server][aspect]" :style="{'grid-column':i+1}" class="flex">
-                            <ui-textbox class="acs-input" v-model="netw_data[c.server][aspect][group]" :label="group"></ui-textbox>
+                            <div v-for="(entry,x) of netw_data[c.server][aspect][group]">{{entry}} <ui-icon-button size="small" type="secondary" icon="backspace" color="red"/></div>
                         </div>
                     </template>
                 </template>
