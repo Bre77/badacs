@@ -288,7 +288,7 @@
             </ui-tab>
             <ui-tab id="netw" title="Network Allowlists" :style="{'grid-template-columns': `24px repeat(${this.conf_setting_columns}, 1fr)`}">
                 <template v-for="c,i of acs_columns.slice(0,conf_setting_columns)">
-                    <ui-select class="settings row1" :options="Object.keys(servers)" :disabled="Object.keys(servers) == 0" placeholder="Not selected" v-model="acs_columns[i].server" @change="NetwGet(c.server)">Server</ui-select>
+                    <ui-select class="settings row1" :options="acs_servers_options" :disabled="acs_servers_options.length == 0" placeholder="Not selected" v-model="acs_columns[i].server" @change="NetwGet(c.server)">Server</ui-select>
                 </template>
                 S2S IP Allowlist<br>Outbound Port Allowlist
             </ui-tab>
