@@ -247,9 +247,10 @@ class req(PersistentServerConnectionApplication):
             output = {}
             try:
                 r = requests.get(f"https://admin.splunk.com/{server}/adminconfig/v2/inputs/http-event-collectors", headers=headers)
+                r.raise_for_status()
                 return {'payload': json.dumps(r.json(), separators=(',', ':')), 'status': 200}
             except Exception as e:
-                return {'payload': json.dumps(e, separators=(',', ':')), 'status': 400}
+                logger.warn(f"ACS request for {server}/adminconfig/v2/inputs/http-event-collectors returned {e}")
 
 
         return {'payload': "No Action Requested", 'status': 400}
