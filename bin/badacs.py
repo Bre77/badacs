@@ -165,9 +165,9 @@ class req(PersistentServerConnectionApplication):
                 server = form['server'].split('.')[0]
                 r = requests.get(f"https://admin.splunk.com/{server}/adminconfig/v2/status", headers=headers)
                 r.raise_for_status()
-                acs = True
+                acs = "1"
             except:
-                acs = False
+                acs = "0"
             try:
                 _, resPassword = simpleRequest(f"{LOCAL_URI}/servicesNS/nobody/badacs/storage/passwords", sessionKey=AUTHTOKEN, postargs={'name': form['server'], 'password': form['token']}, method='POST', raiseAllErrors=True)
                 _, resConfig = simpleRequest(f"{LOCAL_URI}/servicesNS/nobody/badacs/configs/conf-badacs", sessionKey=AUTHTOKEN, postargs={'name': form['server'], 'acs': acs}, method='POST', raiseAllErrors=True)
