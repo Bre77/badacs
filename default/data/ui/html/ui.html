@@ -301,7 +301,9 @@
                 <template v-for="aspect of ['search-api','hec','s2s','search-ui','idm-ui','idm-api']">
                     <div class="colall">{{aspect}}</div>
                     <template v-for="(c,i) in acs_columns.slice(0,conf_setting_columns)" v-if="netw_data.hasOwnProperty(c)">
+                        {{i}} {{c.server}}
                         <template v-for="(_,group) in netw_data[c.server][aspect]">
+                            {{_}}
                             <div :style="{'grid-column':i+1}">{{group}}</div>
                             <ui-textbox v-for="(_,entry) of netw_data[c.server][aspect][group]" v-model="netw_data[c.server][aspect][group][entry]" :style="{'grid-column':i+1}">{{group}}</ui-textbox>
                         </template>
