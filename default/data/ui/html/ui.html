@@ -786,7 +786,7 @@
                 //
                 NetwGet(s){
                     console.log(s)
-                    if(s){
+                    if(s && !this.netw_data.hasOwnProperty(s)){
                         this.Request('getnetwork',{server:s}).then(resp => {
                             this.$set(this.netw_data,s,resp)
                         })
