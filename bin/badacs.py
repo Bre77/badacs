@@ -137,6 +137,9 @@ class req(PersistentServerConnectionApplication):
         if form['a'] == "config":
             c = getMergedConf(APP_NAME)
             del c['default']
+            for server in c:
+                c[server]['acs'] = self.fixval(server['acs'])
+                c[server]['verify'] = self.fixval(server['verify'])
             return {'payload': json.dumps(c, separators=(',', ':')), 'status': 200}
         
         # Get metadata for all configured servers
@@ -198,9 +201,6 @@ class req(PersistentServerConnectionApplication):
                     return {'payload': "Missing '{x}' parameter", 'status': 400}
             serverResponse, resConfig = simpleRequest(f"{uri}/servicesNS/{form['user']}/{form['app']}/configs/conf-{form['file']}/{form.get('stanza','')}?output_mode=json&count=0", sessionKey=token, method='GET', raiseAllErrors=True)
             configs = json.loads(resConfig)['entry']
-            for server in configs:
-                configs[server]['acs'] = self.fixval(server['acs'])
-                configs[server]['verify'] = self.fixval(server['verify'])
             return self.handleConf(configs)
         
         # Change a config and process the response
