@@ -90,6 +90,9 @@
         #conf > .ui-select{
             margin-bottom: 0;
         }
+        .ui-select{
+            margin-bottom: 0;
+        }
         .conf {
             height: 1.5rem;
             line-height: 1.5rem;
@@ -305,6 +308,9 @@
                             <div v-for="(entry,x) of entries">
                                 {{entry}} 
                                 <ui-icon-button size="mini" type="secondary" icon="backspace" color="red"></ui-icon-button>
+                            </div>
+                            <div>
+                                <ui-textbox></ui-textbox>
                                 <ui-icon-button size="mini" type="secondary" icon="add" color="green" v-if="x+1 == entries.length"></ui-icon-button>
                             </div>
                         </div>
