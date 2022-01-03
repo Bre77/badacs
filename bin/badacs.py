@@ -162,8 +162,15 @@ class req(PersistentServerConnectionApplication):
                     logger.warn(f"Request to 'addserver' was missing '{x}' parameter")
                     return {'payload': "Missing '{x}' parameter", 'status': 400}
             try:
+                server = form['server'].split('.')[0]
+                r = requests.get(f"https://admin.splunk.com/{server}/adminconfig/v2/status", headers=headers)
+                r.raise_for_status()
+                acs = True
+            except:
+                acs = False
+            try:
                 _, resPassword = simpleRequest(f"{LOCAL_URI}/servicesNS/nobody/badacs/storage/passwords", sessionKey=AUTHTOKEN, postargs={'name': form['server'], 'password': form['token']}, method='POST', raiseAllErrors=True)
-                _, resConfig = simpleRequest(f"{LOCAL_URI}/servicesNS/nobody/badacs/configs/conf-badacs", sessionKey=AUTHTOKEN, postargs={'name': form['server'], 'acs': False}, method='POST', raiseAllErrors=True)
+                _, resConfig = simpleRequest(f"{LOCAL_URI}/servicesNS/nobody/badacs/configs/conf-badacs", sessionKey=AUTHTOKEN, postargs={'name': form['server'], 'acs': acs}, method='POST', raiseAllErrors=True)
                 output = json.loads(resConfig)['entry']
                 return {'payload': json.dumps(output, separators=(',', ':')), 'status': 200}
             except Exception as e:
