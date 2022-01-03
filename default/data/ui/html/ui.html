@@ -782,6 +782,7 @@
                 // Networks Tab
                 //
                 NetwGet(s){
+                    console.log(s)
                     this.Request('getnetwork',{server:s}).then(resp => {
                         this.$set(this.netw_data,s,resp)
                     })
