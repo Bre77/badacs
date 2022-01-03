@@ -236,7 +236,7 @@ class req(PersistentServerConnectionApplication):
                 r = requests.get(f"https://admin.splunk.com/{server}/adminconfig/v2/access/outbound-ports", headers=headers)
                 output['outbound-ports'] = r.json()
             except Exception as e:
-                output['outbound-ports'] = e
+                logger.warn(f"ACS request for {server}/adminconfig/v2/access/{feature}/ipallowlists returned {e}")
             
             return {'payload': json.dumps(output, separators=(',', ':')), 'status': 200}
 
