@@ -138,8 +138,8 @@ class req(PersistentServerConnectionApplication):
             c = getMergedConf(APP_NAME)
             del c['default']
             for server in c:
-                c[server]['acs'] = self.fixval(server['acs'])
-                c[server]['verify'] = self.fixval(server['verify'])
+                c[server]['acs'] = self.fixval(c[server]['acs'])
+                c[server]['verify'] = self.fixval(c[server]['verify'])
             return {'payload': json.dumps(c, separators=(',', ':')), 'status': 200}
         
         # Get metadata for all configured servers
