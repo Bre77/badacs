@@ -228,7 +228,7 @@
                 <ui-select class="settings col1-2 row2" multiple has-search :options="conf_setting_apps_options" v-model="conf_setting_apps" :keys="{label: conf_app_label}" :loading="conf_loading > 0" placeholder="All Apps">Apps</ui-select>
                 <ui-select class="settings col1-2 row3" :options="conf_setting_show_options" v-model="conf_setting_show">Show</ui-select>
                 <ui-select class="settings col1-2 row4" :options="conf_setting_columns_options" v-model="conf_setting_columns_option" @change="ConfModelUpdate()">Columns</ui-select>
-                <div class="settings col1-2 row5"><ui-progress-linear  v-show="conf_loading" class="conf-loading"></ui-progress-linear></div>
+                <div class="loading col1-2 row5"><ui-progress-linear  v-show="conf_loading"></ui-progress-linear></div>
                 <!-- Column Settings -->
                 <template v-for="c,i of conf_columns.slice(0,conf_setting_columns)">
                     <ui-select class="settings row1" :style="{'grid-column':i+3}" :options="Object.keys(conf_servers)" :loading="conf_loading > 0" :disabled="Object.keys(conf_servers) == 0" v-model="c.server" @change="ConfCheckColumnOptions(c); ConfChangeOptions(c)" placeholder="Not selected">Server</ui-select>
@@ -240,7 +240,7 @@
                         <ui-icon-button icon="drive_file_move" color="orange" tooltip="Move Stanza" :disabled="true || !c.server" @click="context=c;$refs.move.open()"></ui-icon-button>
                         <ui-icon-button icon="backspace" color="red" tooltip="Remove Stanza" :disabled="true || !c.server" @click="context=c;$refs.remove.open()"></ui-icon-button>
                     </div>
-                    <div class="settings row5" :style="{'grid-column':i+3}"><ui-progress-linear v-show="c.loading"></ui-progress-linear></div>
+                    <div class="loading row5" :style="{'grid-column':i+3}"><ui-progress-linear v-show="c.loading"></ui-progress-linear></div>
                 </template>
                 <!-- Conf Model -->
                 <template v-for="file,f of conf_model">
