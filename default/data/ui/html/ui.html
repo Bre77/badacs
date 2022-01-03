@@ -200,6 +200,10 @@
             grid-column: 1 / -1;
         }
 
+        .acsinput {
+            margin-bottom: 0;
+        }
+
     </style>
 </head>
 
@@ -299,7 +303,7 @@
                     <template v-for="(c,i) in acs_columns.slice(0,conf_setting_columns)" v-if="netw_data.hasOwnProperty(c.server)">
                         <div v-for="(_,group) in netw_data[c.server][aspect]" :style="{'grid-column':i+1}" class="flex"> 
                             <div class="ui-textbox__label-text">{{group}}</div>
-                            <ui-textbox v-for="(_,entry) of netw_data[c.server][aspect][group]" v-model="netw_data[c.server][aspect][group][entry]"></ui-textbox>
+                            <ui-textbox class="input" v-for="(_,entry) of netw_data[c.server][aspect][group]" v-model="netw_data[c.server][aspect][group][entry]"></ui-textbox>
                         </div>
                     </template>
                 </template>
