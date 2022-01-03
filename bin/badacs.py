@@ -228,9 +228,10 @@ class req(PersistentServerConnectionApplication):
             for feature in ['search-api','hec','s2s','search-ui','idm-ui','idm-api']:
                 try:
                     r = requests.get(f"https://admin.splunk.com/{server}/adminconfig/v2/access/{feature}/ipallowlists", headers=headers)
+
                     output[feature] = r.json()
                 except Exception as e:
-                    output[feature] = e
+                    logger.warn(f"ACS request for {server}/adminconfig/v2/access/{feature}/ipallowlists returned {e}")
             try:
                 r = requests.get(f"https://admin.splunk.com/{server}/adminconfig/v2/access/outbound-ports", headers=headers)
                 output['outbound-ports'] = r.json()
