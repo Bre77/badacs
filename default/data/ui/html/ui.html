@@ -799,7 +799,7 @@
                 NetwGet(s){
                     console.log(s)
                     if(this.conf.hasOwnProperty(s.server)){
-                        if(this.netw_data.hasOwnProperty()) return
+                        if(this.netw_data.hasOwnProperty(s.server)) return
                         s.loading = 1
                         this.Request('getnetwork',{server:s.server}).then(resp => {
                             this.$set(this.netw_data,s.server,resp)
