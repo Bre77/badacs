@@ -190,7 +190,9 @@ class req(PersistentServerConnectionApplication):
                     return {'payload': "Missing '{x}' parameter", 'status': 400}
             serverResponse, resConfig = simpleRequest(f"{uri}/servicesNS/{form['user']}/{form['app']}/configs/conf-{form['file']}/{form.get('stanza','')}?output_mode=json&count=0", sessionKey=token, method='GET', raiseAllErrors=True)
             configs = json.loads(resConfig)['entry']
-
+            for (config in configs):
+                config['acs'] = this.fixval(config['acs'])
+                config['verify'] = this.fixval(config['verify'])
             return self.handleConf(configs)
         
         # Change a config and process the response
