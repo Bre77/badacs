@@ -796,14 +796,15 @@
                 //
                 // Networks Tab
                 //
-                NetwGet(s){
+                NetwGet(c){
+                    const server = this.acs_columns[c].server
                     console.log(s)
                     if(this.config.hasOwnProperty(s.server)){
                         if(this.netw_data.hasOwnProperty(s.server)) return
-                        s.loading = 1
+                        this.$set(this.acs_columns[c],'loading',1)
                         this.Request('getnetwork',{server:s.server}).then(resp => {
                             this.$set(this.netw_data,s.server,resp)
-                            s.loading = 0
+                            this.$set(this.acs_columns[c],'loading',0)
                         })
                     }
                 },
