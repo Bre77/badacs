@@ -799,7 +799,6 @@
                 //
                 NetwGet(c){
                     const server = this.acs_columns[c].server
-                    console.log(s)
                     if(this.config.hasOwnProperty(s.server)){
                         if(this.netw_data.hasOwnProperty(s.server)) return
                         this.$set(this.acs_columns[c],'loading',1)
