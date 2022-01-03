@@ -295,8 +295,8 @@
                 </template>
                 <template v-for="aspect of ['search-api','hec','s2s','search-ui','idm-ui','idm-api']">
                     <div class="colall">{{aspect}}</div>
-                    <template v-for="c,i of acs_columns.slice(0,conf_setting_columns)" v-if="netw_data[c.server]" >
-                        <template v-for="group in netw_data[c.server][aspect]">
+                    <template v-for="c,i of acs_columns.slice(0,conf_setting_columns)" >
+                        <template v-for="group in netw_data[c.server][aspect]" v-if="netw_data[c.server]">
                             <ui-textbox v-for="value,entry in netw_data[c.server][aspect][group]" v-model="netw_data[c.server][aspect][group][entry]"></ui-textbox>
                         </template>
                     </template>
