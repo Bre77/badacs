@@ -191,8 +191,8 @@ class req(PersistentServerConnectionApplication):
             serverResponse, resConfig = simpleRequest(f"{uri}/servicesNS/{form['user']}/{form['app']}/configs/conf-{form['file']}/{form.get('stanza','')}?output_mode=json&count=0", sessionKey=token, method='GET', raiseAllErrors=True)
             configs = json.loads(resConfig)['entry']
             for server in configs:
-                configs[server]['acs'] = self.fixval(config['acs'])
-                configs[server]['verify'] = self.fixval(config['verify'])
+                configs[server]['acs'] = self.fixval(server['acs'])
+                configs[server]['verify'] = self.fixval(server['verify'])
             return self.handleConf(configs)
         
         # Change a config and process the response
