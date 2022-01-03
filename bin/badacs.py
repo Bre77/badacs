@@ -237,7 +237,7 @@ class req(PersistentServerConnectionApplication):
                 r.raise_for_status()
                 output['outbound-ports'] = r.json()
             except Exception as e:
-                logger.warn(f"ACS request for {server}/adminconfig/v2/access/{feature}/ipallowlists returned {e}")
+                logger.warn(f"ACS request for {server}/adminconfig/v2/access/outbound-ports returned {e}")
             
             return {'payload': json.dumps(output, separators=(',', ':')), 'status': 200}
 
