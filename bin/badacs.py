@@ -171,6 +171,7 @@ class req(PersistentServerConnectionApplication):
 
         # HELPER - Get Server Context
         if 'server' in form:
+            logger.info(form['server'])
             if form['server'] in [args['server']['hostname'],"local"]:
                 uri = LOCAL_URI
                 token = AUTHTOKEN
