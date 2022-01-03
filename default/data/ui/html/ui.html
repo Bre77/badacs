@@ -296,7 +296,7 @@
                 </template>
                 <template v-for="aspect of ['search-api','hec','s2s','search-ui','idm-ui','idm-api']">
                     <div class="colall">{{aspect}}</div>
-                    <template v-for="c,i in acs_columns.slice(0,conf_setting_columns)" v-if="netw_data.hasOwnProperty(c)">
+                    <template v-for="(c,i) in acs_columns.slice(0,conf_setting_columns)" v-if="netw_data.hasOwnProperty(c)">
                         <template v-for="(_,group) in netw_data[c.server][aspect]">
                             <div>{{group}}</div>
                             <ui-textbox v-for="value,entry of netw_data[c.server][aspect][group]" v-model="netw_data[c.server][aspect][group][entry]">{{group}}</ui-textbox>
@@ -800,6 +800,7 @@
                 NetwGet(c){
                     console.log(c)
                     const server = this.acs_columns[c].server
+                    console.log(server)
                     if(this.config.hasOwnProperty(server)){
                         if(this.netw_data.hasOwnProperty(server)) return
                         this.$set(this.acs_columns[c],'loading',1)
@@ -807,7 +808,7 @@
                             this.$set(this.netw_data,server,resp)
                             this.$set(this.acs_columns[c],'loading',0)
                         })
-                    }
+                    } else console.warn(`Couldn't find ${server} in config`)
                 },
                 //
                 // Generic Helpers
