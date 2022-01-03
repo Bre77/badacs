@@ -460,6 +460,9 @@
                     console.timeEnd('conf_columns_ready')
                     return output
                 },
+                acs_servers_options(){
+                    return Object.keys(this.config).filter(s => s.acs)
+                },
                 conf_servers_active(){
                     return this.Afus(this.conf_columns.slice(0,this.conf_setting_columns).map(c => c.server).filter(s => this.conf_servers.hasOwnProperty(s)))
                 },
