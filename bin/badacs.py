@@ -127,7 +127,7 @@ class req(PersistentServerConnectionApplication):
 
         # Helpful crash for debugging
         if form['a'] == "crash":
-            throw("restart")
+            raise("restart")
 
         # Dump the args
         if form['a'] == "args":
