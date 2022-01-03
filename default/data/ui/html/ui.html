@@ -803,7 +803,7 @@
                     if(this.config.hasOwnProperty(server)){
                         if(this.netw_data.hasOwnProperty(server)) return
                         this.$set(this.acs_columns[c],'loading',1)
-                        this.Request('getnetwork',{server:server}).then(resp => {
+                        this.Request('getnetwork',{'server':server}).then(resp => {
                             this.$set(this.netw_data,server,resp)
                             this.$set(this.acs_columns[c],'loading',0)
                         })
