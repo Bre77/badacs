@@ -285,13 +285,13 @@
                 <ui-confirm ref="copy" title="Copy Selected Configuration" @confirm="ConfCopy" @deny="" v-if="context">
                     {{context.server}} <!--{{context.app.label}} {{context.user.label}}-->
                     <ui-select :options="Object.keys(conf_servers)" v-model="conf_copy_server">Target Server</ui-select>
-                    {{ Object.entries(conf_tick).filter(x => x[1]).map(x => x[0])}}
+                    <!--{{ Object.entries(conf_tick).filter(x => x[1]).map(x => x[0])}}-->
                 </ui-confirm>
                 <ui-confirm ref="add" title="Add Config" @confirm="ConfAdd" @deny="">
                     <ui-select has-search :options="conf_setting_files_options" v-model="conf_add_file">File</ui-select>
                     <ui-textbox v-model="conf_add_app">App</ui-textbox>
                     <ui-textbox v-model="conf_add_stanza">Stanza</ui-textbox>
-                    <ui-textbox v-for="attr,x in conf_add_attrs" v-model="conf_add_attrs[x]"></ui-textbox>
+                    <ui-textbox v-for="(attr,x) in conf_add_attrs" v-model="conf_add_attrs[x]"></ui-textbox>
                 </ui-confirm>
                 <ui-confirm ref="move" title="Move Selected Stanza" @confirm="ConfMove" @deny="">
                     This hasnt been built yet
