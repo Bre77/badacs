@@ -302,7 +302,7 @@
             </ui-tab>
             <ui-tab id="netw" class="grid" title="Network Allowlists" :style="{'grid-template-columns': `repeat(${this.conf_setting_columns}, 1fr)`}">
                 <template v-for="(c,i) in acs_columns.slice(0,conf_setting_columns)">
-                    <ui-select class="settings row1" :style="{'grid-column':i+1}" :options="acs_servers_options" :disabled="acs_servers_options.length == 0" placeholder="Not selected" v-model="acs_columns[i].server" @change="NetwGet(i)">Server</ui-select>
+                    <ui-select class="settings row1" :style="{'grid-column':i+1}" :options="acs_servers_options" :disabled="acs_servers_options.length == 0" placeholder="Not selected" v-model="c.server" @change="NetwGet(i)" label="Server" :invalid="!c.server" error="Please select a server"></ui-select>
                     <div class="loading" :style="{'grid-column':i+1}"><ui-progress-linear v-show="c.loading"></ui-progress-linear></div>
                 </template>
                 <template v-for="aspect in ['search-api','hec','s2s','search-ui','idm-ui','idm-api']">
@@ -321,10 +321,10 @@
                     </template>
                 </template>
             </ui-tab>
-            <ui-tab id="idxs" class="grid" title="Indexes">
+            <ui-tab id="idxs" class="grid" title="Indexes" disabled>
                 Indexes
             </ui-tab>
-            <ui-tab id="apps" class="grid" title="Private Apps">
+            <ui-tab id="apps" class="grid" title="Private Apps" disabled>
                 Private Apps
             </ui-tab>
             <ui-tab id="adds" title="Add Server">
