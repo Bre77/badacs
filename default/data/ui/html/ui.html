@@ -245,12 +245,12 @@
                     <ui-select class="settings row1" :style="{'grid-column':i+3}" :options="Object.keys(conf_servers)" :loading="conf_loading > 0" :disabled="Object.keys(conf_servers) == 0" v-model="c.server" @change="ConfCheckColumnOptions(c); ConfChangeOptions(c)" placeholder="Please select a server" label="Server" :invalid="!c.server"></ui-select>
                     <ui-select has-search class="settings row2" :style="{'grid-column':i+3}" :options="conf_servers.hasOwnProperty(c.server) ? [DEFAULT_APP_CONTEXT, SYSTEM_APP_CONTEXT, ...conf_servers[c.server].apps.filter(a => a.visable)] : [DEFAULT_APP_CONTEXT]" v-model="c.app" :disabled="!conf_servers.hasOwnProperty(c.server)" :keys="{label: conf_app_label}" @change="ConfChangeOptions(c)">App Context</ui-select>
                     <ui-select has-search class="settings row3" :style="{'grid-column':i+3}" :options="conf_servers.hasOwnProperty(c.server) ? [DEFAULT_USER_CONTEXT, ...conf_servers[c.server].users] : [DEFAULT_USER_CONTEXT]" v-model="c.user" :disabled="!conf_servers.hasOwnProperty(c.server)" :keys="{label: conf_user_label}" @change="ConfChangeOptions(c)">User Context</ui-select>
-                    <!--<div class="settings row4 ui-button-group" :style="{'grid-column':i+3}">
+                    <div class="settings row4 ui-button-group" :style="{'grid-column':i+3}">
                         <ui-icon-button icon="content_copy" color="primary" tooltip="Copy Selected" :disabled="true || !c.server" @click="context=c;$refs.copy.open()"></ui-icon-button>
                         <ui-icon-button icon="post_add" color="green" tooltip="Add Config" :disabled="true || !c.server" @click="context=c;$refs.add.open()"></ui-icon-button>
                         <ui-icon-button icon="drive_file_move" color="orange" tooltip="Move Stanza" :disabled="true || !c.server" @click="context=c;$refs.move.open()"></ui-icon-button>
                         <ui-icon-button icon="backspace" color="red" tooltip="Remove Stanza" :disabled="true || !c.server" @click="context=c;$refs.remove.open()"></ui-icon-button>
-                    </div>-->
+                    </div>
                     <div class="loading row5" :style="{'grid-column':i+3}"><ui-progress-linear v-show="c.loading"></ui-progress-linear></div>
                 </template>
                 <!-- Conf Model -->
@@ -300,7 +300,7 @@
                     Do you want to confirm this?
                 </ui-confirm>
             </ui-tab>
-            <ui-tab id="netw" class="grid" title="Network Allowlists" :style="{'grid-template-columns': `repeat(${this.conf_setting_columns}, 1fr)`}" disabled>
+            <ui-tab id="netw" class="grid" title="Network Allowlists" :style="{'grid-template-columns': `repeat(${this.conf_setting_columns}, 1fr)`}">
                 <template v-for="(c,i) in acs_columns.slice(0,conf_setting_columns)">
                     <ui-select class="settings row1" :style="{'grid-column':i+1}" :options="acs_servers_options" :disabled="acs_servers_options.length == 0" placeholder="Please select a server" v-model="c.server" @change="NetwGet(i)" label="Server" :invalid="!c.server"></ui-select>
                     <div class="loading" :style="{'grid-column':i+1}"><ui-progress-linear v-show="c.loading"></ui-progress-linear></div>
