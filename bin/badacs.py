@@ -24,10 +24,11 @@ cached_servers = {}
 cached_defaults = {}
 
 class req(PersistentServerConnectionApplication):
-    countb = 0
+    
 
     def __init__(self, command_line, command_arg):
         PersistentServerConnectionApplication.__init__(self)
+        self.loop = asyncio.get_event_loop()
 
     class BearerAuth(requests.auth.AuthBase):
         """Attaches Bearer Authentication to the given Request object."""
@@ -248,7 +249,7 @@ class req(PersistentServerConnectionApplication):
             server = form['server'].split('.')[0]
             
             output = {}
-            loop = asyncio.get_event_loop()
+            
             async with aiohttp.ClientSession(headers={'Authorization',f"Bearer {token}"}, raise_for_status=True) as client:
                 for feature in ['search-api','hec','s2s','search-ui','idm-ui','idm-api']:
                     try:
