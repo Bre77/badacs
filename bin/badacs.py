@@ -7,6 +7,7 @@ import requests
 import os
 import json
 import logging
+import sys
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "lib"))
 from splunklib.modularinput import *
