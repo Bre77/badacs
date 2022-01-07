@@ -31,7 +31,7 @@ class req(PersistentServerConnectionApplication):
         self.loop = asyncio.get_event_loop()
 
     async def getone(self,client,args):
-        async with client(**args) as r:
+        async with client.request(**args) as r:
             return await r.json()
 
     async def getall(self,todo):
