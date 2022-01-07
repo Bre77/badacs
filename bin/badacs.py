@@ -247,13 +247,13 @@ class req(PersistentServerConnectionApplication):
                 s.headers.update({'Authorization',f"Bearer {form['token']}"})
                 for feature in ['search-api','hec','s2s','search-ui','idm-ui','idm-api']:
                     try:
-                        r = requests.get(url="https://admin.splunk.com/"+server+"/adminconfig/v2/access/"+feature+"/ipallowlists", auth=BearerAuth(token))
+                        r = requests.get(url="https://admin.splunk.com/"+server+"/adminconfig/v2/access/"+feature+"/ipallowlists")
                         r.raise_for_status()
                         output[feature] = r.json()
                     except Exception as e:
                         logger.warn(f"ACS request for {server}/adminconfig/v2/access/{feature}/ipallowlists returned {e}")
                 try:
-                    r = requests.get(url="https://admin.splunk.com/"+server+"/adminconfig/v2/access/outbound-ports", auth=BearerAuth(token))
+                    r = requests.get(url="https://admin.splunk.com/"+server+"/adminconfig/v2/access/outbound-ports")
                     r.raise_for_status()
                     output['outbound-ports'] = r.json()
                 except Exception as e:
