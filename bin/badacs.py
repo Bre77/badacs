@@ -38,7 +38,7 @@ class req(PersistentServerConnectionApplication):
         async with aiohttp.ClientSession(raise_for_status=True) as client:
             tasks = []
             for do in todo:
-                tasks.append(asyncio.create_task(await getone(client,do)))
+                tasks.append(asyncio.create_task(await self.getone(client,do)))
             return await asyncio.gather(*tasks)
             #logger.warn(f"ACS request for {server}/adminconfig/v2/access/{feature}/ipallowlists returned {e}")
         
