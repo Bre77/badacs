@@ -24,6 +24,24 @@ class req(PersistentServerConnectionApplication):
     def __init__(self, command_line, command_arg):
         PersistentServerConnectionApplication.__init__(self)
 
+    class BearerAuth(requests.auth.AuthBase):
+        """Attaches Bearer Authentication to the given Request object."""
+    
+        def __init__(self, token):
+            self.token = token
+    
+        def __eq__(self, other):
+            return all([
+                self.token == getattr(other, 'token', None),
+            ])
+    
+        def __ne__(self, other):
+            return not self == other
+    
+        def __call__(self, r):
+            r.headers['Authorization'] = f"Bearer {self.token}"
+            return r
+
     def fixval(self,value):
         if type(value) is str:
             if value.lower() in ["true","1"]:
