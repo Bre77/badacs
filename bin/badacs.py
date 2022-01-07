@@ -249,7 +249,7 @@ class req(PersistentServerConnectionApplication):
             
             output = {}
             loop = asyncio.get_event_loop()
-            async with aiohttp.ClientSession(headers={'Authorization',f"Bearer {token}"},raise_for_status=True) as client:
+            async with aiohttp.ClientSession(headers={'Authorization',f"Bearer {token}"}, raise_for_status=True) as client:
                 for feature in ['search-api','hec','s2s','search-ui','idm-ui','idm-api']:
                     try:
                         r = client.get("https://admin.splunk.com/"+server+"/adminconfig/v2/access/"+feature+"/ipallowlists")
