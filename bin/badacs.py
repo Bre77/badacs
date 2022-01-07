@@ -248,7 +248,7 @@ class req(PersistentServerConnectionApplication):
                 {'method': 'GET', 'url': f"https://admin.splunk.com/{server}/adminconfig/v2/access/outbound-ports", 'headers':[('Authorization',f"Bearer {token}")]}
             ]
             data = self.loop.run_until_complete(self.getall(tasks))
-            output = dict(zip([...FEATURES, 'outbound-ports'], data))
+            output = dict(zip([*FEATURES, 'outbound-ports'], data))
             return {'payload': json.dumps(output, separators=(',', ':')), 'status': 200}
 
         if form['a'] == "gethec" and form['server']:
