@@ -242,8 +242,8 @@ class req(PersistentServerConnectionApplication):
             tasks = []
             async with aiohttp.ClientSession(headers={'Authorization',f"Bearer {token}"}, raise_for_status=True) as client:
                 for feature in ['search-api','hec','s2s','search-ui','idm-ui','idm-api']:
-                    task.append(client.request('GET',f"https://admin.splunk.com/{server}/adminconfig/v2/access/{feature}/ipallowlists"))
-                task.append(client.request('GET',f"https://admin.splunk.com/{server}/adminconfig/v2/access/outbound-ports")
+                    tasks.append(client.request('GET',f"https://admin.splunk.com/{server}/adminconfig/v2/access/{feature}/ipallowlists"))
+                tasks.append(client.request('GET',f"https://admin.splunk.com/{server}/adminconfig/v2/access/outbound-ports")
                 data = self.loop.run_until_complete(self.getall(tasks))
             output = data
             return {'payload': json.dumps(output, separators=(',', ':')), 'status': 200}
