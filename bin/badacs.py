@@ -11,24 +11,8 @@ import urllib.parse
 APP_NAME = "badacs"
 ATTR_BLACKLIST = ['eai:acl', 'eai:appName', 'eai:userName', 'maxDist', 'priority', 'sourcetype', 'termFrequencyWeightedDist']
 
-def setup_logger(level):
-    """
-    Setup a logger for the REST handler
-    """
 
-    logger = logging.getLogger('splunk.appserver.badacs.req')
-    logger.propagate = False # Prevent the log messages from being duplicated in the python.log file
-    logger.setLevel(level)
-
-    log_file_path = make_splunkhome_path(['var', 'log', 'splunk', 'badacs.log'])
-    file_handler = logging.handlers.RotatingFileHandler(log_file_path, maxBytes=25000000, backupCount=5)
-
-    formatter = logging.Formatter('%(asctime)s %(levelname)s %(message)s')
-    file_handler.setFormatter(formatter)
-    logger.addHandler(file_handler)
-    return logger
-
-logger = setup_logger(logging.DEBUG)
+logger = logging.getLogger('splunk.appserver.badacs.req')
 
 # Cached data
 cached_servers = {}
