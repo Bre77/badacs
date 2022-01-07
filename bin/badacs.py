@@ -69,8 +69,8 @@ class req(PersistentServerConnectionApplication):
             "users": users
         }
 
-    def gettoken(self,uri,token,server):
-        _, resPasswords = simpleRequest(f"{uri}/servicesNS/nobody/badacs/storage/passwords/%3A{server}%3A?output_mode=json&count=1", sessionKey=token, method='GET', raiseAllErrors=True)
+    def gettoken(self,uri,token,server): #{uri}/servicesNS/nobody/badacs/
+        _, resPasswords = simpleRequest(f"storage/passwords/%3A{server}%3A?output_mode=json&count=1", sessionKey=token, method='GET', raiseAllErrors=True)
         return json.loads(resPasswords)['entry'][0]['content']['clear_password']
 
     def handleConf(self,configs):
