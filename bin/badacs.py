@@ -243,11 +243,12 @@ class req(PersistentServerConnectionApplication):
                 logger.warn(f"Request to 'getnetwork' was missing 'server' parameter")
                 return {'payload': "Missing 'server' parameter", 'status': 400}
             server = form['server'].split('.')[0]
+            verify = configs.get(form['server'],{}).get('verify',True)
             
             FEATURES = ['search-api','hec','s2s','search-ui','idm-ui','idm-api']
             tasks = [
-                *({'method': 'GET', 'url': f"https://admin.splunk.com/{server}/adminconfig/v2/access/{feature}/ipallowlists", 'headers':[('Authorization',f"Bearer {token}")]} for feature in FEATURES),
-                {'method': 'GET', 'url': f"https://admin.splunk.com/{server}/adminconfig/v2/access/outbound-ports", 'headers':[('Authorization',f"Bearer {token}")]}
+                *({'method': 'GET', 'url': f"https://admin.splunk.com/{server}/adminconfig/v2/access/{feature}/ipallowlists", 'verify':verify, 'headers':[('Authorization',f"Bearer {token}")]} for feature in FEATURES),
+                {'method': 'GET', 'url': f"https://admin.splunk.com/{server}/adminconfig/v2/access/outbound-ports", 'verify':verify, 'headers':[('Authorization',f"Bearer {token}")]}
             ]
             data = self.loop.run_until_complete(self.getall(tasks))
             output = dict(zip([*FEATURES, 'outbound-ports'], data))
