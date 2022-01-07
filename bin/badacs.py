@@ -241,7 +241,7 @@ class req(PersistentServerConnectionApplication):
             output = {}
             
             tasks = []
-            with aiohttp.ClientSession(headers={'Authorization',f"Bearer {token}"}, raise_for_status=True) as client:
+            with aiohttp.ClientSession(headers=[('Authorization',f"Bearer {token}")], raise_for_status=True) as client:
                 for feature in ['search-api','hec','s2s','search-ui','idm-ui','idm-api']:
                     tasks.append(client.request('GET',f"https://admin.splunk.com/{server}/adminconfig/v2/access/{feature}/ipallowlists"))
                 tasks.append(client.request('GET',f"https://admin.splunk.com/{server}/adminconfig/v2/access/outbound-ports"))
