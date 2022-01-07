@@ -178,7 +178,7 @@ class req(PersistentServerConnectionApplication):
                     return {'payload': "Missing '{x}' parameter", 'status': 400}
             try:
                 server = form['server'].split('.')[0]
-                r = requests.get(url="https://admin.splunk.com/"+server+"/adminconfig/v2/status")
+                r = requests.get(url="https://admin.splunk.com/"+server+"/adminconfig/v2/status",auth=)
                 r.raise_for_status()
                 acs = "1"
             except Exception as e:
@@ -244,7 +244,7 @@ class req(PersistentServerConnectionApplication):
             
             output = {}
             with requests.Session() as s:
-                s.headers.update({'Authorization',f"Bearer {form['token']}"})
+                s.headers.update({'Authorization',f"Bearer {token}"})
                 for feature in ['search-api','hec','s2s','search-ui','idm-ui','idm-api']:
                     try:
                         r = requests.get(url="https://admin.splunk.com/"+server+"/adminconfig/v2/access/"+feature+"/ipallowlists")
