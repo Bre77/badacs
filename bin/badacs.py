@@ -4,7 +4,9 @@ from splunk.rest import simpleRequest
 from splunk.clilib.bundle_paths import make_splunkhome_path
 import asyncio
 import requests
-import os, json, logging
+import os
+import json
+import logging
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "lib"))
 from splunklib.modularinput import *
