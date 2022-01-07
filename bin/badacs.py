@@ -218,7 +218,7 @@ class req(PersistentServerConnectionApplication):
             return {'payload': json.dumps(output, separators=(',', ':')), 'status': 200}
 
         # ACS Endpoints
-        headers = {"Authorization": f"Bearer {token}"}
+        headers = {"Authorization": "Bearer "+token}
 
         if form['a'] == "getnetwork":
             if 'server' not in form:
