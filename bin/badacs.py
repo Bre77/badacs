@@ -160,7 +160,7 @@ class req(PersistentServerConnectionApplication):
                     return {'payload': "Missing '{x}' parameter", 'status': 400}
             try:
                 server = form['server'].split('.')[0]
-                r = requests.get("https://admin.splunk.com/"+server+"/adminconfig/v2/status", headers={"Authorization": f"Bearer {form['token']}"})
+                r = requests.get("https://admin.splunk.com/"+server+"/adminconfig/v2/status", headers={"Authorization": "Bearer "+form['token']}})
                 r.raise_for_status()
                 acs = "1"
             except Exception as e:
