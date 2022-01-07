@@ -248,13 +248,13 @@ class req(PersistentServerConnectionApplication):
             server = form['server'].split('.')[0]
             
             output = {}
-            with requests.Session() as s:
-                s.headers.update({'Authorization',f"Bearer {token}"})
+            loop = asyncio.get_event_loop()
+            async with aiohttp.ClientSession(headers={'Authorization',f"Bearer {token}"},raise_for_status=True) as client:
                 for feature in ['search-api','hec','s2s','search-ui','idm-ui','idm-api']:
                     try:
-                        r = requests.get(url="https://admin.splunk.com/"+server+"/adminconfig/v2/access/"+feature+"/ipallowlists")
-                        r.raise_for_status()
-                        output[feature] = r.json()
+                        r = client.get("https://admin.splunk.com/"+server+"/adminconfig/v2/access/"+feature+"/ipallowlists")
+                        
+                        output[feature] = await resp.json()
                     except Exception as e:
                         logger.warn(f"ACS request for {server}/adminconfig/v2/access/{feature}/ipallowlists returned {e}")
                 try:
