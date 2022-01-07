@@ -160,7 +160,7 @@ class req(PersistentServerConnectionApplication):
                     return {'payload': "Missing '{x}' parameter", 'status': 400}
             try:
                 server = form['server'].split('.')[0]
-                r = requests.get("https://admin.splunk.com/{}/adminconfig/v2/status".format(server), headers={"Authorization": f"Bearer {form['token']}"})
+                r = requests.get("https://admin.splunk.com/"+server+"/adminconfig/v2/status", headers={"Authorization": f"Bearer {form['token']}"})
                 r.raise_for_status()
                 acs = "1"
             except Exception as e:
@@ -229,13 +229,13 @@ class req(PersistentServerConnectionApplication):
             output = {}
             for feature in ['search-api','hec','s2s','search-ui','idm-ui','idm-api']:
                 try:
-                    r = requests.get("https://admin.splunk.com/{server}/adminconfig/v2/access/{feature}/ipallowlists".format(server,feature), headers=headers)
+                    r = requests.get("https://admin.splunk.com/"+server"/adminconfig/v2/access/"+feature+"/ipallowlists", headers=headers)
                     r.raise_for_status()
                     output[feature] = r.json()
                 except Exception as e:
                     logger.warn(f"ACS request for {server}/adminconfig/v2/access/{feature}/ipallowlists returned {e}")
             try:
-                r = requests.get("https://admin.splunk.com/{}/adminconfig/v2/access/outbound-ports".format(server), headers=headers)
+                r = requests.get("https://admin.splunk.com/"+server+"/adminconfig/v2/access/outbound-ports", headers=headers)
                 r.raise_for_status()
                 output['outbound-ports'] = r.json()
             except Exception as e:
@@ -248,7 +248,7 @@ class req(PersistentServerConnectionApplication):
             
             output = {}
             try:
-                r = requests.get("https://admin.splunk.com/{}/adminconfig/v2/inputs/http-event-collectors".format(server), headers=headers)
+                r = requests.get("https://admin.splunk.com/"+server+"/adminconfig/v2/inputs/http-event-collectors", headers=headers)
                 r.raise_for_status()
                 return {'payload': json.dumps(r.json(), separators=(',', ':')), 'status': 200}
             except Exception as e:
