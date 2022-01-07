@@ -244,7 +244,8 @@ class req(PersistentServerConnectionApplication):
                 for feature in ['search-api','hec','s2s','search-ui','idm-ui','idm-api']:
                     task.append(client.request('GET',f"https://admin.splunk.com/{server}/adminconfig/v2/access/{feature}/ipallowlists"))
                 task.append(client.request('GET',f"https://admin.splunk.com/{server}/adminconfig/v2/access/outbound-ports")
-            loop.stop()
+                data = self.loop.run_until_complete(self.getall(tasks))
+            output = data
             return {'payload': json.dumps(output, separators=(',', ':')), 'status': 200}
 
         if form['a'] == "gethec" and form['server']:
