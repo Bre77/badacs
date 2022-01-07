@@ -30,13 +30,18 @@ class req(PersistentServerConnectionApplication):
         PersistentServerConnectionApplication.__init__(self)
         self.loop = asyncio.get_event_loop()
 
-    async def getall(self,reqs):
-        tasks = []
-        for req in reqs:
-            task.append(asyncio.create_task(await req.json()))
-        return self.loop.run_until_complete(await asyncio.gather(*tasks))
-        #logger.warn(f"ACS request for {server}/adminconfig/v2/access/{feature}/ipallowlists returned {e}")
+    async def getall(self,todo):
+        async with aiohttp.ClientSession(raise_for_status=True) as client:
+            tasks = []
+            for do in todo:
+                task.append(asyncio.create_task(await getone(client,do)))
+            return self.loop.run_until_complete(await asyncio.gather(*tasks))
+            #logger.warn(f"ACS request for {server}/adminconfig/v2/access/{feature}/ipallowlists returned {e}")
         
+    async def getone(self,client,args){
+        async with client(**args) as r:
+            return await r.json()
+    }
 
     def fixval(self,value):
         if type(value) is str:
@@ -240,12 +245,11 @@ class req(PersistentServerConnectionApplication):
             
             output = {}
             
-            tasks = []
-            with aiohttp.ClientSession(headers=[('Authorization',f"Bearer {token}")], raise_for_status=True) as client:
-                for feature in ['search-api','hec','s2s','search-ui','idm-ui','idm-api']:
-                    tasks.append(client.request('GET',f"https://admin.splunk.com/{server}/adminconfig/v2/access/{feature}/ipallowlists"))
-                tasks.append(client.request('GET',f"https://admin.splunk.com/{server}/adminconfig/v2/access/outbound-ports"))
-                data = self.loop.run_until_complete(self.getall(tasks))
+            tasks = [
+                {'method': 'GET', 'url': f"https://admin.splunk.com/{server}/adminconfig/v2/access/{feature}/ipallowlists",'headers':[('Authorization',f"Bearer {token}")]} for feature in ['search-api','hec','s2s','search-ui','idm-ui','idm-api'],
+                {'method': 'GET', 'url': f"https://admin.splunk.com/{server}/adminconfig/v2/access/outbound-ports",'headers':[('Authorization',f"Bearer {token}")]},
+            }]
+            data = self.loop.run_until_complete(self.getall(tasks))
             output = data
             return {'payload': json.dumps(output, separators=(',', ':')), 'status': 200}
 
