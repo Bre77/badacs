@@ -253,17 +253,15 @@ class req(PersistentServerConnectionApplication):
                 for feature in ['search-api','hec','s2s','search-ui','idm-ui','idm-api']:
                     try:
                         r = client.get("https://admin.splunk.com/"+server+"/adminconfig/v2/access/"+feature+"/ipallowlists")
-                        
-                        output[feature] = await resp.json()
+                        output[feature] = await r.json()
                     except Exception as e:
                         logger.warn(f"ACS request for {server}/adminconfig/v2/access/{feature}/ipallowlists returned {e}")
                 try:
-                    r = requests.get(url="https://admin.splunk.com/"+server+"/adminconfig/v2/access/outbound-ports")
-                    r.raise_for_status()
-                    output['outbound-ports'] = r.json()
+                    r = client.get(url="https://admin.splunk.com/"+server+"/adminconfig/v2/access/outbound-ports")
+                    output['outbound-ports'] = await r.json()
                 except Exception as e:
                     logger.warn(f"ACS request for {server}/adminconfig/v2/access/outbound-ports returned {e}")
-            
+            loop.stop()
             return {'payload': json.dumps(output, separators=(',', ':')), 'status': 200}
 
         if form['a'] == "gethec" and form['server']:
