@@ -38,10 +38,9 @@ class req(PersistentServerConnectionApplication):
             return self.loop.run_until_complete(await asyncio.gather(*tasks))
             #logger.warn(f"ACS request for {server}/adminconfig/v2/access/{feature}/ipallowlists returned {e}")
         
-    async def getone(self,client,args){
+    async def getone(self,client,args):
         async with client(**args) as r:
             return await r.json()
-    }
 
     def fixval(self,value):
         if type(value) is str:
@@ -243,14 +242,13 @@ class req(PersistentServerConnectionApplication):
                 return {'payload': "Missing 'server' parameter", 'status': 400}
             server = form['server'].split('.')[0]
             
-            output = {}
-            
+            FEATURES = ['search-api','hec','s2s','search-ui','idm-ui','idm-api']
             tasks = [
-                {'method': 'GET', 'url': f"https://admin.splunk.com/{server}/adminconfig/v2/access/{feature}/ipallowlists", 'headers':[('Authorization',f"Bearer {token}")]} for feature in ['search-api','hec','s2s','search-ui','idm-ui','idm-api'],
+                {'method': 'GET', 'url': f"https://admin.splunk.com/{server}/adminconfig/v2/access/{feature}/ipallowlists", 'headers':[('Authorization',f"Bearer {token}")]} for feature in FEATURES,
                 {'method': 'GET', 'url': f"https://admin.splunk.com/{server}/adminconfig/v2/access/outbound-ports", 'headers':[('Authorization',f"Bearer {token}")]},
             }]
             data = self.loop.run_until_complete(self.getall(tasks))
-            output = data
+            output = dict(zip([..FEATURES, 'outbound-ports'], data))
             return {'payload': json.dumps(output, separators=(',', ':')), 'status': 200}
 
         if form['a'] == "gethec" and form['server']:
