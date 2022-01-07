@@ -30,23 +30,12 @@ class req(PersistentServerConnectionApplication):
         PersistentServerConnectionApplication.__init__(self)
         self.loop = asyncio.get_event_loop()
 
-    class BearerAuth(requests.auth.AuthBase):
-        """Attaches Bearer Authentication to the given Request object."""
-    
-        def __init__(self, token):
-            self.token = token
-    
-        def __eq__(self, other):
-            return all([
-                self.token == getattr(other, 'token', None),
-            ])
-    
-        def __ne__(self, other):
-            return not self == other
-    
-        def __call__(self, r):
-            r.headers['Authorization'] = f"Bearer {self.token}"
-            return r
+    async def getall(self,reqs):
+        tasks = []
+        for req in reqs:
+            task.append(asyncio.create_task(await req.json()))
+        logger.warn(f"ACS request for {server}/adminconfig/v2/access/{feature}/ipallowlists returned {e}")
+        
 
     def fixval(self,value):
         if type(value) is str:
@@ -250,18 +239,11 @@ class req(PersistentServerConnectionApplication):
             
             output = {}
             
+            tasks = []
             async with aiohttp.ClientSession(headers={'Authorization',f"Bearer {token}"}, raise_for_status=True) as client:
                 for feature in ['search-api','hec','s2s','search-ui','idm-ui','idm-api']:
-                    try:
-                        r = client.get("https://admin.splunk.com/"+server+"/adminconfig/v2/access/"+feature+"/ipallowlists")
-                        output[feature] = await r.json()
-                    except Exception as e:
-                        logger.warn(f"ACS request for {server}/adminconfig/v2/access/{feature}/ipallowlists returned {e}")
-                try:
-                    r = client.get(url="https://admin.splunk.com/"+server+"/adminconfig/v2/access/outbound-ports")
-                    output['outbound-ports'] = await r.json()
-                except Exception as e:
-                    logger.warn(f"ACS request for {server}/adminconfig/v2/access/outbound-ports returned {e}")
+                    task.append(client.request('GET',f"https://admin.splunk.com/{server}/adminconfig/v2/access/{feature}/ipallowlists"))
+                task.append(client.request('GET',f"https://admin.splunk.com/{server}/adminconfig/v2/access/outbound-ports")
             loop.stop()
             return {'payload': json.dumps(output, separators=(',', ':')), 'status': 200}
 
