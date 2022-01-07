@@ -2,11 +2,16 @@ from splunk.persistconn.application import PersistentServerConnectionApplication
 from splunk.clilib.cli_common import getMergedConf
 from splunk.rest import simpleRequest
 from splunk.clilib.bundle_paths import make_splunkhome_path
+import asyncio
 import requests
 import os, json
 import logging
-from distutils.util import strtobool
 import urllib.parse
+
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "lib"))
+from splunklib.modularinput import *
+import aiohttp
+
 
 APP_NAME = "badacs"
 ATTR_BLACKLIST = ['eai:acl', 'eai:appName', 'eai:userName', 'maxDist', 'priority', 'sourcetype', 'termFrequencyWeightedDist']
