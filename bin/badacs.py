@@ -30,6 +30,10 @@ class req(PersistentServerConnectionApplication):
         PersistentServerConnectionApplication.__init__(self)
         self.loop = asyncio.get_event_loop()
 
+    async def getone(self,client,args):
+        async with client(**args) as r:
+            return await r.json()
+
     async def getall(self,todo):
         async with aiohttp.ClientSession(raise_for_status=True) as client:
             tasks = []
@@ -38,9 +42,7 @@ class req(PersistentServerConnectionApplication):
             return self.loop.run_until_complete(await asyncio.gather(*tasks))
             #logger.warn(f"ACS request for {server}/adminconfig/v2/access/{feature}/ipallowlists returned {e}")
         
-    async def getone(self,client,args):
-        async with client(**args) as r:
-            return await r.json()
+    
 
     def fixval(self,value):
         if type(value) is str:
