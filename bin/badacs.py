@@ -229,7 +229,7 @@ class req(PersistentServerConnectionApplication):
             output = {}
             for feature in ['search-api','hec','s2s','search-ui','idm-ui','idm-api']:
                 try:
-                    r = requests.get("https://admin.splunk.com/"+server"/adminconfig/v2/access/"+feature+"/ipallowlists", headers=headers)
+                    r = requests.get("https://admin.splunk.com/"+server+"/adminconfig/v2/access/"+feature+"/ipallowlists", headers=headers)
                     r.raise_for_status()
                     output[feature] = r.json()
                 except Exception as e:
