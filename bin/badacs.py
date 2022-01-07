@@ -178,9 +178,7 @@ class req(PersistentServerConnectionApplication):
                     return {'payload': "Missing '{x}' parameter", 'status': 400}
             try:
                 server = form['server'].split('.')[0]
-                with requests.Session() as s:
-                    s.headers.update({'Authorization',f"Bearer {form['token']}"})
-                    r = s.get("https://admin.splunk.com/"+server+"/adminconfig/v2/status")
+                r = requests.get(url="https://admin.splunk.com/"+server+"/adminconfig/v2/status")
                 r.raise_for_status()
                 acs = "1"
             except Exception as e:
@@ -245,19 +243,21 @@ class req(PersistentServerConnectionApplication):
             server = form['server'].split('.')[0]
             
             output = {}
-            for feature in ['search-api','hec','s2s','search-ui','idm-ui','idm-api']:
+            with requests.Session() as s:
+                s.headers.update({'Authorization',f"Bearer {form['token']}"})
+                for feature in ['search-api','hec','s2s','search-ui','idm-ui','idm-api']:
+                    try:
+                        r = requests.get(url="https://admin.splunk.com/"+server+"/adminconfig/v2/access/"+feature+"/ipallowlists", auth=BearerAuth(token))
+                        r.raise_for_status()
+                        output[feature] = r.json()
+                    except Exception as e:
+                        logger.warn(f"ACS request for {server}/adminconfig/v2/access/{feature}/ipallowlists returned {e}")
                 try:
-                    r = requests.get("https://admin.splunk.com/"+server+"/adminconfig/v2/access/"+feature+"/ipallowlists", auth=BearerAuth(token))
+                    r = requests.get(url="https://admin.splunk.com/"+server+"/adminconfig/v2/access/outbound-ports", auth=BearerAuth(token))
                     r.raise_for_status()
-                    output[feature] = r.json()
+                    output['outbound-ports'] = r.json()
                 except Exception as e:
-                    logger.warn(f"ACS request for {server}/adminconfig/v2/access/{feature}/ipallowlists returned {e}")
-            try:
-                r = requests.get("https://admin.splunk.com/"+server+"/adminconfig/v2/access/outbound-ports", auth=BearerAuth(token))
-                r.raise_for_status()
-                output['outbound-ports'] = r.json()
-            except Exception as e:
-                logger.warn(f"ACS request for {server}/adminconfig/v2/access/outbound-ports returned {e}")
+                    logger.warn(f"ACS request for {server}/adminconfig/v2/access/outbound-ports returned {e}")
             
             return {'payload': json.dumps(output, separators=(',', ':')), 'status': 200}
 
@@ -266,7 +266,7 @@ class req(PersistentServerConnectionApplication):
             
             output = {}
             try:
-                r = requests.get("https://admin.splunk.com/"+server+"/adminconfig/v2/inputs/http-event-collectors", auth=BearerAuth(token))
+                r = requests.get(url="https://admin.splunk.com/"+server+"/adminconfig/v2/inputs/http-event-collectors", auth=BearerAuth(token))
                 r.raise_for_status()
                 return {'payload': json.dumps(r.json(), separators=(',', ':')), 'status': 200}
             except Exception as e:
