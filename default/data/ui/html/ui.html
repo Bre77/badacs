@@ -323,8 +323,8 @@
                 </template>
 
                 <template v-for="(c,i) in acs_columns.slice(0,conf_setting_columns)" v-if="hec_data.hasOwnProperty(c.server)">
-                    <template v-for="hec in hec_data[c.server]">
-                        <div :style="{'grid-column':i+1}">{{hec.spec.name}}</div>
+                    <div v-for="hec in hec_data[c.server]" :style="{'grid-column':i+1}">
+                        <div>{{hec.spec.name}}</div>
                         <ui-textbox v-model="hec.spec.allowedIndexes" :label="Allowed Indexes"></ui-textbox>
                         <ui-textbox v-model="hec.spec.defaultHost" :label="Host"></ui-textbox>
                         <ui-textbox v-model="hec.spec.defaultSource" :label="Source"></ui-textbox>
@@ -333,7 +333,7 @@
                         <ui-checkbox v-model="hec.spec.useAck" :label="Use ACK"></ui-checkbox>
                         <ui-checkbox v-model="hec.spec.disabled" :label="Disabled"></ui-checkbox>
                         <div :style="{'grid-column':i+1}">{{hec.value}}</div>
-                    </template>
+                    </div>
                 </template>
             </ui-tab>
             <ui-tab id="idxs" class="grid" title="Indexes" :style="{'grid-template-columns': `repeat(${this.conf_setting_columns}, 1fr)`}" @select="TabChange(IDXGet)">
