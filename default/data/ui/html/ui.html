@@ -825,12 +825,12 @@
                         ['idm-api','access/idm-api/ipallowlists'],
                         ['outbound-ports','access/outbound-ports']
                         ]
-                    const server = this.acs_columns[c].server
+                    const server = c.server
                     if(!this.config.hasOwnProperty(server)) return
                     if(!this.netw_data.hasOwnProperty(server)){
                         this.$set(this.netw_data,server,{})
                     }
-                    this.$set(this.acs_columns[c],'loading',1)
+                    this.$set(c,'loading',1)
                     return Promise.all(ACS_NETWORK_ENDPOINTS.map(z => {
                         const [key,endpoint] = z
                         if(this.netw_data[server].hasOwnProperty(key)) return
@@ -842,16 +842,16 @@
                             this.$set(this.netw_data[server],key,null)
                         })
                     }))
-                    .then(this.$set(this.acs_columns[c],'loading',0))
+                    .then(this.$set(c,'loading',0))
                 },
                 //
                 // HEC
                 //
                 HECGet(c){
-                    const server = this.acs_columns[c].server
+                    const server = c.server
                     if(!this.config.hasOwnProperty(server)) return
                     if(this.hec_data.hasOwnProperty(server)) return
-                    this.$set(this.acs_columns[c],'loading',1)
+                    this.$set(c,'loading',1)
                     
                     return this.Request('get',{'server':server,'endpoint':'inputs/http-event-collectors'})
                     .then(resp => {
@@ -861,17 +861,17 @@
                         this.$set(this.hec_data,server,null)
                     })
                     .then(()=>{
-                        this.$set(this.acs_columns[c],'loading',0)
+                        this.$set(c,'loading',0)
                     })
                 },
                 //
                 // Indexes
                 //
                 IDXGet(c){
-                    const server = this.acs_columns[c].server
+                    const server = c.server
                     if(!this.config.hasOwnProperty(server)) return
                     if(this.idx_data.hasOwnProperty(server)) return
-                    this.$set(this.acs_columns[c],'loading',1)
+                    this.$set(c,'loading',1)
                     
                     return this.Request('get',{'server':server,'endpoint':'indexes'})
                     .then(resp => {
@@ -880,7 +880,7 @@
                     .catch(e =>{
                         this.$set(this.idx_data,server,null)
                     })
-                    .then(this.$set(this.acs_columns[c],'loading',0))
+                    .then(this.$set(c,'loading',0))
                 },
                 //
                 // Generic Helpers
@@ -926,7 +926,7 @@
                 TabChange(func){
                     for (const c of this.acs_columns){
                         if(c.server){
-                            func(c.server)
+                            func(c)
                         }
                     }
                 }
