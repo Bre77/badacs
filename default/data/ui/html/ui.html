@@ -323,7 +323,10 @@
                 </template>
 
                 <template v-for="(c,i) in acs_columns.slice(0,conf_setting_columns)" v-if="hec_data.hasOwnProperty(c.server)">
-
+                    <template v-for="hec in hec_data[c.server]">
+                        <div :style="{'grid-column':i+1}">{{hec}}</div>
+                    </template>
+                </template>
             </ui-tab>
             <ui-tab id="idxs" class="grid" title="Indexes" :style="{'grid-template-columns': `repeat(${this.conf_setting_columns}, 1fr)`}" @select="TabChange(IDXGet)">
                 Indexes
