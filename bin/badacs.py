@@ -255,32 +255,6 @@ class req(PersistentServerConnectionApplication):
             except Exception as e:
                 return self.errorhandle(f"ACS request for {server}/adminconfig/v2/{form['endpoint']} returned {e}")
 
-        if form['a'] == "getnetwork":
-            if 'server' not in form:
-                logger.warn(f"Request to 'getnetwork' was missing 'server' parameter")
-                return {'payload': "Missing 'server' parameter", 'status': 400}
-            server = form['server'].split('.')[0]
-            
-            FEATURES = ['search-api','hec','s2s','search-ui','idm-ui','idm-api']
-            tasks = [
-                *({'method': 'GET', 'url': f"https://admin.splunk.com/{server}/adminconfig/v2/access/{feature}/ipallowlists", 'ssl':False, 'headers':[('Authorization',f"Bearer {token}")]} for feature in FEATURES),
-                {'method': 'GET', 'url': f"https://admin.splunk.com/{server}/adminconfig/v2/access/outbound-ports", 'ssl':False, 'headers':[('Authorization',f"Bearer {token}")]}
-            ]
-            data = self.loop.run_until_complete(self.getall(tasks))
-            output = dict(zip([*FEATURES, 'outbound-ports'], data))
-            return {'payload': json.dumps(output, separators=(',', ':')), 'status': 200}
-
-        if form['a'] == "gethec" and form['server']:
-            server = form['server'].split('.')[0]
-            
-            output = {}
-            try:
-                r = requests.get(url="https://admin.splunk.com/"+server+"/adminconfig/v2/inputs/http-event-collectors", auth=BearerAuth(token))
-                r.raise_for_status()
-                return {'payload': json.dumps(r.json(), separators=(',', ':')), 'status': 200}
-            except Exception as e:
-                logger.warn(f"ACS request for {server}/adminconfig/v2/inputs/http-event-collectors returned {e}")
-
 
         return {'payload': "No Action Requested", 'status': 400}
         #except Exception as ex:
