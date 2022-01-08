@@ -355,8 +355,7 @@
             'system':'{{SPLUNKWEB_URL_PREFIX}}/static/app/badacs/cog.svg'
         }
         const DELIM = "\0"
-        const ACS_NETWORK_ENDPOINTS = [['search-api','access/search-api/ipallowlists'],['hec','access/hec/ipallowlists'],['s2s','access/s2s/ipallowlists'],['search-ui','access/search-ui/ipallowlists'],['idm-ui','access/idm-ui/ipallowlists'],['idm-api','access/idm-api/ipallowlists'],['outbound-ports','access/outbound-ports']]
-
+        
         function imgError(image){
             console.log(image)
             image.onerror = "";
@@ -806,6 +805,15 @@
                 // Networks Tab
                 //
                 NetwGet(c){
+                    const ACS_NETWORK_ENDPOINTS = [
+                        ['search-api','access/search-api/ipallowlists'],
+                        ['hec','access/hec/ipallowlists'],
+                        ['s2s','access/s2s/ipallowlists'],
+                        ['search-ui','access/search-ui/ipallowlists'],
+                        ['idm-ui','access/idm-ui/ipallowlists'],
+                        ['idm-api','access/idm-api/ipallowlists'],
+                        ['outbound-ports','access/outbound-ports']
+                    ]
                     const server = this.acs_columns[c].server
                     if(!this.config.hasOwnProperty(server)) return
                     if(!this.netw_data.hasOwnProperty(server)){
