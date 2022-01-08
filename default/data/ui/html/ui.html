@@ -326,11 +326,8 @@
                     {{hec_data[c.server]}}
                 </template>
             </ui-tab>
-            <ui-tab id="idxs" class="grid" title="Indexes" disabled>
+            <ui-tab id="idxs" class="grid" title="Indexes">
                 Indexes
-            </ui-tab>
-            <ui-tab id="apps" class="grid" title="Private Apps" disabled>
-                Private Apps
             </ui-tab>
             <ui-tab id="adds" title="Add Server">
                 <ui-textbox label="Hostname" placeholder="sh.splunkcloud.com" v-model="addserver_host"
@@ -857,10 +854,10 @@
                     
                     return this.Request('get',{'server':server,'endpoint':'inputs/http-event-collectors'})
                     .then(resp => {
-                        this.$set(this.hec_data[server],key,resp)
+                        this.$set(this.hec_data,server,resp)
                     })
                     .catch(e =>{
-                        this.$set(this.hec_data[server],key,null)
+                        this.$set(this.hec_data,server,null)
                     })
                     .then(()=>{
                         this.$set(this.acs_columns[c],'loading',0)
@@ -877,10 +874,10 @@
                     
                     return this.Request('get',{'server':server,'endpoint':'indexes'})
                     .then(resp => {
-                        this.$set(this.idx_data[server],key,resp)
+                        this.$set(this.idx_data,server,resp)
                     })
                     .catch(e =>{
-                        this.$set(this.idx_data[server],key,null)
+                        this.$set(this.idx_data,server,null)
                     })
                     .then(this.$set(this.acs_columns[c],'loading',0))
                 },
