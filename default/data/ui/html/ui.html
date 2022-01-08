@@ -872,6 +872,7 @@
                         this.$set(this.idx_data[server],key,resp)
                     })
                     .catch(e =>{
+                        console.error(e)
                         this.$set(this.idx_data[server],key,null)
                     })
                     .then(this.$set(this.acs_columns[c],'loading',0))
