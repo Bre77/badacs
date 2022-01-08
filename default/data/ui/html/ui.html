@@ -333,12 +333,19 @@
                         <ui-textbox v-model="hec.spec.defaultIndex">Index</ui-textbox>
                         <ui-checkbox v-model="hec.spec.useAck">Use ACK</ui-checkbox>
                         <ui-checkbox v-model="hec.spec.disabled">Disabled</ui-checkbox>
-                        
                     </div>
                 </template>
             </ui-tab>
             <ui-tab id="idxs" class="grid" title="Indexes" :style="{'grid-template-columns': `repeat(${this.conf_setting_columns}, 1fr)`}" @select="TabChange(IDXGet)">
-                Indexes
+                <template v-for="(c,i) in acs_columns.slice(0,conf_setting_columns)">
+                    <ui-select class="settings row1" :style="{'grid-column':i+1}" :options="acs_servers_options" :disabled="acs_servers_options.length == 0" placeholder="Please select a server" v-model="c.server" @change="IDXGet(c)" label="Server" :invalid="!c.server"></ui-select>
+                    <div class="loading" :style="{'grid-column':i+1}"><ui-progress-linear v-show="c.loading"></ui-progress-linear></div>
+                </template>
+                <template v-for="(c,i) in acs_columns.slice(0,conf_setting_columns)" v-if="idx_data.hasOwnProperty(c.server)">
+                    <div v-for="idx in idx_data[c.server]" :style="{'grid-column':i+1}">
+                        {{idx}}
+                    </div>
+                </template>
             </ui-tab>
             <ui-tab id="adds" title="Add Server">
                 <ui-textbox label="Hostname" placeholder="sh.splunkcloud.com" v-model="addserver_host"
