@@ -325,13 +325,13 @@
                 <template v-for="(c,i) in acs_columns.slice(0,conf_setting_columns)" v-if="hec_data.hasOwnProperty(c.server)">
                     <div v-for="hec in hec_data[c.server]" :style="{'grid-column':i+1}">
                         <div>{{hec.spec.name}}</div>
-                        <ui-textbox v-model="hec.spec.allowedIndexes" :label="Allowed Indexes"></ui-textbox>
-                        <ui-textbox v-model="hec.spec.defaultHost" :label="Host"></ui-textbox>
-                        <ui-textbox v-model="hec.spec.defaultSource" :label="Source"></ui-textbox>
-                        <ui-textbox v-model="hec.spec.defaultSourcetype" :label="Sourcetype"></ui-textbox>
-                        <ui-textbox v-model="hec.spec.defaultIndex" :label="Index"></ui-textbox>
-                        <ui-checkbox v-model="hec.spec.useAck" :label="Use ACK"></ui-checkbox>
-                        <ui-checkbox v-model="hec.spec.disabled" :label="Disabled"></ui-checkbox>
+                        <ui-textbox v-model="hec.spec.allowedIndexes">Allowed Indexes</ui-textbox>
+                        <ui-textbox v-model="hec.spec.defaultHost">Host</ui-textbox>
+                        <ui-textbox v-model="hec.spec.defaultSource">Source</ui-textbox>
+                        <ui-textbox v-model="hec.spec.defaultSourcetype">Sourcetype</ui-textbox>
+                        <ui-textbox v-model="hec.spec.defaultIndex">Index</ui-textbox>
+                        <ui-checkbox v-model="hec.spec.useAck">Use ACK</ui-checkbox>
+                        <ui-checkbox v-model="hec.spec.disabled">Disabled</ui-checkbox>
                         <div :style="{'grid-column':i+1}">{{hec.value}}</div>
                     </div>
                 </template>
