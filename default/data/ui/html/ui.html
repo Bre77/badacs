@@ -810,11 +810,12 @@
                     if(this.config.hasOwnProperty(server)){
                         if(this.netw_data.hasOwnProperty(server)) return
                         this.$set(this.acs_columns[c],'loading',1)
-                        Promise.all(ACS_NETWORK_ENDPOINTS.map(z => {
-                            const (key,endpoint) = z
-                            return this.Request('get',{'server':server,'endpoint':endpoint}).then(resp => {
+                        Promise.all(ACS_NETWORK_ENDPOINTS.map([key,endpoint] => {
+                            return this.Request('get',{'server':server,'endpoint':endpoint})
+                            .then(resp => {
                                 this.$set(this.netw_data[server],key,resp)
-                            }).catch(e =>{
+                            })
+                            .catch(e =>{
                                 this.$set(this.netw_data[server],key,null)
                             })
                         })).then({
