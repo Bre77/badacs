@@ -355,6 +355,7 @@
             'system':'{{SPLUNKWEB_URL_PREFIX}}/static/app/badacs/cog.svg'
         }
         const DELIM = "\0"
+        const ACS_NETWORK_ENDPOINTS = [['search-api','access/search-api/ipallowlists'],['hec','access/hec/ipallowlists'],['s2s','access/s2s/ipallowlists'],['search-ui','access/search-ui/ipallowlists'],['idm-ui','access/idm-ui/ipallowlists'],['idm-api','access/idm-api/ipallowlists'],['outbound-ports','access/outbound-ports']]
 
         function imgError(image){
             console.log(image)
@@ -811,10 +812,16 @@
                     if(this.config.hasOwnProperty(server)){
                         if(this.netw_data.hasOwnProperty(server)) return
                         this.$set(this.acs_columns[c],'loading',1)
-                        this.Request('getnetwork',{'server':server}).then(resp => {
-                            this.$set(this.netw_data,server,resp)
+                        Promise.all(ACS_NETWORK_ENDPOINTS.map(z => {
+                            const key,endpoint = z
+                            return this.Request('get',{'server':server,'endpoint':endpoint}).then(resp => {
+                                this.$set(this.netw_data[server],key,resp)
+                            })
+                        })).then({
                             this.$set(this.acs_columns[c],'loading',0)
-                        })
+                        }
+                        
+                        
                     }
                 },
                 //
