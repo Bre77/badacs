@@ -807,22 +807,24 @@
                 //
                 NetwGet(c){
                     const server = this.acs_columns[c].server
-                    if(this.config.hasOwnProperty(server)){
-                        if(this.netw_data.hasOwnProperty(server)) return
-                        this.$set(this.acs_columns[c],'loading',1)
-                        Promise.all(ACS_NETWORK_ENDPOINTS.map(z => {
-                            const [key,endpoint] = z
-                            return this.Request('get',{'server':server,'endpoint':endpoint})
-                            .then(resp => {
-                                this.$set(this.netw_data[server],key,resp)
-                            })
-                            .catch(e =>{
-                                this.$set(this.netw_data[server],key,null)
-                            })
-                        })).then({
-                            this.$set(this.acs_columns[c],'loading',0)
-                        })
+                    if(!this.config.hasOwnProperty(server)) return
+                    if(!this.netw_data.hasOwnProperty(server)){
+                        this.$set(this.netw_data,server,{})
                     }
+                    this.$set(this.acs_columns[c],'loading',1)
+                    return Promise.all(ACS_NETWORK_ENDPOINTS.map(z => {
+                        const [key,endpoint] = z
+                        if(this.netw_data[server].hasOwnProperty(key)) return
+                        return this.Request('get',{'server':server,'endpoint':endpoint})
+                        .then(resp => {
+                            this.$set(this.netw_data[server],key,resp)
+                        })
+                        .catch(e =>{
+                            this.$set(this.netw_data[server],key,null)
+                        })
+                    })).then({
+                        this.$set(this.acs_columns[c],'loading',0)
+                    })
                 },
                 //
                 // Generic Helpers
