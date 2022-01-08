@@ -833,7 +833,8 @@
                         .catch(e =>{
                             this.$set(this.netw_data[server],key,null)
                         })
-                    })).then(()=>{
+                    }))
+                    .then(()=>{
                         this.$set(this.acs_columns[c],'loading',0)
                     })
                 },
@@ -849,11 +850,31 @@
                     return this.Request('get',{'server':server,'endpoint':'inputs/http-event-collectors'})
                     .then(resp => {
                         this.$set(this.hec_data[server],key,resp)
-                        this.$set(this.acs_columns[c],'loading',0)
                     })
                     .catch(e =>{
                         this.$set(this.hec_data[server],key,null)
                     })
+                    .then(()=>{
+                        this.$set(this.acs_columns[c],'loading',0)
+                    })
+                },
+                //
+                // Indexes
+                //
+                IDXGet(c){
+                    const server = this.acs_columns[c].server
+                    if(!this.config.hasOwnProperty(server)) return
+                    if(this.idx_data.hasOwnProperty(server)) return
+                    this.$set(this.acs_columns[c],'loading',1)
+                    
+                    return this.Request('get',{'server':server,'endpoint':'indexes'})
+                    .then(resp => {
+                        this.$set(this.idx_data[server],key,resp)
+                    })
+                    .catch(e =>{
+                        this.$set(this.idx_data[server],key,null)
+                    })
+                    .then(this.$set(this.acs_columns[c],'loading',0))
                 },
                 //
                 // Generic Helpers
