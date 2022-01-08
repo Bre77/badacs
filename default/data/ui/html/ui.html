@@ -816,6 +816,8 @@
                             const key,endpoint = z
                             return this.Request('get',{'server':server,'endpoint':endpoint}).then(resp => {
                                 this.$set(this.netw_data[server],key,resp)
+                            }).catch(e =>{
+                                this.$set(this.netw_data[server],key,null)
                             })
                         })).then({
                             this.$set(this.acs_columns[c],'loading',0)
