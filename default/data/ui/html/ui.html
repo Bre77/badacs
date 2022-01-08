@@ -347,6 +347,8 @@
                 <template v-for="(c,i) in acs_columns.slice(0,conf_setting_columns)" v-if="idx_data.hasOwnProperty(c.server)">
                     <div v-for="idx in idx_data[c.server]" :style="{'grid-column':i+1}">
                         {{idx}}
+                        searchableDays
+                        maxDataSizeMB
                     </div>
                 </template>
             </ui-tab>
