@@ -383,6 +383,15 @@
             'system':'{{SPLUNKWEB_URL_PREFIX}}/static/app/badacs/cog.svg'
         }
         const DELIM = "\0"
+        const ACS_NETWORK_ENDPOINTS = {
+            'search-api':'access/search-api/ipallowlists',
+            'hec':'access/hec/ipallowlists',
+            's2s':'access/s2s/ipallowlists',
+            'search-ui':'access/search-ui/ipallowlists',
+            'idm-ui':'access/idm-ui/ipallowlists',
+            'idm-api':'access/idm-api/ipallowlists',
+            'outbound-ports':'access/outbound-ports'
+        }
         
         function imgError(image){
             console.log(image)
@@ -449,6 +458,7 @@
                 hec_data: {},
                 idx_data: {},
                 app_data: {},
+                ACS_NETWORK_ENDPOINTS: ACS_NETWORK_ENDPOINTS
             },
             computed: {
                 conf_setting_apps_names(){
@@ -836,22 +846,13 @@
                 // Networks Tab
                 //
                 NETGet(c){
-                    const ACS_NETWORK_ENDPOINTS = [
-                        ['search-api','access/search-api/ipallowlists'],
-                        ['hec','access/hec/ipallowlists'],
-                        ['s2s','access/s2s/ipallowlists'],
-                        ['search-ui','access/search-ui/ipallowlists'],
-                        ['idm-ui','access/idm-ui/ipallowlists'],
-                        ['idm-api','access/idm-api/ipallowlists'],
-                        ['outbound-ports','access/outbound-ports']
-                        ]
                     const server = c.server
                     if(!this.config.hasOwnProperty(server)) return
                     if(!this.netw_data.hasOwnProperty(server)){
                         this.$set(this.netw_data,server,{})
                     }
                     this.$set(c,'loading',1)
-                    return Promise.all(ACS_NETWORK_ENDPOINTS.map(z => {
+                    return Promise.all(Object.entries(ACS_NETWORK_ENDPOINTS).map(z => {
                         const [key,endpoint] = z
                         if(this.netw_data[server].hasOwnProperty(key)) return
                         return this.Request('get',{'server':server,'endpoint':endpoint})
