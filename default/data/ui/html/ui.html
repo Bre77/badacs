@@ -329,7 +329,7 @@
                     <div v-for="hec in hec_data[c.server]" :style="{'grid-column':i+1}">
                         <div>{{hec}}</div>
                         <ui-textbox v-model="hec.spec.name">Name</ui-textbox>
-                        <ui-textbox v-model="hec.spec.allowedIndexes">Allowed Indexes</ui-textbox>
+                        <ui-select multiple :options="Object.keys(idx_data[c.server] || {})" v-model="hec.spec.allowedIndexes">Allowed Indexes</ui-textbox>
                         <ui-textbox v-model="hec.spec.defaultHost">Host</ui-textbox>
                         <ui-textbox v-model="hec.spec.defaultSource">Source</ui-textbox>
                         <ui-textbox v-model="hec.spec.defaultSourcetype">Sourcetype</ui-textbox>
@@ -869,6 +869,8 @@
                 // HEC
                 //
                 HECGet(c){
+                    // HEC also needs the index list, so grab that first
+                    this.IDXGet(c)
                     const server = c.server
                     if(!this.config.hasOwnProperty(server)) return
                     if(this.hec_data.hasOwnProperty(server)) return
