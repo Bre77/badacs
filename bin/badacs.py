@@ -245,17 +245,15 @@ class req(PersistentServerConnectionApplication):
         if form['a'] == "get":
             for x in ['server','endpoint']: # Check required parameters
                 if x not in form:
-                    logger.warn(f"Request to 'setconf' was missing '{x}' parameter")
-                    return {'payload': "Missing '{x}' parameter", 'status': 400}
+                    return self.errorhandle(f"Request to 'get' was missing '{x}' parameter")
             server = form['server'].split('.')[0]
-            endpoint = form[endpoint]
             
             try:
-                r = requests.get(f"https://admin.splunk.com/{server}/adminconfig/v2/{endpoint}", headers={'Authorization':f"Bearer {token}"})
+                r = requests.get(f"https://admin.splunk.com/{server}/adminconfig/v2/{form['endpoint']}", headers={'Authorization':f"Bearer {token}"})
                 r.raise_for_status()
                 return {'payload': json.dumps(r.json(), separators=(',', ':')), 'status': 200}
             except Exception as e:
-                return self.errorhandle(f"ACS request for {server}/adminconfig/v2/{endpoint} returned {e}")
+                return self.errorhandle(f"ACS request for {server}/adminconfig/v2/{form['endpoint']} returned {e}")
 
         if form['a'] == "getnetwork":
             if 'server' not in form:
