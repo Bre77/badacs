@@ -114,6 +114,10 @@ class req(PersistentServerConnectionApplication):
     #            output[server] = {"uri": f"https://{server}:{conf[stanza]['port']}", "token": conf[stanza]['token']}
     #    return output
 
+    def errorhandle(self, message, status=400):
+        logger.error(message)
+        return {'payload': message, 'status': status}
+
     def handle(self, in_string):
         global cached_servers, cached_defaults
         #try:
@@ -238,12 +242,25 @@ class req(PersistentServerConnectionApplication):
             return {'payload': json.dumps(output, separators=(',', ':')), 'status': 200}
 
         # ACS Endpoints
+        if form['a'] == "get":
+            for x in ['server','path']: # Check required parameters
+                if x not in form:
+                    logger.warn(f"Request to 'setconf' was missing '{x}' parameter")
+                    return {'payload': "Missing '{x}' parameter", 'status': 400}
+            server = form['server'].split('.')[0]
+            
+            try:
+                r = requests.get(f"https://admin.splunk.com/{server}/adminconfig/v2/{form[path]}", 'headers':{'Authorization':f"Bearer {token}"})
+                r.raise_for_status()
+                return {'payload': json.dumps(r.json(), separators=(',', ':')), 'status': 200}
+            except Exception as e:
+                return self.errorhandle(f"ACS request for {server}/adminconfig/v2/{form[path]} returned {e}")
+
         if form['a'] == "getnetwork":
             if 'server' not in form:
                 logger.warn(f"Request to 'getnetwork' was missing 'server' parameter")
                 return {'payload': "Missing 'server' parameter", 'status': 400}
             server = form['server'].split('.')[0]
-            verify = configs.get(form['server'],{}).get('verify',True)
             
             FEATURES = ['search-api','hec','s2s','search-ui','idm-ui','idm-api']
             tasks = [
