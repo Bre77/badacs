@@ -262,7 +262,7 @@ class req(PersistentServerConnectionApplication):
             server = form['server'].split('.')[0]
             
             try:
-                r = requests.patch(f"https://admin.splunk.com/{server}/adminconfig/v2/{form['endpoint']}", headers={'Authorization':f"Bearer {token}"}, data=form['data'])
+                r = requests.patch(f"https://admin.splunk.com/{server}/adminconfig/v2/{form['endpoint']}", headers={'Authorization':f"Bearer {token}", "Content-Type":"application/json"}, data=form['data'])
                 r.raise_for_status()
                 return {'payload': json.dumps(r.json(), separators=(',', ':')), 'status': 200}
             except Exception as e:
@@ -275,7 +275,7 @@ class req(PersistentServerConnectionApplication):
             server = form['server'].split('.')[0]
             
             try:
-                r = requests.post(f"https://admin.splunk.com/{server}/adminconfig/v2/{form['endpoint']}", headers={'Authorization':f"Bearer {token}"}, data=form['data'])
+                r = requests.post(f"https://admin.splunk.com/{server}/adminconfig/v2/{form['endpoint']}", headers={'Authorization':f"Bearer {token}", "Content-Type":"application/json"}, data=form['data'])
                 r.raise_for_status()
                 return {'payload': json.dumps(r.json(), separators=(',', ':')), 'status': 200}
             except Exception as e:
