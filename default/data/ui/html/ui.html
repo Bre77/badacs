@@ -324,7 +324,9 @@
 
                 <template v-for="(c,i) in acs_columns.slice(0,conf_setting_columns)" v-if="hec_data.hasOwnProperty(c.server)">
                     <template v-for="hec in hec_data[c.server]">
-                        <div :style="{'grid-column':i+1}">{{hec}}</div>
+                        <div :style="{'grid-column':i+1}">{{hec.name}}</div>
+                        <ui-textbox v-for="x in hec" v-model="x"></ui-textbox>
+                        
                     </template>
                 </template>
             </ui-tab>
