@@ -255,6 +255,32 @@ class req(PersistentServerConnectionApplication):
             except Exception as e:
                 return self.errorhandle(f"ACS request for {server}/adminconfig/v2/{form['endpoint']} returned {e}")
 
+        if form['a'] == "patch":
+            for x in ['server','endpoint','data']: # Check required parameters
+                if x not in form:
+                    return self.errorhandle(f"Request to 'patch' was missing '{x}' parameter")
+            server = form['server'].split('.')[0]
+            
+            try:
+                r = requests.patch(f"https://admin.splunk.com/{server}/adminconfig/v2/{form['endpoint']}", headers={'Authorization':f"Bearer {token}"}, data=form['data'])
+                r.raise_for_status()
+                return {'payload': json.dumps(r.json(), separators=(',', ':')), 'status': 200}
+            except Exception as e:
+                return self.errorhandle(f"ACS request for {server}/adminconfig/v2/{form['endpoint']} returned {e}")
+
+        if form['a'] == "post":
+            for x in ['server','endpoint','data']: # Check required parameters
+                if x not in form:
+                    return self.errorhandle(f"Request to 'patch' was missing '{x}' parameter")
+            server = form['server'].split('.')[0]
+            
+            try:
+                r = requests.post(f"https://admin.splunk.com/{server}/adminconfig/v2/{form['endpoint']}", headers={'Authorization':f"Bearer {token}"}, data=form['data'])
+                r.raise_for_status()
+                return {'payload': json.dumps(r.json(), separators=(',', ':')), 'status': 200}
+            except Exception as e:
+                return self.errorhandle(f"ACS request for {server}/adminconfig/v2/{form['endpoint']} returned {e}")
+
 
         return {'payload': "No Action Requested", 'status': 400}
         #except Exception as ex:
