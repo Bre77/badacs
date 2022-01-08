@@ -806,9 +806,7 @@
                 // Networks Tab
                 //
                 NetwGet(c){
-                    console.log(c)
                     const server = this.acs_columns[c].server
-                    console.log(server)
                     if(this.config.hasOwnProperty(server)){
                         if(this.netw_data.hasOwnProperty(server)) return
                         this.$set(this.acs_columns[c],'loading',1)
@@ -822,8 +820,6 @@
                         })).then({
                             this.$set(this.acs_columns[c],'loading',0)
                         }
-                        
-                        
                     }
                 },
                 //
