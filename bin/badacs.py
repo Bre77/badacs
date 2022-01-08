@@ -76,13 +76,13 @@ class req(PersistentServerConnectionApplication):
         return json.loads(resPasswords)['entry'][0]['content']['clear_password']
 
     def handleConf(self,configs):
-        #try:
-        #    serverResponse, resDefault = simpleRequest(f"{uri}/services/properties/{form['file']}/default?output_mode=json&count=0", sessionKey=token, method='GET', raiseAllErrors=False)
-        #    defaults = {}
-        #    for default in json.loads(resDefault)['entry']:
-        #        defaults[default['name']] = self.fixval(default['content'])
-        #except Exception:
-        #    defaults = {}
+        try:
+            serverResponse, resDefault = simpleRequest(f"{uri}/services/properties/{form['file']}/default?output_mode=json&count=0", sessionKey=token, method='GET', raiseAllErrors=False)
+            defaults = {}
+            for default in json.loads(resDefault)['entry']:
+                defaults[default['name']] = self.fixval(default['content'])
+        except Exception:
+            defaults = {}
 
         defaults = {}
         output = {}
