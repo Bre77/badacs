@@ -253,7 +253,7 @@ class req(PersistentServerConnectionApplication):
                 r.raise_for_status()
                 return {'payload': json.dumps(r.json(), separators=(',', ':')), 'status': 200}
             except Exception as e:
-                return self.errorhandle(f"ACS request for {server}/adminconfig/v2/{form['endpoint']} returned {e}")
+                return self.errorhandle(f"ACS get request for {server}/adminconfig/v2/{form['endpoint']} returned {e}")
 
         if form['a'] == "patch":
             for x in ['server','endpoint','data']: # Check required parameters
@@ -266,12 +266,12 @@ class req(PersistentServerConnectionApplication):
                 r.raise_for_status()
                 return {'payload': json.dumps(r.json(), separators=(',', ':')), 'status': 200}
             except Exception as e:
-                return self.errorhandle(f"ACS request for {server}/adminconfig/v2/{form['endpoint']} returned {e}")
+                return self.errorhandle(f"ACS patch request for {server}/adminconfig/v2/{form['endpoint']} returned {e}")
 
         if form['a'] == "post":
             for x in ['server','endpoint','data']: # Check required parameters
                 if x not in form:
-                    return self.errorhandle(f"Request to 'patch' was missing '{x}' parameter")
+                    return self.errorhandle(f"Request to 'post' was missing '{x}' parameter")
             server = form['server'].split('.')[0]
             
             try:
@@ -279,7 +279,7 @@ class req(PersistentServerConnectionApplication):
                 r.raise_for_status()
                 return {'payload': json.dumps(r.json(), separators=(',', ':')), 'status': 200}
             except Exception as e:
-                return self.errorhandle(f"ACS request for {server}/adminconfig/v2/{form['endpoint']} returned {e}")
+                return self.errorhandle(f"ACS post request for {server}/adminconfig/v2/{form['endpoint']} returned {e}")
 
 
         return {'payload': "No Action Requested", 'status': 400}
