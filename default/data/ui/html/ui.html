@@ -417,7 +417,10 @@
                     server: '',
                     loading: 0,
                 })),
-                netw_data: {}
+                netw_data: {},
+                hec_data: {},
+                idx_data: {},
+                app_data: {},
             },
             computed: {
                 conf_setting_apps_names(){
@@ -813,7 +816,7 @@
                         ['idm-ui','access/idm-ui/ipallowlists'],
                         ['idm-api','access/idm-api/ipallowlists'],
                         ['outbound-ports','access/outbound-ports']
-                    ]
+                        ]
                     const server = this.acs_columns[c].server
                     if(!this.config.hasOwnProperty(server)) return
                     if(!this.netw_data.hasOwnProperty(server)){
@@ -832,6 +835,24 @@
                         })
                     })).then(()=>{
                         this.$set(this.acs_columns[c],'loading',0)
+                    })
+                },
+                //
+                // HEC
+                //
+                HECGet(c){
+                    const server = this.acs_columns[c].server
+                    if(!this.config.hasOwnProperty(server)) return
+                    if(this.hec_data.hasOwnProperty(server)) return
+                    this.$set(this.acs_columns[c],'loading',1)
+                    
+                    return this.Request('get',{'server':server,'endpoint':'inputs/http-event-collectors'})
+                    .then(resp => {
+                        this.$set(this.hec_data[server],key,resp)
+                        this.$set(this.acs_columns[c],'loading',0)
+                    })
+                    .catch(e =>{
+                        this.$set(this.hec_data[server],key,null)
                     })
                 },
                 //
