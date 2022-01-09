@@ -53,7 +53,7 @@ class req(PersistentServerConnectionApplication):
         return value
 
 
-    def getserver(self,uri,token):
+    def getserver(self,uri,token): # REMOVE
         try:
             _, resApps = simpleRequest(f"{uri}/services/apps/local?output_mode=json&count=0", sessionKey=token, method='GET', raiseAllErrors=True)
             apps = [{"name": x['name'], "label":x['content'].get('label'), "visable":x['content'].get('visible'), "details":x['content'].get('details'), "version":x['content'].get('version')} for x in json.loads(resApps)['entry'] if not x['content']['disabled']]
