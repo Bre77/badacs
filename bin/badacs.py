@@ -89,7 +89,8 @@ class req(PersistentServerConnectionApplication):
             
             try:
                 r = requests.get(f"https://admin.splunk.com/{stack}/adminconfig/v2/{form['endpoint']}", headers={'Authorization':f"Bearer {token}"})
-                r.raise_for_status()
+                if r.status_code !== 200:
+                    return self.errorhandle(r.text,r.reason,r.status_code)
                 return {'payload': json.dumps(r.json(), separators=(',', ':')), 'status': 200}
             except Exception as e:
                 return self.errorhandle(f"ACS get request for {stack}/adminconfig/v2/{form['endpoint']} returned {e}")
@@ -97,26 +98,16 @@ class req(PersistentServerConnectionApplication):
         if form['a'] == "change":
             for x in ['stack','endpoint','method','data']: # Check required parameters
                 if x not in form:
-                    return self.errorhandle(f"Request to 'patch' was missing '{x}' parameter")
+                    return self.errorhandle(f"Request to 'change' was missing '{x}' parameter")
             
             try:
                 r = requests.request(form['method'], f"https://admin.splunk.com/{stack}/adminconfig/v2/{form['endpoint']}", headers={'Authorization':f"Bearer {token}", "Content-Type":"application/json"}, data=form['data'])
-                r.raise_for_status()
+                if r.status_code in [200,201,202]:
+                    return self.errorhandle(r.text,r.reason,r.status_code)
                 return {'payload': json.dumps(r.json(), separators=(',', ':')), 'status': 200}
             except Exception as e:
-                return self.errorhandle(f"ACS patch request for {stack}/adminconfig/v2/{form['endpoint']} returned {e}")
+                return self.errorhandle(f"ACS change request for {stack}/adminconfig/v2/{form['endpoint']} returned {e}")
 
-        if form['a'] == "post":
-            for x in ['stack','endpoint','data']: # Check required parameters
-                if x not in form:
-                    return self.errorhandle(f"Request to 'post' was missing '{x}' parameter")
-            
-            try:
-                r = requests.post(f"https://admin.splunk.com/{stack}/adminconfig/v2/{form['endpoint']}", headers={'Authorization':f"Bearer {token}", "Content-Type":"application/json"}, data=form['data'])
-                r.raise_for_status()
-                return {'payload': json.dumps(r.json(), separators=(',', ':')), 'status': 200}
-            except Exception as e:
-                return self.errorhandle(f"ACS post request for {stack}/adminconfig/v2/{form['endpoint']} returned {e}")
 
 
         return {'payload': "No Action Requested", 'status': 400}
