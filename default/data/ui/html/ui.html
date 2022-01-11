@@ -494,19 +494,7 @@
                 })
             },
             watch: {
-                conf_setting_files(next,prev){
-                    if(next.length) localStorage.setItem('badacs_conf_setting_files', next.join(DELIM))
-                },
-                conf_setting_show(next,prev){
-                    localStorage.setItem('badacs_conf_setting_show', next)
-                },
-                conf_setting_columns_option(next,prev){
-                    localStorage.setItem('badacs_conf_setting_columns_option', next)
-                },
-                /*conf_hide(next,prev){
-                    console.log('badacs_conf_hide',next)
-                    if(next) localStorage.setItem('badacs_conf_hide', Object.entries(next).filter(x => x[1]).map(x => x[0]).join(DELIM))
-                }*/
+
             }
         })
     </script>
