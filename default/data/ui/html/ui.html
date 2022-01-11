@@ -489,26 +489,6 @@
                 }
             },
             mounted() {
-                if(localStorage.badacs_conf_setting_files){
-                    this.$set(this, 'conf_setting_files', localStorage.getItem('badacs_conf_setting_files').split(DELIM))
-                }
-                if(localStorage.badacs_conf_setting_apps){
-                    this.$set(this, 'conf_setting_apps', localStorage.getItem('badacs_conf_setting_apps').split(DELIM))
-                }
-                /*if(localStorage.badacs_conf_setting_show){
-                    this.$set(this, 'conf_setting_show', localStorage.getItem('badacs_conf_setting_show'))
-                }*/
-                if(localStorage.badacs_conf_setting_columns_option){
-                    this.$set(this, 'conf_setting_columns_option', localStorage.getItem('badacs_conf_setting_columns_option'))
-                }
-                if(localStorage.badacs_conf_hide){
-                    let conf_hide = localStorage.getItem('badacs_conf_hide').split(DELIM).reduce((a,b)=>{
-                        a[b] = true
-                        return a
-                    },{})
-                    console.log(conf_hide)
-                    this.$set(this, 'conf_hide', conf_hide)
-                }
                 this.Request('config').then(resp => {
                     this.$set(this,'config',resp)
                 })
