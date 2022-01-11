@@ -370,8 +370,13 @@
                     this.Request('addstack',{stack:this.addstack_host,token:this.addstack_auth}).then(resp => {
                         console.log(resp)
                         this.addstack_host = ""
+                        this.addstack_host_error = ""
                         this.addstack_auth = ""
+                        this.addstack_auth_error = ""
+                        this.addstack_shared = true
                         //return this.TabConfig() // Can likely do this locally
+                    },reject => {
+                        this.addstack_host_error = reject
                     })
                 },
                 //
