@@ -2,7 +2,6 @@ from splunk.persistconn.application import PersistentServerConnectionApplication
 from splunk.clilib.cli_common import getMergedConf
 from splunk.rest import simpleRequest
 from splunk.clilib.bundle_paths import make_splunkhome_path
-import asyncio
 import requests
 import os
 import json
@@ -30,20 +29,6 @@ class req(PersistentServerConnectionApplication):
         PersistentServerConnectionApplication.__init__(self)
         self.loop = asyncio.get_event_loop()
 
-    async def getone(self,client,args):
-        async with client.request(**args) as r:
-            return await r.json()
-
-    async def getall(self,todo):
-        async with aiohttp.ClientSession(raise_for_status=True) as client:
-            tasks = []
-            for do in todo:
-                tasks.append(asyncio.create_task(await self.getone(client,do)))
-            return await asyncio.gather(*tasks)
-            #logger.warn(f"ACS request for {server}/adminconfig/v2/access/{feature}/ipallowlists returned {e}")
-        
-    
-
     def fixval(self,value):
         if type(value) is str:
             if value.lower() in ["true","1"]:
@@ -52,67 +37,9 @@ class req(PersistentServerConnectionApplication):
                 return False
         return value
 
-
-    def getserver(self,uri,token): # REMOVE
-        try:
-            _, resApps = simpleRequest(f"{uri}/services/apps/local?output_mode=json&count=0", sessionKey=token, method='GET', raiseAllErrors=True)
-            apps = [{"name": x['name'], "label":x['content'].get('label'), "visable":x['content'].get('visible'), "details":x['content'].get('details'), "version":x['content'].get('version')} for x in json.loads(resApps)['entry'] if not x['content']['disabled']]
-        except Exception as e:
-            logger.error(f"Request to {uri}/services/apps/local threw error {e}")
-
-        try:
-            _, resUsers = simpleRequest(f"{uri}/services/authentication/users?output_mode=json&count=0", sessionKey=token, method='GET', raiseAllErrors=True)
-            users = [{"name": x['name'], "realname": x['content'].get('realname'), "defaultApp":x['content'].get('defaultApp')} for x in json.loads(resUsers)['entry']]
-        except Exception as e:
-            logger.error(f"Request to {uri}/services/authentication/users threw error {e}")
-        
-        return {
-            "apps": apps,
-            "users": users
-        }
-
     def gettoken(self,uri,token,server):
         _, resPasswords = simpleRequest(f"/servicesNS/nobody/{APP_NAME}/storage/passwords/%3A{server}%3A?output_mode=json&count=1", sessionKey=token, method='GET', raiseAllErrors=True)
         return json.loads(resPasswords)['entry'][0]['content']['clear_password']
-
-    def handleConf(self,configs):
-        try:
-            serverResponse, resDefault = simpleRequest(f"{uri}/services/properties/{form['file']}/default?output_mode=json&count=0", sessionKey=token, method='GET', raiseAllErrors=False)
-            defaults = {}
-            for default in json.loads(resDefault)['entry']:
-                defaults[default['name']] = self.fixval(default['content'])
-        except Exception:
-            defaults = {}
-
-        defaults = {}
-        output = {}
-
-        for stanza in configs:
-            app = stanza['acl']['app']
-            if app not in output:
-                output[app] = {}
-            output[app][stanza['name']] = {
-                'acl':{
-                    'can_write':stanza['acl']['can_write'],
-                    'owner':stanza['acl']['owner'],
-                    'sharing':stanza['acl']['sharing']
-                },
-                'attr':{}
-            } #'id':stanza['id'],
-            for attr in stanza['content']:
-                value = self.fixval(stanza['content'][attr])
-                if attr in ATTR_BLACKLIST or (attr in defaults and value == defaults[attr]):
-                    continue
-                output[app][stanza['name']]['attr'][attr] = value
-        return {'payload': json.dumps(output, separators=(',', ':')), 'status': 200}
-
-    #def listservers(self,args,conf):
-    #    output = {"local":{"uri": args['server']['rest_uri'], "token": AUTHTOKEN}}
-    #    for stanza in conf:
-    #        if stanza.startswith(f"{APP_NAME}://"):
-    #            _, server = stanza.split("://")
-    #            output[server] = {"uri": f"https://{server}:{conf[stanza]['port']}", "token": conf[stanza]['token']}
-    #    return output
 
     def errorhandle(self, message, status=400):
         logger.error(message)
@@ -183,18 +110,14 @@ class req(PersistentServerConnectionApplication):
                     logger.warn(f"Request to 'addserver' was missing '{x}' parameter")
                     return {'payload': "Missing '{x}' parameter", 'status': 400}
             try:
-                server = form['server'].split('.')[0]
-                r = requests.get(url="https://admin.splunk.com/"+server+"/adminconfig/v2/status",auth=BearerAuth(form['token']))
+                r = requests.get(f"https://admin.splunk.com/{form['server']}/adminconfig/v2/status", headers={'Authorization':f"Bearer {form['token']}"})
                 r.raise_for_status()
-                acs = "1"
             except Exception as e:
-                logger.info(f"ACS test for {server} returned {e}")
-                acs = "0"
+                return errorhandle(f"Adding new stack failed with error '{e}'")
             try:
-                _, resPassword = simpleRequest(f"{LOCAL_URI}/servicesNS/nobody/badacs/storage/passwords", sessionKey=AUTHTOKEN, postargs={'name': form['server'], 'password': form['token']}, method='POST', raiseAllErrors=True)
-                _, resConfig = simpleRequest(f"{LOCAL_URI}/servicesNS/nobody/badacs/configs/conf-badacs", sessionKey=AUTHTOKEN, postargs={'name': form['server'], 'acs': acs}, method='POST', raiseAllErrors=True)
-                output = json.loads(resConfig)['entry']
-                return {'payload': json.dumps(output, separators=(',', ':')), 'status': 200}
+                _, resPassword = simpleRequest(f"{LOCAL_URI}/servicesNS/nobody/{APP_NAME}/storage/passwords", sessionKey=AUTHTOKEN, postargs={'name': form['server'], 'password': form['token']}, method='POST', raiseAllErrors=True)
+                _, resConfig = simpleRequest(f"{LOCAL_URI}/servicesNS/nobody/{APP_NAME}/configs/conf-badacs", sessionKey=AUTHTOKEN, postargs={'name': form['server']}, method='POST', raiseAllErrors=True)
+                return {'payload': 'true', 'status': 200}
             except Exception as e:
                 return {'payload': json.dumps(str(e), separators=(',', ':')), 'status': 400}
 
