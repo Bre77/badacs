@@ -359,7 +359,7 @@
                 // Add Server Tab
                 //
                 AddServer(){
-                    this.Request('addserver',{server:this.addserver_host,token:this.addserver_auth}).then(resp => {
+                    this.Request('addstack',{server:this.addserver_host,token:this.addserver_auth}).then(resp => {
                         console.log(resp)
                         this.addserver_host = ""
                         this.addserver_auth = ""
