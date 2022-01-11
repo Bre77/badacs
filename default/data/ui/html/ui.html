@@ -286,11 +286,11 @@
                 </template>
             </ui-tab>
             <ui-tab id="adds" title="Add Server">
-                <ui-textbox label="Hostname" placeholder="sh.splunkcloud.com" v-model="addserver_host"
-                    :invalid="addserver_host !== ''" :error="addserver_host_error"></ui-textbox>
-                <ui-textbox label="Auth Token" v-model="addserver_auth" :invalid="addserver_auth !== ''"
-                    :error="addserver_auth_error"></ui-textbox>
-                <ui-button @click="AddServer">Submit</button>
+                <ui-textbox label="Hostname" placeholder="sh.splunkcloud.com" v-model="addstack_host"
+                    :invalid="addstack_host !== ''" :error="addstack_host_error"></ui-textbox>
+                <ui-textbox label="Auth Token" v-model="addstack_auth" :invalid="addstack_auth !== ''"
+                    :error="addstack_auth_error"></ui-textbox>
+                <ui-button @click="addstack">Submit</button>
             </ui-tab>
         </ui-tabs>
     </div>
@@ -333,10 +333,10 @@
                 config: {},
                 servers: {},
                 setting_columns: 2,
-                addserver_host: "",
-                addserver_host_error: "",
-                addserver_auth: "",
-                addserver_auth_error: "",
+                addstack_host: "",
+                addstack_host_error: "",
+                addstack_auth: "",
+                addstack_auth_error: "",
                 valid_line: RegExp('^[^#=]+=[^=]+$'),
                 SPLUNKD_PATH: `/${window.$C.LOCALE}/splunkd/__raw/servicesNS/${window.$C.USERNAME}`,
                 acs_columns: Array.from({length:COLUMNS_MAX}, u => ({
@@ -358,11 +358,11 @@
                 //
                 // Add Server Tab
                 //
-                AddServer(){
-                    this.Request('addstack',{server:this.addserver_host,token:this.addserver_auth}).then(resp => {
+                AddStack(){
+                    this.Request('addstack',{server:this.addstack_host,token:this.addstack_auth}).then(resp => {
                         console.log(resp)
-                        this.addserver_host = ""
-                        this.addserver_auth = ""
+                        this.addstack_host = ""
+                        this.addstack_auth = ""
                         //return this.TabConfig() // Can likely do this locally
                     })
                 },
