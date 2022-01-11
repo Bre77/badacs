@@ -18,10 +18,6 @@ ATTR_BLACKLIST = ['eai:acl', 'eai:appName', 'eai:userName', 'maxDist', 'priority
 
 logger = logging.getLogger(f"splunk.appserver.{APP_NAME}.req")
 
-# Cached data
-cached_servers = {}
-cached_defaults = {}
-
 class req(PersistentServerConnectionApplication):
     
 
@@ -37,8 +33,8 @@ class req(PersistentServerConnectionApplication):
                 return False
         return value
 
-    def gettoken(self,uri,token,server):
-        _, resPasswords = simpleRequest(f"/servicesNS/nobody/{APP_NAME}/storage/passwords/%3A{server}%3A?output_mode=json&count=1", sessionKey=token, method='GET', raiseAllErrors=True)
+    def gettoken(self,uri,token,stack):
+        _, resPasswords = simpleRequest(f"/servicesNS/nobody/{APP_NAME}/storage/passwords/{APP_NAME}%3A{stack}%3A?output_mode=json&count=1", sessionKey=self.AUTHTOKEN, method='GET', raiseAllErrors=True)
         return json.loads(resPasswords)['entry'][0]['content']['clear_password']
 
     def errorhandle(self, message, status=400):
@@ -46,7 +42,6 @@ class req(PersistentServerConnectionApplication):
         return {'payload': message, 'status': status}
 
     def handle(self, in_string):
-        global cached_servers, cached_defaults
         #try:
         args = json.loads(in_string)
 
@@ -55,9 +50,9 @@ class req(PersistentServerConnectionApplication):
 
         output = {}
 
-        USER = args['session']['user']
-        AUTHTOKEN = args['session']['authtoken']
-        LOCAL_URI = args['server']['rest_uri']
+        self.USER = args['session']['user']
+        self.AUTHTOKEN = args['session']['authtoken']
+        self.LOCAL_URI = args['server']['rest_uri']
 
         
         # https://dev.lan:8089/
@@ -82,26 +77,7 @@ class req(PersistentServerConnectionApplication):
         if form['a'] == "config":
             c = getMergedConf(APP_NAME)
             del c['default']
-            for server in c:
-                c[server]['acs'] = self.fixval(c[server]['acs'])
-                c[server]['verify'] = self.fixval(c[server]['verify'])
             return {'payload': json.dumps(c, separators=(',', ':')), 'status': 200}
-        
-        # Get metadata for all configured servers
-        if form['a'] == "getservers":
-            output = {
-                args['server']['hostname']: self.getserver(LOCAL_URI,AUTHTOKEN) 
-            }
-            for host in getMergedConf(APP_NAME):
-                if host == "default":
-                    continue
-                token = self.gettoken(LOCAL_URI,AUTHTOKEN,host)
-                output[host] = self.getserver(f"https://{host}:8089",token)
-            cached_servers = output
-            return {'payload': json.dumps(output, separators=(',', ':')), 'status': 200}
-
-        if form['a'] == "getcachedservers":
-            return {'payload': json.dumps(cached_servers, separators=(',', ':')), 'status': 200}
 
         # Add a new server and get its base metadata
         if form['a'] == "addserver":
@@ -115,94 +91,53 @@ class req(PersistentServerConnectionApplication):
             except Exception as e:
                 return errorhandle(f"Checking stack {form['server']} threw the error '{e}'")
             try:
-                _, resPassword = simpleRequest(f"{LOCAL_URI}/servicesNS/nobody/{APP_NAME}/storage/passwords", sessionKey=AUTHTOKEN, postargs={'name': form['server'], 'password': form['token']}, method='POST', raiseAllErrors=True)
-                _, resConfig = simpleRequest(f"{LOCAL_URI}/servicesNS/nobody/{APP_NAME}/configs/conf-badacs", sessionKey=AUTHTOKEN, postargs={'name': form['server']}, method='POST', raiseAllErrors=True)
+                _, resPassword = simpleRequest(f"{LOCAL_URI}/servicesNS/nobody/{APP_NAME}/storage/passwords", sessionKey=self.AUTHTOKEN, postargs={'name': form['server'], 'password': form['token']}, method='POST', raiseAllErrors=True)
+                _, resConfig = simpleRequest(f"{LOCAL_URI}/servicesNS/nobody/{APP_NAME}/configs/conf-badacs", sessionKey=self.AUTHTOKEN, postargs={'name': form['server']}, method='POST', raiseAllErrors=True)
                 return {'payload': 'true', 'status': 200}
             except Exception as e:
                 return errorhandle(f"Failed to save stack {form['server']}")
 
-        # HELPER - Get Server Context
-        if 'server' in form:
-            # Validate "server"
-            if form['server'] in [args['server']['hostname'],"local"]:
-                uri = LOCAL_URI
-                token = AUTHTOKEN
-            else:
-                uri = f"https://{form['server']}:8089"
-                token = self.gettoken(LOCAL_URI,AUTHTOKEN,form['server'])
-        else:
-            logger.warn("Request was missing 'server' parameter")
-            return {'payload': "Missing 'server' parameter", 'status': 400}
 
-        # Get config of a single server
-        if form['a'] == "getconf":
-            for x in ['server','file','user','app']: # Check required parameters
-                if x not in form:
-                    logger.warn(f"Request to 'getconf' was missing '{x}' parameter")
-                    return {'payload': "Missing '{x}' parameter", 'status': 400}
-            serverResponse, resConfig = simpleRequest(f"{uri}/servicesNS/{form['user']}/{form['app']}/configs/conf-{form['file']}/{form.get('stanza','')}?output_mode=json&count=0", sessionKey=token, method='GET', raiseAllErrors=True)
-            configs = json.loads(resConfig)['entry']
-            return self.handleConf(configs)
-        
-        # Change a config and process the response
-        if form['a'] == "setconf":
-            for x in ['server','file','stanza','attr','value']: # Check required parameters
-                if x not in form:
-                    logger.warn(f"Request to 'setconf' was missing '{x}' parameter")
-                    return {'payload': "Missing '{x}' parameter", 'status': 400}
-            postargs = {form['attr']: form['value']}
-            serverResponse, resConfig = simpleRequest(f"{uri}/servicesNS/{form['user']}/{form['app']}/configs/conf-{form['file']}/{form['stanza']}?output_mode=json", sessionKey=token, method='POST', raiseAllErrors=True, postargs=postargs)
-            configs = json.loads(resConfig)['entry']
-
-            return self.handleConf(configs)
-
-        if form['a'] == "getfiles":
-            if 'server' not in form:
-                logger.warn(f"Request to 'getfiles' was missing 'server' parameter")
-                return {'payload': "Missing 'server' parameter", 'status': 400}
-            serverResponse, resConfig = simpleRequest(f"{uri}/services/properties?output_mode=json", sessionKey=token, method='GET', raiseAllErrors=True)
-            output = [f['name'] for f in json.loads(resConfig)['entry']]
-            return {'payload': json.dumps(output, separators=(',', ':')), 'status': 200}
 
         # ACS Endpoints
         if form['a'] == "get":
-            for x in ['server','endpoint']: # Check required parameters
+            for x in ['stack','endpoint']: # Check required parameters
                 if x not in form:
                     return self.errorhandle(f"Request to 'get' was missing '{x}' parameter")
-            server = form['server'].split('.')[0]
+            token = self.gettoken(form['stack'])
             
             try:
-                r = requests.get(f"https://admin.splunk.com/{server}/adminconfig/v2/{form['endpoint']}", headers={'Authorization':f"Bearer {token}"})
+                r = requests.get(f"https://admin.splunk.com/{stack}/adminconfig/v2/{form['endpoint']}", headers={'Authorization':f"Bearer {token}"})
                 r.raise_for_status()
                 return {'payload': json.dumps(r.json(), separators=(',', ':')), 'status': 200}
             except Exception as e:
-                return self.errorhandle(f"ACS get request for {server}/adminconfig/v2/{form['endpoint']} returned {e}")
+                return self.errorhandle(f"ACS get request for {stack}/adminconfig/v2/{form['endpoint']} returned {e}")
 
         if form['a'] == "patch":
-            for x in ['server','endpoint','data']: # Check required parameters
+            for x in ['stack','endpoint','data']: # Check required parameters
                 if x not in form:
                     return self.errorhandle(f"Request to 'patch' was missing '{x}' parameter")
-            server = form['server'].split('.')[0]
+            token = self.gettoken(form['stack'])
             
             try:
-                r = requests.patch(f"https://admin.splunk.com/{server}/adminconfig/v2/{form['endpoint']}", headers={'Authorization':f"Bearer {token}", "Content-Type":"application/json"}, data=form['data'])
+                r = requests.patch(f"https://admin.splunk.com/{stack}/adminconfig/v2/{form['endpoint']}", headers={'Authorization':f"Bearer {token}", "Content-Type":"application/json"}, data=form['data'])
                 r.raise_for_status()
                 return {'payload': json.dumps(r.json(), separators=(',', ':')), 'status': 200}
             except Exception as e:
-                return self.errorhandle(f"ACS patch request for {server}/adminconfig/v2/{form['endpoint']} returned {e}")
+                return self.errorhandle(f"ACS patch request for {stack}/adminconfig/v2/{form['endpoint']} returned {e}")
 
         if form['a'] == "post":
-            for x in ['server','endpoint','data']: # Check required parameters
+            for x in ['stack','endpoint','data']: # Check required parameters
                 if x not in form:
                     return self.errorhandle(f"Request to 'post' was missing '{x}' parameter")
-            server = form['server'].split('.')[0]
+            token = self.gettoken(form['stack'])
             
             try:
-                r = requests.post(f"https://admin.splunk.com/{server}/adminconfig/v2/{form['endpoint']}", headers={'Authorization':f"Bearer {token}", "Content-Type":"application/json"}, data=form['data'])
+                r = requests.post(f"https://admin.splunk.com/{stack}/adminconfig/v2/{form['endpoint']}", headers={'Authorization':f"Bearer {token}", "Content-Type":"application/json"}, data=form['data'])
                 r.raise_for_status()
                 return {'payload': json.dumps(r.json(), separators=(',', ':')), 'status': 200}
             except Exception as e:
-                return self.errorhandle(f"ACS post request for {server}/adminconfig/v2/{form['endpoint']} returned {e}")
+                return self.errorhandle(f"ACS post request for {stack}/adminconfig/v2/{form['endpoint']} returned {e}")
 
 
         return {'payload': "No Action Requested", 'status': 400}
