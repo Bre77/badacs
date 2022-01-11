@@ -231,14 +231,14 @@
                 <p>This app is under active development. Only the "Config" and "Add Server" tabs are currently enabled.</p>
                 <p>Created and supported by <a target="_blank" href="https://splunkbase.splunk.com/apps/#/author/s7orm">Brett Adams</a>. Please report issues on <a target="_blank" href="https://github.com/Bre77/badacs/issues">GitHub</a></p>
             </ui-tab>
-            <ui-tab id="netw" class="grid" title="Network Allowlists" :style="{'grid-template-columns': `repeat(${this.conf_setting_columns}, 1fr)`}" @select="TabChange(NETGet)">
-                <template v-for="(c,i) in acs_columns.slice(0,conf_setting_columns)">
+            <ui-tab id="netw" class="grid" title="Network Allowlists" :style="{'grid-template-columns': `repeat(${this.setting_columns}, 1fr)`}" @select="TabChange(NETGet)">
+                <template v-for="(c,i) in acs_columns.slice(0,setting_columns)">
                     <ui-select class="settings row1" :style="{'grid-column':i+1}" :options="acs_servers_options" :disabled="acs_servers_options.length == 0" placeholder="Please select a server" v-model="c.server" @change="NETGet(c)" label="Server" :invalid="!c.server"></ui-select>
                     <div class="loading" :style="{'grid-column':i+1}"><ui-progress-linear v-show="c.loading"></ui-progress-linear></div>
                 </template>
                 <template v-for="aspect in ['search-api','hec','s2s','search-ui','idm-ui','idm-api']">
                     <div class="colall"><b>{{aspect}}</b></div>
-                    <template v-for="(c,i) in acs_columns.slice(0,conf_setting_columns)" v-if="netw_data.hasOwnProperty(c.server)">
+                    <template v-for="(c,i) in acs_columns.slice(0,setting_columns)" v-if="netw_data.hasOwnProperty(c.server)">
                         <div v-for="(entries,group) in netw_data[c.server][aspect]" :style="{'grid-column':i+1}" class="flex">
                             <div v-for="(entry,x) in entries">
                                 {{entry}} 
@@ -252,13 +252,13 @@
                     </template>
                 </template>
             </ui-tab>
-            <ui-tab id="hec" class="grid" title="HEC" :style="{'grid-template-columns': `repeat(${this.conf_setting_columns}, 1fr)`}" @select="TabChange(HECGet)">
-                <template v-for="(c,i) in acs_columns.slice(0,conf_setting_columns)">
+            <ui-tab id="hec" class="grid" title="HEC" :style="{'grid-template-columns': `repeat(${this.setting_columns}, 1fr)`}" @select="TabChange(HECGet)">
+                <template v-for="(c,i) in acs_columns.slice(0,setting_columns)">
                     <ui-select class="settings row1" :style="{'grid-column':i+1}" :options="acs_servers_options" :disabled="acs_servers_options.length == 0" placeholder="Please select a server" v-model="c.server" @change="HECGet(c)" label="Server" :invalid="!c.server"></ui-select>
                     <div class="loading" :style="{'grid-column':i+1}"><ui-progress-linear v-show="c.loading"></ui-progress-linear></div>
                 </template>
 
-                <template v-for="(c,i) in acs_columns.slice(0,conf_setting_columns)" v-if="hec_data.hasOwnProperty(c.server)">
+                <template v-for="(c,i) in acs_columns.slice(0,setting_columns)" v-if="hec_data.hasOwnProperty(c.server)">
                     <div v-for="hec in hec_data[c.server]" :style="{'grid-column':i+1}">
                         <div>{{hec.token}}</div>
                         <ui-textbox v-model="hec.spec.name">Name</ui-textbox>
@@ -272,12 +272,12 @@
                     </div>
                 </template>
             </ui-tab>
-            <ui-tab id="idx" class="grid" title="Indexes" :style="{'grid-template-columns': `repeat(${this.conf_setting_columns}, 1fr)`}" @select="TabChange(IDXGet)">
-                <template v-for="(c,i) in acs_columns.slice(0,conf_setting_columns)">
+            <ui-tab id="idx" class="grid" title="Indexes" :style="{'grid-template-columns': `repeat(${this.setting_columns}, 1fr)`}" @select="TabChange(IDXGet)">
+                <template v-for="(c,i) in acs_columns.slice(0,setting_columns)">
                     <ui-select class="settings row1" :style="{'grid-column':i+1}" :options="acs_servers_options" :disabled="acs_servers_options.length == 0" placeholder="Please select a server" v-model="c.server" @change="IDXGet(c)" label="Server" :invalid="!c.server"></ui-select>
                     <div class="loading" :style="{'grid-column':i+1}"><ui-progress-linear v-show="c.loading"></ui-progress-linear></div>
                 </template>
-                <template v-for="(c,i) in acs_columns.slice(0,conf_setting_columns)" v-if="idx_data.hasOwnProperty(c.server)">
+                <template v-for="(c,i) in acs_columns.slice(0,setting_columns)" v-if="idx_data.hasOwnProperty(c.server)">
                     <div v-for="idx in idx_data[c.server]" :style="{'grid-column':i+1}">
                         {{idx}}
                         searchableDays
@@ -332,7 +332,7 @@
                 context: {},
                 config: {},
                 servers: {},
-            
+                setting_columns: 2,
                 addserver_host: "",
                 addserver_host_error: "",
                 addserver_auth: "",
