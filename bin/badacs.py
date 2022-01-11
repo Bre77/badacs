@@ -16,7 +16,7 @@ class req(PersistentServerConnectionApplication):
         PersistentServerConnectionApplication.__init__(self)
 
     def errorhandle(self, message, status=400):
-        logger.error(f"app={APP_NAME} user={self.USER} message=\"{message}\"")
+        logger.error(f"app={APP_NAME} user={self.USER} status={status} message=\"{message}\"")
         return {'payload': message, 'status': status}
 
     def handle(self, in_string):
