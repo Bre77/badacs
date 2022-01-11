@@ -382,8 +382,7 @@
                         return this.Request('get',{'stack':server,'endpoint':endpoint})
                         .then(resp => {
                             this.$set(this.netw_data[server],key,resp)
-                        })
-                        .catch(e =>{
+                        }, reject =>{
                             this.$set(this.netw_data[server],key,null)
                         })
                     }))
