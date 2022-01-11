@@ -8,9 +8,6 @@ import json
 import logging
 import sys
 
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "lib"))
-import aiohttp
-
 
 APP_NAME = "badacs"
 ATTR_BLACKLIST = ['eai:acl', 'eai:appName', 'eai:userName', 'maxDist', 'priority', 'sourcetype', 'termFrequencyWeightedDist']
