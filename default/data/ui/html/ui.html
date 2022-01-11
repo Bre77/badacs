@@ -432,7 +432,9 @@
                     .catch(e =>{
                         this.$set(this.idx_data,c.server,null)
                     })
-                    .then(c.loading -= 1)
+                    .then(()=>{
+                        c.loading -= 1
+                    })
                 },
                 //
                 // Generic Helpers
