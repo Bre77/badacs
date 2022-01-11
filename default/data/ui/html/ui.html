@@ -419,8 +419,8 @@
                 //
                 IDXGet(c){
                     console.log("IDXGet",c)
-                    if(!this.config.hasOwnProperty(c.server)) return
-                    if(this.idx_data.hasOwnProperty(c.server)) return
+                    if(!this.config.hasOwnProperty(c.server)) return Promise.resolve()
+                    if(this.idx_data.hasOwnProperty(c.server)) return Promise.resolve()
                     c.loading += 1
                     
                     return this.Request('get',{'stack':c.server,'endpoint':'indexes'})
