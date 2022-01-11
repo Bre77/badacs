@@ -406,8 +406,7 @@
                         return this.Request('get',{'stack':c.server,'endpoint':'inputs/http-event-collectors'})
                         .then(resp => {
                             this.$set(this.hec_data,c.server,resp['http-event-collectors'])
-                        })
-                        .catch(e =>{
+                        }, reject => {
                             this.$set(this.hec_data,c.server,null)
                         })
                         .then(()=>{
@@ -428,8 +427,7 @@
                     return this.Request('get',{'stack':c.server,'endpoint':'indexes'})
                     .then(resp => {
                         this.$set(this.idx_data,c.server,resp)
-                    })
-                    .catch(e =>{
+                    }, reject => {
                         this.$set(this.idx_data,c.server,null)
                     })
                     .then(()=>{
