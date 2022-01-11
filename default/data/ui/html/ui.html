@@ -470,7 +470,7 @@
                                 return Promise.reject({ cause: resp.status, message: message})
                             })
                         }
-                    }, reject => return reject)
+                    }, reject => reject)
                 },
                 GetChild(object, keys, def=false) {
                     for (const key of keys){
