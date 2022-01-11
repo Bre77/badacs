@@ -20,20 +20,15 @@ class req(PersistentServerConnectionApplication):
         return {'payload': message, 'status': status}
 
     def handle(self, in_string):
-        #try:
         args = json.loads(in_string)
 
         if args['method'] != "POST":
             return {'payload': {'message': "Service running."}, 'status': 200 }
 
-        output = {}
-
         self.USER = args['session']['user']
         self.AUTHTOKEN = args['session']['authtoken']
         self.LOCAL_URI = args['server']['rest_uri']
 
-        
-        # https://dev.lan:8089/
         # Process Form
         form = {}
         for x in args['form']:
@@ -71,8 +66,8 @@ class req(PersistentServerConnectionApplication):
             except Exception as e:
                 return errorhandle(f"Checking stack {form['stack']} threw the error '{e}'")
             try:
-                _, resPassword = simpleRequest(f"{LOCAL_URI}/servicesNS/nobody/{APP_NAME}/storage/passwords", sessionKey=self.AUTHTOKEN, postargs={'name': form['stack'], 'password': form['token']}, method='POST', raiseAllErrors=True)
-                _, resConfig = simpleRequest(f"{LOCAL_URI}/servicesNS/nobody/{APP_NAME}/configs/conf-badacs", sessionKey=self.AUTHTOKEN, postargs={'name': form['stack']}, method='POST', raiseAllErrors=True)
+                _, resPassword = simpleRequest(f"/servicesNS/nobody/{APP_NAME}/storage/passwords", sessionKey=self.AUTHTOKEN, postargs={'name': form['stack'], 'password': form['token']}, method='POST', raiseAllErrors=True)
+                _, resConfig = simpleRequest(f"/servicesNS/nobody/{APP_NAME}/configs/conf-badacs", sessionKey=self.AUTHTOKEN, postargs={'name': form['stack']}, method='POST', raiseAllErrors=True)
                 return {'payload': 'true', 'status': 200}
             except Exception as e:
                 return errorhandle(f"Failed to save stack {form['stack']}")
