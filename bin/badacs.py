@@ -61,9 +61,10 @@ class req(PersistentServerConnectionApplication):
                     return self.errorhandle(f"Request to 'addstack' was missing '{x}' parameter")
             try:
                 r = requests.get(f"https://admin.splunk.com/{form['stack']}/adminconfig/v2/status", headers={'Authorization':f"Bearer {form['token']}"})
-                r.raise_for_status()
+                if r.status_code !== 200:
+                    return self.errorhandle(r.text,r.reason,r.status_code)
             except Exception as e:
-                return self.errorhandle(f"Checking stack {form['stack']} failed",e)
+                return self.errorhandle(f"Connecting to ACS failed",e)
             try:
                 _, resPassword = simpleRequest(f"/servicesNS/nobody/{APP_NAME}/storage/passwords", sessionKey=self.AUTHTOKEN, postargs={'name': form['stack'], 'password': form['token']}, method='POST', raiseAllErrors=True)
                 _, resConfig = simpleRequest(f"/servicesNS/nobody/{APP_NAME}/configs/conf-badacs", sessionKey=self.AUTHTOKEN, postargs={'name': form['stack']}, method='POST', raiseAllErrors=True)
