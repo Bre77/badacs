@@ -79,7 +79,7 @@ class req(PersistentServerConnectionApplication):
                 _, resPasswords = simpleRequest(f"/servicesNS/nobody/{APP_NAME}/storage/passwords/{APP_NAME}%3A{stack}%3A?output_mode=json&count=1", sessionKey=self.AUTHTOKEN, method='GET', raiseAllErrors=True)
                 token = json.loads(resPasswords)['entry'][0]['content']['clear_password']
             except Exception as e:
-                return self.errorhandle("Couldn't retrieve auth token for {stack}")
+                return self.errorhandle(f"Couldn't retrieve auth token for {stack}")
 
         # ACS Endpoints
         if form['a'] == "get":
