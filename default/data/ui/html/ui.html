@@ -372,14 +372,14 @@
                 NETGet(c){
                     console.log("NETGet",c)
                     const server = c.server
-                    if(!this.config.hasOwnProperty(server)) return
+                    if(!this.config.hasOwnProperty(server)) return Promise.resolve()
                     if(!this.netw_data.hasOwnProperty(server)){
                         this.$set(this.netw_data,server,{})
                     }
                     c.loading += 1
                     return Promise.all(Object.entries(ACS_NETWORK_ENDPOINTS).map(z => {
                         const [key,endpoint] = z
-                        if(this.netw_data[server].hasOwnProperty(key)) return
+                        if(this.netw_data[server].hasOwnProperty(key)) return Promise.resolve()
                         return this.Request('get',{'stack':server,'endpoint':endpoint})
                         .then(resp => {
                             this.$set(this.netw_data[server],key,resp)
@@ -399,8 +399,8 @@
                     // HEC also needs the index list, so grab that first
                     return this.IDXGet(c).then(()=>{
                         // Check this is valid
-                        if(!this.config.hasOwnProperty(c.server)) return
-                        if(this.hec_data.hasOwnProperty(c.server)) return
+                        if(!this.config.hasOwnProperty(c.server)) return Promise.resolve()
+                        if(this.hec_data.hasOwnProperty(c.server)) return Promise.resolve()
 
                         c.loading += 1
                         
