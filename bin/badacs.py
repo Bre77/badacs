@@ -113,13 +113,13 @@ class req(PersistentServerConnectionApplication):
                 r = requests.get(f"https://admin.splunk.com/{form['server']}/adminconfig/v2/status", headers={'Authorization':f"Bearer {form['token']}"})
                 r.raise_for_status()
             except Exception as e:
-                return errorhandle(f"Adding new stack failed with error '{e}'")
+                return errorhandle(f"Checking stack {form['server']} threw the error '{e}'")
             try:
                 _, resPassword = simpleRequest(f"{LOCAL_URI}/servicesNS/nobody/{APP_NAME}/storage/passwords", sessionKey=AUTHTOKEN, postargs={'name': form['server'], 'password': form['token']}, method='POST', raiseAllErrors=True)
                 _, resConfig = simpleRequest(f"{LOCAL_URI}/servicesNS/nobody/{APP_NAME}/configs/conf-badacs", sessionKey=AUTHTOKEN, postargs={'name': form['server']}, method='POST', raiseAllErrors=True)
                 return {'payload': 'true', 'status': 200}
             except Exception as e:
-                return {'payload': json.dumps(str(e), separators=(',', ':')), 'status': 400}
+                return errorhandle(f"Failed to save stack {form['server']}")
 
         # HELPER - Get Server Context
         if 'server' in form:
