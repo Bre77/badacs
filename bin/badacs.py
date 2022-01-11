@@ -63,13 +63,13 @@ class req(PersistentServerConnectionApplication):
                 r = requests.get(f"https://admin.splunk.com/{form['stack']}/adminconfig/v2/status", headers={'Authorization':f"Bearer {form['token']}"})
                 r.raise_for_status()
             except Exception as e:
-                return errorhandle(f"Checking stack {form['stack']} failed",e)
+                return self.errorhandle(f"Checking stack {form['stack']} failed",e)
             try:
                 _, resPassword = simpleRequest(f"/servicesNS/nobody/{APP_NAME}/storage/passwords", sessionKey=self.AUTHTOKEN, postargs={'name': form['stack'], 'password': form['token']}, method='POST', raiseAllErrors=True)
                 _, resConfig = simpleRequest(f"/servicesNS/nobody/{APP_NAME}/configs/conf-badacs", sessionKey=self.AUTHTOKEN, postargs={'name': form['stack']}, method='POST', raiseAllErrors=True)
                 return {'payload': 'true', 'status': 200}
             except Exception as e:
-                return errorhandle(f"Failed to save stack {form['stack']}",e)
+                return self.errorhandle(f"Failed to save stack {form['stack']}",e)
 
         if "stack" not in form:
             return self.errorhandle("Missing 'stack' parameter")
