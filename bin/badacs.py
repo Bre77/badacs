@@ -58,19 +58,18 @@ class req(PersistentServerConnectionApplication):
         if form['a'] == "addstack":
             for x in ['stack','token']: # Check required parameters
                 if x not in form:
-                    logger.warn(f"Request to 'addstack' was missing '{x}' parameter")
-                    return {'payload': "Missing '{x}' parameter", 'status': 400}
+                    return self.errorhandle(f"Request to 'addstack' was missing '{x}' parameter")
             try:
                 r = requests.get(f"https://admin.splunk.com/{form['stack']}/adminconfig/v2/status", headers={'Authorization':f"Bearer {form['token']}"})
                 r.raise_for_status()
             except Exception as e:
-                return errorhandle(f"Checking stack {form['stack']} threw the error '{e}'")
+                return errorhandle(f"Checking stack {form['stack']} failed",e)
             try:
                 _, resPassword = simpleRequest(f"/servicesNS/nobody/{APP_NAME}/storage/passwords", sessionKey=self.AUTHTOKEN, postargs={'name': form['stack'], 'password': form['token']}, method='POST', raiseAllErrors=True)
                 _, resConfig = simpleRequest(f"/servicesNS/nobody/{APP_NAME}/configs/conf-badacs", sessionKey=self.AUTHTOKEN, postargs={'name': form['stack']}, method='POST', raiseAllErrors=True)
                 return {'payload': 'true', 'status': 200}
             except Exception as e:
-                return errorhandle(f"Failed to save stack {form['stack']}")
+                return errorhandle(f"Failed to save stack {form['stack']}",e)
 
         if "stack" not in form:
             return self.errorhandle("Missing 'stack' parameter")
@@ -79,7 +78,7 @@ class req(PersistentServerConnectionApplication):
                 _, resPasswords = simpleRequest(f"/servicesNS/nobody/{APP_NAME}/storage/passwords/{APP_NAME}%3A{stack}%3A?output_mode=json&count=1", sessionKey=self.AUTHTOKEN, method='GET', raiseAllErrors=True)
                 token = json.loads(resPasswords)['entry'][0]['content']['clear_password']
             except Exception as e:
-                return self.errorhandle(f"Couldn't retrieve auth token for {stack}",error=e)
+                return self.errorhandle(f"Couldn't retrieve auth token for {stack}",e)
 
         # ACS Endpoints
         if form['a'] == "get":
