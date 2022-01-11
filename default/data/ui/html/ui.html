@@ -394,7 +394,7 @@
                 //
                 HECGet(c){
                     // HEC also needs the index list, so grab that first
-                    this.IDXGet(c).then({
+                    this.IDXGet(c).then(()=>{
                         // Check this is valid
                         if(!this.config.hasOwnProperty(c.server)) return
                         if(this.hec_data.hasOwnProperty(c.server)) return
