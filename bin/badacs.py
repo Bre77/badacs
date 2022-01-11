@@ -15,8 +15,8 @@ class req(PersistentServerConnectionApplication):
     def __init__(self, command_line, command_arg):
         PersistentServerConnectionApplication.__init__(self)
 
-    def errorhandle(self, message, status=400):
-        logger.error(f"app={APP_NAME} user={self.USER} status={status} message=\"{message}\"")
+    def errorhandle(self, message, error="", status=400):
+        logger.error(f"app={APP_NAME} user={self.USER} status={status} message=\"{message}\" error=\"{error}\"")
         return {'payload': message, 'status': status}
 
     def handle(self, in_string):
@@ -79,7 +79,7 @@ class req(PersistentServerConnectionApplication):
                 _, resPasswords = simpleRequest(f"/servicesNS/nobody/{APP_NAME}/storage/passwords/{APP_NAME}%3A{stack}%3A?output_mode=json&count=1", sessionKey=self.AUTHTOKEN, method='GET', raiseAllErrors=True)
                 token = json.loads(resPasswords)['entry'][0]['content']['clear_password']
             except Exception as e:
-                return self.errorhandle(f"Couldn't retrieve auth token for {stack}")
+                return self.errorhandle(f"Couldn't retrieve auth token for {stack}",error=e)
 
         # ACS Endpoints
         if form['a'] == "get":
