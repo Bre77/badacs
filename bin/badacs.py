@@ -79,32 +79,36 @@ class req(PersistentServerConnectionApplication):
             del c['default']
             return {'payload': json.dumps(c, separators=(',', ':')), 'status': 200}
 
-        # Add a new server and get its base metadata
-        if form['a'] == "addserver":
-            for x in ['server','token']: # Check required parameters
+        
+
+        # Add a new stack and get its base metadata
+        if form['a'] == "addstack":
+            for x in ['stack','token']: # Check required parameters
                 if x not in form:
-                    logger.warn(f"Request to 'addserver' was missing '{x}' parameter")
+                    logger.warn(f"Request to 'addstack' was missing '{x}' parameter")
                     return {'payload': "Missing '{x}' parameter", 'status': 400}
             try:
-                r = requests.get(f"https://admin.splunk.com/{form['server']}/adminconfig/v2/status", headers={'Authorization':f"Bearer {form['token']}"})
+                r = requests.get(f"https://admin.splunk.com/{form['stack']}/adminconfig/v2/status", headers={'Authorization':f"Bearer {form['token']}"})
                 r.raise_for_status()
             except Exception as e:
-                return errorhandle(f"Checking stack {form['server']} threw the error '{e}'")
+                return errorhandle(f"Checking stack {form['stack']} threw the error '{e}'")
             try:
-                _, resPassword = simpleRequest(f"{LOCAL_URI}/servicesNS/nobody/{APP_NAME}/storage/passwords", sessionKey=self.AUTHTOKEN, postargs={'name': form['server'], 'password': form['token']}, method='POST', raiseAllErrors=True)
-                _, resConfig = simpleRequest(f"{LOCAL_URI}/servicesNS/nobody/{APP_NAME}/configs/conf-badacs", sessionKey=self.AUTHTOKEN, postargs={'name': form['server']}, method='POST', raiseAllErrors=True)
+                _, resPassword = simpleRequest(f"{LOCAL_URI}/servicesNS/nobody/{APP_NAME}/storage/passwords", sessionKey=self.AUTHTOKEN, postargs={'name': form['stack'], 'password': form['token']}, method='POST', raiseAllErrors=True)
+                _, resConfig = simpleRequest(f"{LOCAL_URI}/servicesNS/nobody/{APP_NAME}/configs/conf-badacs", sessionKey=self.AUTHTOKEN, postargs={'name': form['stack']}, method='POST', raiseAllErrors=True)
                 return {'payload': 'true', 'status': 200}
             except Exception as e:
-                return errorhandle(f"Failed to save stack {form['server']}")
+                return errorhandle(f"Failed to save stack {form['stack']}")
 
-
+        if "stack" not in form:
+            return self.errorhandle("Missing 'stack' parameter")
+        else:
+            token = self.gettoken(form['stack'])
 
         # ACS Endpoints
         if form['a'] == "get":
             for x in ['stack','endpoint']: # Check required parameters
                 if x not in form:
                     return self.errorhandle(f"Request to 'get' was missing '{x}' parameter")
-            token = self.gettoken(form['stack'])
             
             try:
                 r = requests.get(f"https://admin.splunk.com/{stack}/adminconfig/v2/{form['endpoint']}", headers={'Authorization':f"Bearer {token}"})
@@ -113,14 +117,13 @@ class req(PersistentServerConnectionApplication):
             except Exception as e:
                 return self.errorhandle(f"ACS get request for {stack}/adminconfig/v2/{form['endpoint']} returned {e}")
 
-        if form['a'] == "patch":
-            for x in ['stack','endpoint','data']: # Check required parameters
+        if form['a'] == "change":
+            for x in ['stack','endpoint','method','data']: # Check required parameters
                 if x not in form:
                     return self.errorhandle(f"Request to 'patch' was missing '{x}' parameter")
-            token = self.gettoken(form['stack'])
             
             try:
-                r = requests.patch(f"https://admin.splunk.com/{stack}/adminconfig/v2/{form['endpoint']}", headers={'Authorization':f"Bearer {token}", "Content-Type":"application/json"}, data=form['data'])
+                r = requests.request(form['method'], f"https://admin.splunk.com/{stack}/adminconfig/v2/{form['endpoint']}", headers={'Authorization':f"Bearer {token}", "Content-Type":"application/json"}, data=form['data'])
                 r.raise_for_status()
                 return {'payload': json.dumps(r.json(), separators=(',', ':')), 'status': 200}
             except Exception as e:
@@ -130,7 +133,6 @@ class req(PersistentServerConnectionApplication):
             for x in ['stack','endpoint','data']: # Check required parameters
                 if x not in form:
                     return self.errorhandle(f"Request to 'post' was missing '{x}' parameter")
-            token = self.gettoken(form['stack'])
             
             try:
                 r = requests.post(f"https://admin.splunk.com/{stack}/adminconfig/v2/{form['endpoint']}", headers={'Authorization':f"Bearer {token}", "Content-Type":"application/json"}, data=form['data'])
