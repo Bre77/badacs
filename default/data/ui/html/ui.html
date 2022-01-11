@@ -375,7 +375,7 @@
                     if(!this.netw_data.hasOwnProperty(server)){
                         this.$set(this.netw_data,server,{})
                     }
-                    this.$set(c,'loading',1)
+                    c.loading += 1
                     return Promise.all(Object.entries(ACS_NETWORK_ENDPOINTS).map(z => {
                         const [key,endpoint] = z
                         if(this.netw_data[server].hasOwnProperty(key)) return
@@ -387,7 +387,7 @@
                             this.$set(this.netw_data[server],key,null)
                         })
                     }))
-                    .then(this.$set(c,'loading',0))
+                    .then(c.loading -= 1)
                 },
                 //
                 // HEC
