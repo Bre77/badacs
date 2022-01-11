@@ -3,36 +3,17 @@ from splunk.clilib.cli_common import getMergedConf
 from splunk.rest import simpleRequest
 from splunk.clilib.bundle_paths import make_splunkhome_path
 import requests
-import os
 import json
 import logging
-import sys
-
 
 APP_NAME = "badacs"
-ATTR_BLACKLIST = ['eai:acl', 'eai:appName', 'eai:userName', 'maxDist', 'priority', 'sourcetype', 'termFrequencyWeightedDist']
-
 
 logger = logging.getLogger(f"splunk.appserver.{APP_NAME}.req")
 
 class req(PersistentServerConnectionApplication):
     
-
     def __init__(self, command_line, command_arg):
         PersistentServerConnectionApplication.__init__(self)
-        self.loop = asyncio.get_event_loop()
-
-    def fixval(self,value):
-        if type(value) is str:
-            if value.lower() in ["true","1"]:
-                return True
-            if value.lower() in ["false","0"]:
-                return False
-        return value
-
-    def gettoken(self,uri,token,stack):
-        _, resPasswords = simpleRequest(f"/servicesNS/nobody/{APP_NAME}/storage/passwords/{APP_NAME}%3A{stack}%3A?output_mode=json&count=1", sessionKey=self.AUTHTOKEN, method='GET', raiseAllErrors=True)
-        return json.loads(resPasswords)['entry'][0]['content']['clear_password']
 
     def errorhandle(self, message, status=400):
         logger.error(message)
@@ -99,7 +80,11 @@ class req(PersistentServerConnectionApplication):
         if "stack" not in form:
             return self.errorhandle("Missing 'stack' parameter")
         else:
-            token = self.gettoken(form['stack'])
+            try:
+                _, resPasswords = simpleRequest(f"/servicesNS/nobody/{APP_NAME}/storage/passwords/{APP_NAME}%3A{stack}%3A?output_mode=json&count=1", sessionKey=self.AUTHTOKEN, method='GET', raiseAllErrors=True)
+                token = json.loads(resPasswords)['entry'][0]['content']['clear_password']
+            except Exception as e:
+                return self.errorhandle("Couldn't retrieve auth token for {stack}")
 
         # ACS Endpoints
         if form['a'] == "get":
