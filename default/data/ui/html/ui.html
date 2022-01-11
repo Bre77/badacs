@@ -387,7 +387,9 @@
                             this.$set(this.netw_data[server],key,null)
                         })
                     }))
-                    .then(c.loading -= 1)
+                    .then(()=>{
+                        c.loading -= 1
+                    })
                 },
                 //
                 // HEC
