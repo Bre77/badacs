@@ -376,7 +376,9 @@
                         this.addstack_shared = true
                         //return this.TabConfig() // Can likely do this locally
                     },reject => {
-                        this.addstack_host_error = reject
+                        if(reject.cause = 401){
+                            this.addstack_auth_error = reject.message
+                        } else this.addstack_host_error = reject.message
                     })
                 },
                 //
