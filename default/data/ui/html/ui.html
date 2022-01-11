@@ -241,8 +241,8 @@
                     </tr>
                 </table>
                 <h3>Add Stack</h3>
-                <ui-textbox label="Stack Name" v-model="addstack_host" help="This is the subdomain infront of .splunkcloud.com" :invalid="addstack_host !== ''" :error="addstack_host_error"></ui-textbox>
-                <ui-textbox label="Auth Token" v-model="addstack_auth" help="This must be an auth token for a user with the sc-admin role" :invalid="addstack_auth !== ''" :error="addstack_auth_error"></ui-textbox>
+                <ui-textbox label="Stack Name" v-model="addstack_host" help="This is the subdomain infront of .splunkcloud.com" :invalid="addstack_host == ''" :error="addstack_host_error"></ui-textbox>
+                <ui-textbox label="Auth Token" v-model="addstack_auth" help="This must be an auth token for a user with the sc-admin role" :invalid="addstack_auth == ''" :error="addstack_auth_error"></ui-textbox>
                 <ui-checkbox label="Shared" v-model="addstack_shared"></ui-checkbox>
                 <ui-button @click="AddStack()" :disabled="!Boolean(addstack_host && addstack_auth)">Submit</button>
             </ui-tab>
