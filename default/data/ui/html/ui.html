@@ -346,6 +346,56 @@
 
         Vue.prototype.localStorage = window.localStorage
         Vue.use(KeenUI);
+
+        Vue.component('removable', {
+            data: function(){
+                return {
+                    loading: false
+                }
+            },
+            props: ['action','args','value'],
+            methods: {
+                handler() {
+                    this.loading = true
+                    this.action(this.value, ...this.args).then(()=>{
+                        this.loading = false
+                    })
+                }
+            },
+            template: `<div class="removable">{{value}} <ui-icon-button size="mini" type="secondary" icon="backspace" color="red" :loading="loading" @click="handler" title="Remove"></ui-icon-button></div>`
+        })
+
+        Vue.component('addable', {
+            data: function(){
+                return {
+                    value: "",
+                    loading: false,
+                    error: ""
+                }
+            },
+            props: ['action','args','placeholder'],
+            methods: {
+                handler() {
+                    this.loading = true
+                    console.log(this.action)
+                    this.action(this.value, ...this.args).then(()=>{
+                        this.loading = false
+                        this.$set(this,'error',"")
+                    },reject=>{
+                        console.log("REJECT",reject)
+                        this.loading = false
+                        this.$set(this,'error',reject)
+                    })
+                }
+            },
+            template: `
+            <div class="addable">
+                <ui-textbox :placeholder="placeholder" class="half-input" v-model="value" :error="error" style="float:left;"></ui-textbox>
+                <ui-icon-button size="mini" type="secondary" icon="add" color="green" :loading="loading" @click="handler" title="Add" style="float:left;"></ui-icon-button> {{error}}
+            </div>
+            `)
+        })
+
         const vue = new Vue({
             el: '#vue',
             data: {
@@ -371,53 +421,6 @@
                 ACS_NETWORK_ENDPOINTS: ACS_NETWORK_ENDPOINTS
             },
             components: {
-                'removable': {
-                    data: function(){
-                        return {
-                            loading: false
-                        }
-                    },
-                    props: ['action','args','value'],
-                    methods: {
-                        handler() {
-                            this.loading = true
-                            this.action(this.value, ...this.args).then(()=>{
-                                this.loading = false
-                            })
-                        }
-                    },
-                    template: `<div class="removable">{{value}} <ui-icon-button size="mini" type="secondary" icon="backspace" color="red" :loading="loading" @click="handler" title="Remove"></ui-icon-button></div>`
-                },
-                'addable': {
-                    data: function(){
-                        return {
-                            value: "",
-                            loading: false,
-                            error: ""
-                        }
-                    },
-                    props: ['action','args','placeholder'],
-                    methods: {
-                        handler() {
-                            this.loading = true
-                            console.log(this.action)
-                            this.action(this.value, ...this.args).then(()=>{
-                                this.loading = false
-                                this.$set(this,'error',"")
-                            },reject=>{
-                                console.log("REJECT",reject)
-                                this.loading = false
-                                this.$set(this,'error',reject)
-                            })
-                        }
-                    },
-                    template: `
-                    <div class="addable">
-                        <ui-textbox :placeholder="placeholder" class="half-input" v-model="value" :error="error" style="float:left;"></ui-textbox>
-                        <ui-icon-button size="mini" type="secondary" icon="add" color="green" :loading="loading" @click="handler" title="Add" style="float:left;"></ui-icon-button> {{error}}
-                    </div>
-                    `
-                },
             },
             computed: {
                 acs_servers_options(){
