@@ -481,7 +481,7 @@
                     console.log("NetOutRemove",port,value,stack)
                     return this.Request('change',{'method':'DELETE', 'stack':stack, 'endpoint':`access/outbound-ports/${port}`, 'data':JSON.stringify({'subnets':[value]})}).then(()=>{
                         if(this.netout_data[stack][x].subnets.length > 1){
-                            this.$delete(this.netout_data[stack][x].subnets,u)
+                            this.$delete(this.netout_data[stack][x].destinationRanges,u)
                         } else {
                             this.$delete(this.netout_data[stack],x)
                         }
