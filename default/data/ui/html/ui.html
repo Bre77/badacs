@@ -244,7 +244,7 @@
             </ui-tab>
             <ui-tab id="netin" class="grid" title="Inbound Allowlists" :style="{'grid-template-columns': `repeat(${this.setting_columns}, 1fr)`}" @input="TabChange(NetInGet)">
                 <template v-for="(c,i) in acs_columns.slice(0,setting_columns)">
-                    <ui-select class="settings row1" :style="{'grid-column':i+1}" :options="acs_servers_options" :disabled="acs_servers_options.length == 0" placeholder="Please select a server" v-model="c.server" @dropdown-close="NetInGet(c)" label="Server" :invalid="!c.server"></ui-select>
+                    <ui-select class="settings row1" :style="{'grid-column':i+1}" :options="acs_servers_options" :disabled="acs_servers_options.length == 0" placeholder="Please select a server" v-model="c.server" @dropdown-close="NetInGet(c)" label="Stack" :invalid="!c.server"></ui-select>
                     <div class="loading" :style="{'grid-column':i+1}"><ui-progress-linear v-show="c.loading"></ui-progress-linear></div>
                 </template>
                 <template v-for="aspect in Object.keys(ACS_NETWORK_ENDPOINTS)">
@@ -265,7 +265,7 @@
             </ui-tab>
             <ui-tab id="netout" class="grid" title="Outbound Allowlists" :style="{'grid-template-columns': `repeat(${this.setting_columns}, 1fr)`}" @select="TabChange(NetOutGet)">
                 <template v-for="(c,i) in acs_columns.slice(0,setting_columns)">
-                    <ui-select class="settings row1" :style="{'grid-column':i+1}" :options="acs_servers_options" :disabled="acs_servers_options.length == 0" placeholder="Please select a server" v-model="c.server" @dropdown-close="NetOutGet(c)" label="Server" :invalid="!c.server"></ui-select>
+                    <ui-select class="settings row1" :style="{'grid-column':i+1}" :options="acs_servers_options" :disabled="acs_servers_options.length == 0" placeholder="Please select a server" v-model="c.server" @dropdown-close="NetOutGet(c)" label="Stack" :invalid="!c.server"></ui-select>
                     <div class="loading" :style="{'grid-column':i+1}"><ui-progress-linear v-show="c.loading"></ui-progress-linear></div>
                     <template v-for="(c,i) in acs_columns.slice(0,setting_columns)" v-if="netin_data.hasOwnProperty(c.server)">
                         <div v-for="(entries,group) in netout_data[c.server]" :style="{'grid-column':i+1}" class="flex">
@@ -283,7 +283,7 @@
             </ui-tab>
             <ui-tab id="hec" class="grid" title="HEC" :style="{'grid-template-columns': `repeat(${this.setting_columns}, 1fr)`}" @select="TabChange(HecGet)">
                 <template v-for="(c,i) in acs_columns.slice(0,setting_columns)">
-                    <ui-select class="settings row1" :style="{'grid-column':i+1}" :options="acs_servers_options" :disabled="acs_servers_options.length == 0" placeholder="Please select a server" v-model="c.server" @dropdown-close="HecGet(c)" label="Server" :invalid="!c.server"></ui-select>
+                    <ui-select class="settings row1" :style="{'grid-column':i+1}" :options="acs_servers_options" :disabled="acs_servers_options.length == 0" placeholder="Please select a server" v-model="c.server" @dropdown-close="HecGet(c)" label="Stack" :invalid="!c.server"></ui-select>
                     <div class="loading" :style="{'grid-column':i+1}"><ui-progress-linear v-show="c.loading"></ui-progress-linear></div>
                 </template>
 
@@ -303,7 +303,7 @@
             </ui-tab>
             <ui-tab id="idx" class="grid" title="Indexes" :style="{'grid-template-columns': `repeat(${this.setting_columns}, 1fr)`}" @select="TabChange(IdxGet)">
                 <template v-for="(c,i) in acs_columns.slice(0,setting_columns)">
-                    <ui-select class="settings row1" :style="{'grid-column':i+1}" :options="acs_servers_options" :disabled="acs_servers_options.length == 0" placeholder="Please select a server" v-model="c.server" @dropdown-close="IdxGet(c)" label="Server" :invalid="!c.server"></ui-select>
+                    <ui-select class="settings row1" :style="{'grid-column':i+1}" :options="acs_servers_options" :disabled="acs_servers_options.length == 0" placeholder="Please select a server" v-model="c.server" @dropdown-close="IdxGet(c)" label="Stack" :invalid="!c.server"></ui-select>
                     <div class="loading" :style="{'grid-column':i+1}"><ui-progress-linear v-show="c.loading"></ui-progress-linear></div>
                 </template>
                 <template v-for="(c,i) in acs_columns.slice(0,setting_columns)" v-if="idx_data.hasOwnProperty(c.server)">
