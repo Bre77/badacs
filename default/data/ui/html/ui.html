@@ -247,18 +247,8 @@
                 <template v-for="aspect in Object.keys(ACS_NETWORK_ENDPOINTS)">
                     <div class="colall"><b>{{aspect}}</b></div>
                     <template v-for="(c,i) in acs_columns.slice(0,setting_columns)" v-if="netin_data.hasOwnProperty(c.server)">
-                        <div v-for="(entries,group) in netin_data[c.server][aspect]" :style="{'grid-column':i+1}" class="flex">
-                            <div v-for="(entry,x) in entries">
-                                {{entry}} 
-                                <ui-icon-button size="mini" type="secondary" icon="backspace" color="red"></ui-icon-button>
-                            </div>
-                            <div class="flex">
-                                <form>
-                                    <ui-textbox placeholder="Add New" class="half-input"></ui-textbox>
-                                    <ui-icon-button size="mini" type="secondary" icon="add" color="green" @click="NetInAdd"></ui-icon-button>
-                                </form>
-                            </div>
-                        </div>
+                            <removable v-for="(entry,x) in netin_data[c.server][aspect].subnets" :key="x" :value="entry" :action="NetInRemove" :args="[c.server,aspect]" :style="{'grid-column':i+1}"></removable>
+                            <addable :stack="c.server" :aspect="aspect" :action="NetInAdd">
                     </template>
                 </template>
             </ui-tab>
@@ -376,7 +366,7 @@
                     data: () => ({
                         loading: 0
                     }),
-                    props: ['value'],
+                    props: ['stack','aspect','value'],
                     methods: {
                         handler() {
                             this.loading = 1
@@ -467,13 +457,13 @@
                         c.loading -= 1
                     })
                 },
-                NetInRemove(c,aspect,value){
-                    return this.Request('change',{'stack':c.server,'endpoint':endpoint})
+                NetInRemove(value,stack,aspect){
+                    return this.Request('change',{'method':'DELETE','stack':stack,'endpoint':ACS_NETWORK_ENDPOINTS[aspect]})
                 },
-                NetInAdd(form){
-                    form.preventDefault();
-                    console.log(form.path[3][0])
-                    //return this.Request('change',{'stack':c.server,'endpoint':endpoint})
+                NetInAdd(value,stack,aspect){
+                    return this.Request('change',{'method':'POST','stack':stack,'endpoint':ACS_NETWORK_ENDPOINTS[aspect]},'data':JSON.stringify({'subnets':[value]})).then(()=>{
+                        this.netin_data[c.server].subnets
+                    })
                 },
                 //
                 // NETOUT Tab
