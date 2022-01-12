@@ -392,20 +392,19 @@
                 //
                 NETGet(c){
                     console.log("NETGet",c)
-                    const server = c.server
-                    if(!this.config.hasOwnProperty(server)) return Promise.resolve()
-                    if(!this.netin_data.hasOwnProperty(server)){
-                        this.$set(this.netin_data,server,{})
+                    //if(!this.config.hasOwnProperty(c.server)) return Promise.resolve()
+                    if(!this.netin_data.hasOwnProperty(c.server)){
+                        this.$set(this.netin_data,c.server,{})
                     }
                     c.loading += 1
                     return Promise.all(Object.entries(ACS_netinORK_ENDPOINTS).map(z => {
                         const [key,endpoint] = z
-                        if(this.netin_data[server].hasOwnProperty(key)) return Promise.resolve()
-                        return this.Request('get',{'stack':server,'endpoint':endpoint})
+                        if(this.netin_data[c.server].hasOwnProperty(key)) return Promise.resolve()
+                        return this.Request('get',{'stack':c.server,'endpoint':endpoint})
                         .then(resp => {
-                            this.$set(this.netin_data[server],key,resp)
+                            this.$set(this.netin_data[c.server],key,resp)
                         }, reject =>{
-                            this.$set(this.netin_data[server],key,{})
+                            this.$set(this.netin_data[c.server],key,{})
                         })
                     }))
                     .then(()=>{
@@ -417,10 +416,9 @@
                 //
                 PORTGet(c){
                     console.log(PORTGet",c)
-                    const server = c.server
-                    if(!this.config.hasOwnProperty(server)) return Promise.resolve()
-                    if(!this.netout_data.hasOwnProperty(server)){
-                        this.$set(this.netin_data,server,{})
+                    //if(!this.config.hasOwnProperty(c.server)) return Promise.resolve()
+                    if(!this.netout_data.hasOwnProperty(c.server)){
+                        this.$set(this.netout_data,c.server,{})
                     }
                     c.loading += 1
                     return this.Request('get',{'stack':c.server,'endpoint':'access/outbound-ports'})
@@ -440,7 +438,7 @@
                     // HEC also needs the index list, so grab that first
                     return this.IDXGet(c).then(()=>{
                         // Check this is valid
-                        if(!this.config.hasOwnProperty(c.server)) return Promise.resolve()
+                        //if(!this.config.hasOwnProperty(c.server)) return Promise.resolve()
                         if(this.hec_data.hasOwnProperty(c.server)) return Promise.resolve()
 
                         c.loading += 1
@@ -460,7 +458,7 @@
                 //
                 IDXGet(c){
                     console.log("IDXGet",c)
-                    if(!this.config.hasOwnProperty(c.server)) return Promise.resolve()
+                    //if(!this.config.hasOwnProperty(c.server)) return Promise.resolve()
                     if(this.idx_data.hasOwnProperty(c.server)) return Promise.resolve()
                     c.loading += 1
                     
