@@ -377,8 +377,8 @@
                         //return this.TabConfig() // Can likely do this locally
                     },reject => {
                         if(reject.cause == 401){
-                            this.addstack_auth_error = reject.message
                             this.addstack_host_error = ""
+                            this.addstack_auth_error = reject.message
                         } else {
                             this.addstack_host_error = reject.message
                             this.addstack_auth_error = ""
@@ -477,13 +477,15 @@
                         console.warn(e)
                         return Promise.reject({ cause: 'local', message: e.message });
                     })
+                    .then(resp => resp.json())
+                    .catch(e => {
+                        console.warn("JSON PARSE",e,resp)
+                        return Promise.reject({ cause: 'parse', message: e.message });
+                    })
                     .then(resp => {
                         console.log(resp.status)
                         if (resp.status == 200){
-                            return resp.json().catch(e => {
-                                console.warn(e)
-                                return Promise.reject({ cause: 'parse', message: e.message });
-                            })
+                            return resp.json()
                         } else {
                             return resp.json().then(e => {
                                 console.warn(resp.status, e.error, e.message)
