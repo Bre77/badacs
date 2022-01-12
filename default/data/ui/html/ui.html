@@ -519,6 +519,7 @@
                         return Promise.reject({ cause: 'local', message: e.message });
                     })
                     .then(resp => {
+                        console.log(resp.status)
                         return resp.json().catch(e => {
                             console.error("JSON PARSE",e,resp)
                             return Promise.reject({ cause: 'parse', message: e.message });
