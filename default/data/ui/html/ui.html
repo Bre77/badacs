@@ -322,6 +322,40 @@
             `
         })
 
+        Vue.component('addport', {
+            data: function(){
+                return {
+                    name: "",
+                    port: 0,
+                    subnets: [],
+                    loading: false,
+                    error: ""
+                }
+            },
+            props: ['action','args','placeholder'],
+            methods: {
+                handler() {
+                    this.loading = true
+                    this.error = ""
+                    console.log(this.action)
+                    this.action(this.value, ...this.args).then(()=>{
+                        this.loading = false
+                        this.value = ""
+                    },reject=>{
+                        console.log("REJECT",reject)
+                        this.loading = false
+                        this.error = reject
+                    })
+                }
+            },
+            template: `
+            <div class="addable">
+                <ui-textbox :placeholder="placeholder" v-model="value" :error="error" style="float:left;"></ui-textbox>
+                <ui-icon-button size="mini" type="secondary" icon="add" color="green" :loading="loading" @click="handler" title="Add" style="float:left;"></ui-icon-button> {{error}}
+            </div>
+            `
+        })
+
         const vue = new Vue({
             el: '#vue',
             data: {
