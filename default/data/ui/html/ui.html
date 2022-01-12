@@ -385,7 +385,9 @@
                             })
                         }
                     },
-                    template: `{{value}}<ui-icon-button size="mini" type="secondary" icon="backspace" color="red" :loading="loading"></ui-icon-button>`
+                    template: `<div>
+                    {{value}}<ui-icon-button size="mini" type="secondary" icon="backspace" color="red" :loading="loading"></ui-icon-button>
+                    </div>`
                 },
                 'addable': {
                     data: () => ({
@@ -396,14 +398,14 @@
                     methods: {
                         handler() {
                             this.loading = 1
-                            this.action().then(()=>{
-                                this.loading = 0
-                            })
+                            this.$emit('action')
                         }
                     },
                     template: `
-                    <ui-textbox placeholder="Add New" class="half-input" v-model="value"></ui-textbox>
-                    <ui-icon-button size="mini" type="secondary" icon="add" color="green" @click="handler" :loading="loading"></ui-icon-button>
+                    <div>
+                        <ui-textbox placeholder="Add New" class="half-input" :value="value" @input="$emit('input', $event.target.value)"></ui-textbox>
+                        <ui-icon-button size="mini" type="secondary" icon="add" color="green" @click="handler" :loading="loading"></ui-icon-button>
+                    </div>
                     `
                 },
             },
