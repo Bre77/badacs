@@ -374,15 +374,21 @@
             components: {
                 'removable': {
                     data: () => ({
-                        value,
                         loading: 0
-                    })
+                    }),
+                    props: ['value'],
+                    template: `{{value}}<ui-icon-button size="mini" type="secondary" icon="backspace" color="red" :loading></ui-icon-button>`
                 },
                 'addable': {
-                    data() {
+                    data: () => ({
                         value,
                         loading: 0
-                    }
+                    }),
+                    props: ['value'],
+                    template: `
+                    <ui-textbox placeholder="Add New" class="half-input" v-model="value"></ui-textbox>
+                    <ui-icon-button size="mini" type="secondary" icon="add" color="green" @click="NetInAdd"></ui-icon-button>
+                    `
                 },
             }
             computed: {
