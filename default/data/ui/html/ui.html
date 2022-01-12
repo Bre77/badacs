@@ -366,11 +366,13 @@
                     data: () => ({
                         loading: 0
                     }),
-                    props: ['stack','aspect','value'],
+                    props: ['action','args','value'],
                     methods: {
                         handler() {
                             this.loading = 1
-                            this.$emit('action')
+                            this.action(this.value, ...this.args).then(()=>{
+                                this.loading = 0
+                            })
                         }
                     },
                     template: `<div>
@@ -382,7 +384,7 @@
                         value,
                         loading: 0
                     }),
-                    props: ['action','invalid'],
+                    props: ['action','args'],
                     methods: {
                         handler() {
                             this.loading = 1
