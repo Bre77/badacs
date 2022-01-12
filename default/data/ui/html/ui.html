@@ -423,14 +423,14 @@
                         this.$set(this.netin_data,server,{})
                     }
                     c.loading += 1
-                        return this.Request('get',{'stack':c.server,'endpoint':'access/outbound-ports'})
-                        .then(resp => {
-                            this.$set(this.hec_data,c.server,resp)
-                            c.loading -= 1
-                        }, reject => {
-                            this.$set(this.hec_data,c.server,[])
-                            c.loading -= 1
-                        })
+                    return this.Request('get',{'stack':c.server,'endpoint':'access/outbound-ports'})
+                    .then(resp => {
+                        this.$set(this.hec_data,c.server,resp)
+                        c.loading -= 1
+                    }, reject => {
+                        this.$set(this.hec_data,c.server,[])
+                        c.loading -= 1
+                    })
                 },
                 //
                 // HEC
