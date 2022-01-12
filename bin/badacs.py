@@ -80,10 +80,10 @@ class req(PersistentServerConnectionApplication):
                 return self.errorhandle("Missing 'stack' parameter")
             else:
                 try:
-                    _, resPasswords = simpleRequest(f"/servicesNS/nobody/{APP_NAME}/storage/passwords/{APP_NAME}%3A{stack}%3A?output_mode=json&count=1", sessionKey=self.AUTHTOKEN, method='GET', raiseAllErrors=True)
+                    _, resPasswords = simpleRequest(f"/servicesNS/nobody/{APP_NAME}/storage/passwords/{APP_NAME}%3A{form['stack']}%3A?output_mode=json&count=1", sessionKey=self.AUTHTOKEN, method='GET', raiseAllErrors=True)
                     token = json.loads(resPasswords)['entry'][0]['content']['clear_password']
                 except Exception as e:
-                    return self.errorhandle(f"Couldn't retrieve auth token for {stack}",e)
+                    return self.errorhandle(f"Couldn't retrieve auth token for {form['stack']}",e)
 
             # ACS Endpoints
             if form['a'] == "get":
@@ -92,12 +92,12 @@ class req(PersistentServerConnectionApplication):
                         return self.errorhandle(f"Request to 'get' was missing '{x}' parameter")
                 
                 try:
-                    r = requests.get(f"https://admin.splunk.com/{stack}/adminconfig/v2/{form['endpoint']}", headers={'Authorization':f"Bearer {token}"})
+                    r = requests.get(f"https://admin.splunk.com/{form['stack']}/adminconfig/v2/{form['endpoint']}", headers={'Authorization':f"Bearer {token}"})
                     if r.status_code != 200:
                         return self.errorhandle(r.text,r.reason,r.status_code)
                     return {'payload': json.dumps(r.json(), separators=(',', ':')), 'status': 200}
                 except Exception as e:
-                    return self.errorhandle(f"ACS get request for {stack}/adminconfig/v2/{form['endpoint']} returned {e}")
+                    return self.errorhandle(f"ACS get request for {form['stack']}/adminconfig/v2/{form['endpoint']} returned {e}")
 
             if form['a'] == "change":
                 for x in ['stack','endpoint','method','data']: # Check required parameters
@@ -105,12 +105,12 @@ class req(PersistentServerConnectionApplication):
                         return self.errorhandle(f"Request to 'change' was missing '{x}' parameter")
                 
                 try:
-                    r = requests.request(form['method'], f"https://admin.splunk.com/{stack}/adminconfig/v2/{form['endpoint']}", headers={'Authorization':f"Bearer {token}", "Content-Type":"application/json"}, data=form['data'])
+                    r = requests.request(form['method'], f"https://admin.splunk.com/{form['stack']}/adminconfig/v2/{form['endpoint']}", headers={'Authorization':f"Bearer {token}", "Content-Type":"application/json"}, data=form['data'])
                     if r.status_code not in [201,202]:
                         return self.errorhandle(r.text,r.reason,r.status_code)
                     return {'payload': json.dumps(r.json(), separators=(',', ':')), 'status': 200}
                 except Exception as e:
-                    return self.errorhandle(f"ACS change request for {stack}/adminconfig/v2/{form['endpoint']} returned {e}")
+                    return self.errorhandle(f"ACS change request for {form['stack']}/adminconfig/v2/{form['endpoint']} returned {e}")
 
 
 
