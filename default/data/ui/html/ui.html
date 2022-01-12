@@ -485,9 +485,9 @@
                                 return Promise.reject({ cause: 'parse', message: e.message });
                             })
                         } else {
-                            return resp.text().then(message => {
-                                console.warn(resp.status, message)
-                                return Promise.reject({ cause: resp.status, message: message})
+                            return resp.json().then(e => {
+                                console.warn(resp.status, e.error, e.message)
+                                return Promise.reject({ cause: resp.status, message: e.message, error: e.error})
                             })
                         }
                     }, reject => reject)
