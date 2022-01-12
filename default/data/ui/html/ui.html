@@ -377,14 +377,15 @@
             methods: {
                 handler() {
                     this.loading = true
+                    this.error = ""
                     console.log(this.action)
                     this.action(this.value, ...this.args).then(()=>{
                         this.loading = false
-                        this.$set(this,'error',"")
+                        
                     },reject=>{
                         console.log("REJECT",reject)
                         this.loading = false
-                        this.$set(this,'error',reject)
+                        this.error = reject
                     })
                 }
             },
