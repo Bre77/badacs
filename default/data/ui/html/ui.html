@@ -469,12 +469,14 @@
                 NetInRemove(value,stack,aspect){
                     console.log("NetInRemove",value,stack,aspect)
                     /*return this.Request('change',{'method':'DELETE','stack':stack,'endpoint':ACS_NETWORK_ENDPOINTS[aspect]})*/
+                    return Promise.resolve()
                 },
                 NetInAdd(value,stack,aspect){
                     console.log("NetInAdd",value,stack,aspect)
                     /*return this.Request('change',{'method':'POST','stack':stack,'endpoint':ACS_NETWORK_ENDPOINTS[aspect]},'data':JSON.stringify({'subnets':[value]})).then(()=>{
                         this.netin_data[c.server].subnets.push(value)
                     })*/
+                    return Promise.resolve()
                 },
                 //
                 // NETOUT Tab
