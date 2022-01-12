@@ -489,7 +489,7 @@
                     const subnets = subnets.split(',').map(s => s.trim())
                     const payload = {
                         'outboundPorts': [{
-                            'port': port,
+                            'port': Number(port),
                             'subnets': subnets
                         }],
                         'reason': name
