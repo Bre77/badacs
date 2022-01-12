@@ -186,7 +186,7 @@
                     </div>
                 </template>
             </ui-tab>
-            <ui-tab id="netout" class="grid" title="Outbound Allowlists" :style="{'grid-template-columns': `repeat(${this.setting_columns}, 1fr)`}" @select="TabChange(NetOutGet)" disabled>
+            <ui-tab id="netout" class="grid" title="Outbound Allowlists" :style="{'grid-template-columns': `repeat(${this.setting_columns}, 1fr)`}" @select="TabChange(NetOutGet)">
                 <template v-for="(c,i) in acs_columns.slice(0,setting_columns)">
                     <ui-select class="settings row1" :style="{'grid-column':i+1}" :options="acs_servers_options" :disabled="acs_servers_options.length == 0" placeholder="Please select a server" v-model="c.server" @dropdown-close="NetOutGet(c)" label="Stack" :invalid="!c.server"></ui-select>
                     <div class="loading" :style="{'grid-column':i+1}"><ui-progress-linear v-show="c.loading"></ui-progress-linear></div>
