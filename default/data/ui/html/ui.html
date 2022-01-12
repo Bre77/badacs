@@ -411,7 +411,7 @@
                     },
                     template: `
                     <div class="addable">
-                        <ui-textbox :placeholder="placeholder" class="half-input" v-model="value" :error="error" style="float:left;"></ui-textbox>
+                        <ui-textbox :placeholder="placeholder" class="half-input" v-model="value" :error="error" :invalid="error" style="float:left;"></ui-textbox>
                         <ui-icon-button size="mini" type="secondary" icon="add" color="green" :loading="loading" @click="handler" title="Add" style="float:left;"></ui-icon-button>
                     </div>
                     `
