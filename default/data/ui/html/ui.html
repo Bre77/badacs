@@ -247,7 +247,7 @@
                 <template v-for="aspect in Object.keys(ACS_NETWORK_ENDPOINTS)">
                     <div class="colall"><b>{{aspect}}</b></div>
                     <template v-for="(c,i) in acs_columns.slice(0,setting_columns)" v-if="netin_data.hasOwnProperty(c.server)">
-                            <removable v-if="netin_data[c.server][aspect].subnets" v-for="(entry,x) in netin_data[c.server][aspect].subnets" :key="c.server+aspect+x" v-model="netin_data[c.server][aspect].subnets[x]" :action="NetInRemove" :args="[c.server,aspect]" :style="{'grid-column':i+1}"></removable>
+                            <removable v-if="netin_data[c.server][aspect]" v-for="(entry,x) in netin_data[c.server][aspect].subnets" :key="c.server+aspect+x" v-model="netin_data[c.server][aspect].subnets[x]" :action="NetInRemove" :args="[c.server,aspect]" :style="{'grid-column':i+1}"></removable>
                             <addable :action="NetInAdd" :args="[c.server,aspect]" :style="{'grid-column':i+1}">
                     </template>
                 </template>
