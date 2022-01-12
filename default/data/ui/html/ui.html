@@ -252,7 +252,7 @@
                                 {{entry}} 
                                 <ui-icon-button size="mini" type="secondary" icon="backspace" color="red"></ui-icon-button>
                             </div>
-                            <div>
+                            <div class="flex">
                                 <ui-textbox placeholder="Add New" class="half-input"></ui-textbox>
                                 <ui-icon-button size="mini" type="secondary" icon="add" color="green"></ui-icon-button>
                             </div>
@@ -270,9 +270,9 @@
                         </div>
                     </template>
                     <div :style="{'grid-column':i+1}">
-                        <ui-textbox>Name</ui-textbox>
-                        <ui-textbox>Port</ui-textbox>
-                        <ui-textbox>Destination Subnets</ui-textbox>
+                        <ui-textbox class="tight">Name</ui-textbox>
+                        <ui-textbox class="tight">Port</ui-textbox>
+                        <ui-textbox class="tight">Destination Subnets</ui-textbox>
                         <ui-icon-button size="mini" type="secondary" icon="add" color="green"></ui-icon-button>
                     </div>
                 </template>
