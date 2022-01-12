@@ -55,7 +55,7 @@ class req(PersistentServerConnectionApplication):
 
             # Add a new stack and get its base metadata
             if form['a'] == "addstack":
-                for x in ['stack','token']: # Check required parameters
+                for x in ['stack','token','shared']: # Check required parameters
                     if x not in form:
                         return self.errorhandle(f"Request to 'addstack' was missing '{x}' parameter")
                 try:
@@ -70,8 +70,9 @@ class req(PersistentServerConnectionApplication):
                 except Exception as e:
                     return self.errorhandle(f"Connecting to ACS failed",e)
                 try:
-                    _, resPassword = simpleRequest(f"/servicesNS/nobody/{APP_NAME}/storage/passwords", sessionKey=self.AUTHTOKEN, postargs={'name': form['stack'], 'password': form['token']}, method='POST', raiseAllErrors=True)
-                    _, resConfig = simpleRequest(f"/servicesNS/nobody/{APP_NAME}/configs/conf-badacs", sessionKey=self.AUTHTOKEN, postargs={'name': form['stack']}, method='POST', raiseAllErrors=True)
+                    user_context = "nobody" if form['shared'] == "true" else self.USER
+                    _, resPassword = simpleRequest(f"/servicesNS/{user_context}/{APP_NAME}/storage/passwords", sessionKey=self.AUTHTOKEN, postargs={'name': form['stack'], 'password': form['token']}, method='POST', raiseAllErrors=True)
+                    _, resConfig = simpleRequest(f"/servicesNS/{user_context}/{APP_NAME}/configs/conf-badacs", sessionKey=self.AUTHTOKEN, postargs={'name': form['stack']}, method='POST', raiseAllErrors=True)
                     return {'payload': 'true', 'status': 200}
                 except Exception as e:
                     return self.errorhandle(f"Failed to save stack {form['stack']}",e)
