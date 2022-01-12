@@ -382,14 +382,14 @@
                 'addable': {
                     data: () => ({
                         value,
-                        loading: 0
+                        loading: false
                     }),
                     props: ['action','args'],
                     methods: {
                         handler() {
-                            this.loading = 1
+                            this.loading = true
                             this.action(this.value, ...this.args).then(()=>{
-                                this.loading = 0
+                                this.loading = false
                             })
                         }
                     },
