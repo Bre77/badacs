@@ -376,18 +376,31 @@
                     data: () => ({
                         loading: 0
                     }),
-                    props: ['value'],
-                    template: `{{value}}<ui-icon-button size="mini" type="secondary" icon="backspace" color="red" :loading></ui-icon-button>`
+                    props: ['value', 'action'],
+                    methods: {
+                        handler() {
+                            this.loading = 1
+                            this.action().then(()=>{
+                                this.loading = 0
+                            })
+                        }
+                    },
+                    template: `{{value}}<ui-icon-button size="mini" type="secondary" icon="backspace" color="red" :loading="loading"></ui-icon-button>`
                 },
                 'addable': {
                     data: () => ({
                         value,
                         loading: 0
                     }),
-                    props: ['value'],
+                    props: ['method'],
+                    methods: {
+                        handler() {
+
+                        }
+                    },
                     template: `
                     <ui-textbox placeholder="Add New" class="half-input" v-model="value"></ui-textbox>
-                    <ui-icon-button size="mini" type="secondary" icon="add" color="green" @click="NetInAdd"></ui-icon-button>
+                    <ui-icon-button size="mini" type="secondary" icon="add" color="green" @click="handler" :loading="loading"></ui-icon-button>
                     `
                 },
             }
