@@ -193,11 +193,9 @@
                 </template>
                 <template v-for="(c,i) in acs_columns.slice(0,setting_columns)" v-if="netin_data.hasOwnProperty(c.server)">
                     <div :style="{'grid-column':i+1}">
-                        <template v-for="(c,i) in acs_columns.slice(0,setting_columns)" v-if="netin_data.hasOwnProperty(c.server)">
-                            <div v-for="(entries,group) in netout_data[c.server]" :style="{'grid-column':i+1}" class="flex">
-                                {{entries}}
-                            </div>
-                        </template>
+                        <div v-for="(entries,group) in netout_data[c.server]" :style="{'grid-column':i+1}" class="flex">
+                            {{entries}}
+                        </div>
                         <addport :action="NetOutAdd" :stack="c.server"></addport>
                     </div>
                 </template>
