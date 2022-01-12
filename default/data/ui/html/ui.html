@@ -181,7 +181,7 @@
                     
                     <div v-for="(c,i) in acs_columns.slice(0,setting_columns)" v-if="netin_data.hasOwnProperty(c.server)" :style="{'grid-column':i+1}">
                         <div><b>{{aspect}}</b></div>
-                        <removable v-if="netin_data[c.server].hasOwnProperty(aspect)" v-for="(entry,x) in netin_data[c.server][aspect]" :value="entry" :action="NetInRemove" :args="[c.server,aspect]"></removable>
+                        <removable v-if="netin_data[c.server].hasOwnProperty(aspect)" v-for="(value,x) in netin_data[c.server][aspect]" :value="value" :action="NetInRemove" :args="[c.server,aspect]"></removable>
                         <addable :action="NetInAdd" :args="[c.server,aspect]" placeholder="Add CIDR">
                     </div>
                 </template>
