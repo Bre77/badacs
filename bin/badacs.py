@@ -63,8 +63,8 @@ class req(PersistentServerConnectionApplication):
                 r = requests.get(f"https://admin.splunk.com/{form['stack']}/adminconfig/v2/status", headers={'Authorization':f"Bearer {form['token']}"})
                 if r.status_code != 200:
                     try:
-
-                        message = r.json().message
+                        data = r.json()
+                        message = data.get('message',r.text)
                     except Exception:
                         message = r.text
                     return self.errorhandle(message,r.reason,r.status_code)
