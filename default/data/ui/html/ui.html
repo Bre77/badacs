@@ -376,17 +376,15 @@
                     data: () => ({
                         loading: 0
                     }),
-                    props: ['value', 'action'],
+                    props: ['value'],
                     methods: {
                         handler() {
                             this.loading = 1
-                            this.action().then(()=>{
-                                this.loading = 0
-                            })
+                            this.$emit('action')
                         }
                     },
                     template: `<div>
-                    {{value}}<ui-icon-button size="mini" type="secondary" icon="backspace" color="red" :loading="loading"></ui-icon-button>
+                    {{value}}<ui-icon-button size="mini" type="secondary" icon="backspace" color="red" :loading="loading" @click="handler"></ui-icon-button>
                     </div>`
                 },
                 'addable': {
@@ -404,7 +402,7 @@
                     template: `
                     <div>
                         <ui-textbox placeholder="Add New" class="half-input" :value="value" @input="$emit('input', $event.target.value)"></ui-textbox>
-                        <ui-icon-button size="mini" type="secondary" icon="add" color="green" @click="handler" :loading="loading"></ui-icon-button>
+                        <ui-icon-button size="mini" type="secondary" icon="add" color="green" :loading="loading" @click="handler"></ui-icon-button>
                     </div>
                     `
                 },
