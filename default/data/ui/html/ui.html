@@ -240,7 +240,7 @@
                 <ui-checkbox label="Shared" v-model="addstack_shared"></ui-checkbox>
                 <ui-button @click="AddStack()" :disabled="!Boolean(addstack_host && addstack_auth)">Submit</button>
             </ui-tab>
-            <ui-tab id="netin" class="grid" title="Inbound Allowlists" :style="{'grid-template-columns': `repeat(${this.setting_columns}, 1fr)`}" @select="TabChange(NetInGet)">
+            <ui-tab id="netin" class="grid" title="Inbound Allowlists" :style="{'grid-template-columns': `repeat(${this.setting_columns}, 1fr)`}" @input="TabChange(NetInGet)">
                 <template v-for="(c,i) in acs_columns.slice(0,setting_columns)">
                     <ui-select class="settings row1" :style="{'grid-column':i+1}" :options="acs_servers_options" :disabled="acs_servers_options.length == 0" placeholder="Please select a server" v-model="c.server" @change="NetInGet(c)" label="Server" :invalid="!c.server"></ui-select>
                     <div class="loading" :style="{'grid-column':i+1}"><ui-progress-linear v-show="c.loading"></ui-progress-linear></div>
