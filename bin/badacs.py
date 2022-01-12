@@ -115,6 +115,6 @@ class req(PersistentServerConnectionApplication):
 
 
 
-        return {'payload': "No Action Requested", 'status': 400}
+        return self.errorhandle("Invalid Action")
         #except Exception as ex:
         #    return {'payload': json.dumps(ex), 'status': 500}
