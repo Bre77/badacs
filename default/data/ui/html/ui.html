@@ -392,6 +392,7 @@
                     methods: {
                         handler() {
                             this.loading = true
+                            console.log(this.action)
                             this.action(this.value, ...this.args).then(()=>{
                                 this.loading = false
                             })
@@ -399,7 +400,7 @@
                     },
                     template: `
                     <div>
-                        <ui-textbox placeholder="Add New" class="half-input" v-model="value" @input="$emit('input', value)"></ui-textbox>
+                        <ui-textbox placeholder="Add New" class="half-input" v-model="value"></ui-textbox>
                         <ui-icon-button size="mini" type="secondary" icon="add" color="green" :loading="loading" @click="handler"></ui-icon-button>
                     </div>
                     `
