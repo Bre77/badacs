@@ -96,7 +96,7 @@ class req(PersistentServerConnectionApplication):
                     r = requests.get(f"https://admin.splunk.com/{form['stack']}/adminconfig/v2/{form['endpoint']}", headers={'Authorization':f"Bearer {token}"})
                     if r.status_code != 200:
                         return self.errorhandle(r.json()['message'],r.reason,r.status_code)
-                    return {'payload': r.text, 'status': 200}
+                    return {'payload': r.text(), 'status': 200}
                 except Exception as e:
                     return self.errorhandle(f"ACS get failed for {form['stack']}/adminconfig/v2/{form['endpoint']}",e)
 
@@ -109,7 +109,7 @@ class req(PersistentServerConnectionApplication):
                     r = requests.request(form['method'], f"https://admin.splunk.com/{form['stack']}/adminconfig/v2/{form['endpoint']}", headers={'Authorization':f"Bearer {token}", "Content-Type":"application/json"}, data=form['data'])
                     if r.status_code not in [200,201,202]:
                         return self.errorhandle(r.json()['message'],r.reason,r.status_code)
-                    return {'payload': r.text, 'status': r.status_code}
+                    return {'payload': r.text(), 'status': r.status_code}
                 except Exception as e:
                     return self.errorhandle(f"ACS change failed for {form['stack']}/adminconfig/v2/{form['endpoint']}",e)
 
