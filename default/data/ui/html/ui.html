@@ -527,10 +527,10 @@
                             return Promise.reject({ cause: 'parse', message: e.message });
                         }).then(data=>{
                             console.log(resp.status)
-                            if (resp.status > 500){
+                            if (resp.status >= 500){
                                 console.error(resp.status, data.error, data.message)
                                 return Promise.reject({ cause: resp.status, message: "There was a server error, please report this on GitHub", error: data.message})
-                            } else if (resp.status > 400){
+                            } else if (resp.status >= 400){
                                 console.warn(resp.status, data.error, data.message)
                                 return Promise.reject({ cause: resp.status, message: data.message, error: data.error})
                             }
