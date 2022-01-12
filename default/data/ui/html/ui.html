@@ -378,7 +378,11 @@
                     },reject => {
                         if(reject.cause == 401){
                             this.addstack_auth_error = reject.message
-                        } else this.addstack_host_error = reject.message
+                            this.addstack_host_error = ""
+                        } else {
+                            this.addstack_host_error = reject.message
+                            this.addstack_auth_error = ""
+                        }
                     })
                 },
                 //
