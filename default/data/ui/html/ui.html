@@ -388,7 +388,9 @@
                     methods: {
                         handler() {
                             this.loading = 1
-                            this.$emit('action')
+                            this.action(this.value, ...this.args).then(()=>{
+                                this.loading = 0
+                            })
                         }
                     },
                     template: `
