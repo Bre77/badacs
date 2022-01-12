@@ -479,7 +479,8 @@
                 NetOutRemove(port,value,stack){
                     console.log("NetOutRemove",port,value,stack)
                     return this.Request('change',{'method':'POST', 'stack':stack, 'endpoint':`access/outbound-ports/${port}`, 'data':JSON.stringify({'subnets':[value]})}).then(()=>{
-                        this.netout_data[stack].push(payload)
+                        
+                        
                     },reject => {
                         return Promise.reject(reject.message)
                     })
@@ -495,6 +496,9 @@
                         'reason': name
                     }
                     return this.Request('change',{'method':'POST', 'stack':stack, 'endpoint':'access/outbound-ports', 'data':JSON.stringify(payload)}).then(()=>{
+                        if(!Array.isArray(this.netout_data[stack])){
+                            this.$set(this.netout_data,stack,[])
+                        }
                         this.netout_data[stack].push({
                             "destinationRanges": subnets,
                             "name": name,
