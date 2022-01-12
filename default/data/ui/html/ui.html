@@ -496,9 +496,9 @@
                         'reason': name
                     }
                     return this.Request('change',{'method':'POST', 'stack':stack, 'endpoint':'access/outbound-ports', 'data':JSON.stringify(payload)}).then(()=>{
-                        if(!Array.isArray(this.netout_data[stack])){
+                        /*if(!Array.isArray(this.netout_data[stack])){
                             this.$set(this.netout_data,stack,[])
-                        }
+                        }*/
                         this.netout_data[stack].push({
                             "destinationRanges": subnets,
                             "name": name,
