@@ -422,7 +422,7 @@
                             this.$set(this.hec_data,c.server,resp['http-event-collectors'])
                             c.loading -= 1
                         }, reject => {
-                            this.$set(this.hec_data,c.server,null)
+                            this.$set(this.hec_data,c.server,[])
                             c.loading -= 1
                         })
                     })
@@ -441,7 +441,7 @@
                         this.$set(this.idx_data,c.server,resp)
                         c.loading -= 1
                     }, reject => {
-                        this.$set(this.idx_data,c.server,null)
+                        this.$set(this.idx_data,c.server,[])
                         c.loading -= 1
                     })
                 },
