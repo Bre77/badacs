@@ -240,15 +240,15 @@
                 <ui-checkbox label="Shared" v-model="addstack_shared"></ui-checkbox>
                 <ui-button @click="AddStack()" :disabled="!Boolean(addstack_host && addstack_auth)">Submit</button>
             </ui-tab>
-            <ui-tab id="netw" class="grid" title="Network Allowlists" :style="{'grid-template-columns': `repeat(${this.setting_columns}, 1fr)`}" @select="TabChange(NETGet)">
+            <ui-tab id="netin" class="grid" title="Inbound Allowlists" :style="{'grid-template-columns': `repeat(${this.setting_columns}, 1fr)`}" @select="TabChange(NETGet)">
                 <template v-for="(c,i) in acs_columns.slice(0,setting_columns)">
                     <ui-select class="settings row1" :style="{'grid-column':i+1}" :options="acs_servers_options" :disabled="acs_servers_options.length == 0" placeholder="Please select a server" v-model="c.server" @change="NETGet(c)" label="Server" :invalid="!c.server"></ui-select>
                     <div class="loading" :style="{'grid-column':i+1}"><ui-progress-linear v-show="c.loading"></ui-progress-linear></div>
                 </template>
-                <template v-for="aspect in ['search-api','hec','s2s','search-ui','idm-ui','idm-api']">
+                <template v-for="aspect in Object.keys(ACS_NETWORK_ENDPOINTS)">
                     <div class="colall"><b>{{aspect}}</b></div>
-                    <template v-for="(c,i) in acs_columns.slice(0,setting_columns)" v-if="netw_data.hasOwnProperty(c.server)">
-                        <div v-for="(entries,group) in netw_data[c.server][aspect]" :style="{'grid-column':i+1}" class="flex">
+                    <template v-for="(c,i) in acs_columns.slice(0,setting_columns)" v-if="netin_data.hasOwnProperty(c.server)">
+                        <div v-for="(entries,group) in netin_data[c.server][aspect]" :style="{'grid-column':i+1}" class="flex">
                             <div v-for="(entry,x) in entries">
                                 {{entry}} 
                                 <ui-icon-button size="mini" type="secondary" icon="backspace" color="red"></ui-icon-button>
@@ -260,6 +260,13 @@
                         </div>
                     </template>
                 </template>
+            </ui-tab>
+            <ui-tab id="netout" class="grid" title="Outbound Allowlists" :style="{'grid-template-columns': `repeat(${this.setting_columns}, 1fr)`}" @select="TabChange(PORTGet)">
+                <template v-for="(c,i) in acs_columns.slice(0,setting_columns)">
+                    <ui-select class="settings row1" :style="{'grid-column':i+1}" :options="acs_servers_options" :disabled="acs_servers_options.length == 0" placeholder="Please select a server" v-model="c.server" @change="PORTGet(c)" label="Server" :invalid="!c.server"></ui-select>
+                    <div class="loading" :style="{'grid-column':i+1}"><ui-progress-linear v-show="c.loading"></ui-progress-linear></div>
+                </template>
+                
             </ui-tab>
             <ui-tab id="hec" class="grid" title="HEC" :style="{'grid-template-columns': `repeat(${this.setting_columns}, 1fr)`}" @select="TabChange(HECGet)">
                 <template v-for="(c,i) in acs_columns.slice(0,setting_columns)">
@@ -316,7 +323,7 @@
             'search-ui':'access/search-ui/ipallowlists',
             'idm-ui':'access/idm-ui/ipallowlists',
             'idm-api':'access/idm-api/ipallowlists',
-            'outbound-ports':'access/outbound-ports'
+            
         }
         
         function imgError(image){
@@ -345,7 +352,8 @@
                     server: '',
                     loading: 0,
                 })),
-                netw_data: {},
+                netin_data: {},
+                netout_data: {},
                 hec_data: {},
                 idx_data: {},
                 app_data: {},
@@ -380,29 +388,49 @@
                     })
                 },
                 //
-                // Networks Tab
+                // NETIN Tab
                 //
                 NETGet(c){
                     console.log("NETGet",c)
                     const server = c.server
                     if(!this.config.hasOwnProperty(server)) return Promise.resolve()
-                    if(!this.netw_data.hasOwnProperty(server)){
-                        this.$set(this.netw_data,server,{})
+                    if(!this.netin_data.hasOwnProperty(server)){
+                        this.$set(this.netin_data,server,{})
                     }
                     c.loading += 1
-                    return Promise.all(Object.entries(ACS_NETWORK_ENDPOINTS).map(z => {
+                    return Promise.all(Object.entries(ACS_netinORK_ENDPOINTS).map(z => {
                         const [key,endpoint] = z
-                        if(this.netw_data[server].hasOwnProperty(key)) return Promise.resolve()
+                        if(this.netin_data[server].hasOwnProperty(key)) return Promise.resolve()
                         return this.Request('get',{'stack':server,'endpoint':endpoint})
                         .then(resp => {
-                            this.$set(this.netw_data[server],key,resp)
+                            this.$set(this.netin_data[server],key,resp)
                         }, reject =>{
-                            this.$set(this.netw_data[server],key,{})
+                            this.$set(this.netin_data[server],key,{})
                         })
                     }))
                     .then(()=>{
                         c.loading -= 1
                     })
+                },
+                //
+                // NETOUT Tab
+                //
+                PORTGet(c){
+                    console.log(PORTGet",c)
+                    const server = c.server
+                    if(!this.config.hasOwnProperty(server)) return Promise.resolve()
+                    if(!this.netout_data.hasOwnProperty(server)){
+                        this.$set(this.netin_data,server,{})
+                    }
+                    c.loading += 1
+                        return this.Request('get',{'stack':c.server,'endpoint':'access/outbound-ports'})
+                        .then(resp => {
+                            this.$set(this.hec_data,c.server,resp)
+                            c.loading -= 1
+                        }, reject => {
+                            this.$set(this.hec_data,c.server,[])
+                            c.loading -= 1
+                        })
                 },
                 //
                 // HEC
