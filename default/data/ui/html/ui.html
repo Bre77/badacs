@@ -371,6 +371,20 @@
                 app_data: {},
                 ACS_NETWORK_ENDPOINTS: ACS_NETWORK_ENDPOINTS
             },
+            components: {
+                'removable': {
+                    data: () => ({
+                        value,
+                        loading: 0
+                    })
+                },
+                'addable': {
+                    data() {
+                        value,
+                        loading: 0
+                    }
+                },
+            }
             computed: {
                 acs_servers_options(){
                     return Object.keys(this.config)
