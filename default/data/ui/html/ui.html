@@ -363,9 +363,11 @@
             },
             components: {
                 'removable': {
-                    data: () => ({
-                        loading: false
-                    }),
+                    data: function(){
+                        return {
+                            loading: false
+                        }
+                    },
                     props: ['action','args','value'],
                     methods: {
                         handler() {
