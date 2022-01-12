@@ -377,9 +377,7 @@
                             })
                         }
                     },
-                    template: `<div>
-                    {{value}} <ui-icon-button size="mini" type="secondary" icon="backspace" color="red" :loading="loading" @click="handler"></ui-icon-button>
-                    </div>`
+                    template: `<div>{{value}} <ui-icon-button size="mini" type="secondary" icon="backspace" color="red" :loading="loading" @click="handler"></ui-icon-button></div>`
                 },
                 'addable': {
                     data: function(){
@@ -475,6 +473,7 @@
                         this.$delete(this.netin_data[stack][aspect],this.netin_data[stack][aspect].indexOf(value))
                     },reject => {
                         console.error(reject)
+                        return Promise.reject(reject.message)
                     })
                 },
                 NetInAdd(value,stack,aspect){
@@ -483,6 +482,7 @@
                         this.netin_data[c.server].subnets.push(value)
                     },reject => {
                         console.error(reject)
+                        return Promise.reject(reject.message)
                     })
                 },
                 //
