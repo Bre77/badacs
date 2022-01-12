@@ -397,7 +397,7 @@
                         this.$set(this.netin_data,c.server,{})
                     }
                     c.loading += 1
-                    return Promise.all(Object.entries(ACS_netinORK_ENDPOINTS).map(z => {
+                    return Promise.all(Object.entries(ACS_NETWORK_ENDPOINTS).map(z => {
                         const [key,endpoint] = z
                         if(this.netin_data[c.server].hasOwnProperty(key)) return Promise.resolve()
                         return this.Request('get',{'stack':c.server,'endpoint':endpoint})
