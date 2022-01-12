@@ -196,7 +196,7 @@
                                 {{entries}}
                             </div>
                         </template>
-                        <addport action=""></div>
+                        <addport action="NetOutAdd" :stack="c.server"></div>
                     </div>
                 </template>
                 
@@ -329,12 +329,12 @@
                     error: ""
                 }
             },
-            props: ['action','args'],
+            props: ['action','stack'],
             methods: {
                 handler() {
                     this.loading = true
                     this.error = ""
-                    this.action(this.name, this.port, this.subnets, ...this.args).then(()=>{
+                    this.action(this.name, this.port, this.subnets, this.stack).then(()=>{
                         this.loading = false
                         this.value = ""
                         this.port = 0
