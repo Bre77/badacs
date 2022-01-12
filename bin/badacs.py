@@ -17,7 +17,7 @@ class req(PersistentServerConnectionApplication):
 
     def errorhandle(self, message, error="", status=400):
         logger.error(f"app={APP_NAME} user={self.USER} status={status} message=\"{message}\" error=\"{error}\"")
-        return {'payload': json.dumps({message:message, error:str(error)}), 'status': status}
+        return {'payload': json.dumps({'message':message, 'error':str(error)}, separators=(',', ':')), 'status': status}
 
     def handle(self, in_string):
         args = json.loads(in_string)
