@@ -250,7 +250,7 @@
                         <div v-for="(entries,group) in netin_data[c.server][aspect]" :style="{'grid-column':i+1}" class="flex">
                             <div v-for="(entry,x) in entries">
                                 {{entry}} 
-                                <ui-icon-button size="mini" type="secondary" icon="backspace" color="red"></ui-icon-button>
+                                <ui-icon-button size="tiny" type="secondary" icon="backspace" color="red"></ui-icon-button>
                             </div>
                             <div class="flex">
                                 <ui-textbox placeholder="Add New" class="half-input"></ui-textbox>
