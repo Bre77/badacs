@@ -347,9 +347,9 @@
             },
             template: `
             <div class="addable">
-                <ui-textbox v-model="value" style="float:left;"></ui-textbox>
-                <ui-textbox type="number" v-model="port" style="float:left;"></ui-textbox>
-                <ui-textbox help="Comma seperated list of CIDR subnets" v-model="subnets" :error="error" style="float:left;"></ui-textbox>
+                <ui-textbox v-model="name" style="float:left;">Name</ui-textbox>
+                <ui-textbox type="number" v-model="port" style="float:left;">Port</ui-textbox>
+                <ui-textbox help="Comma seperated list of CIDR subnets" v-model="subnets" :error="error" style="float:left;">Subnets</ui-textbox>
                 <ui-icon-button size="mini" type="secondary" icon="add" color="green" :loading="loading" @click="handler" title="Add" style="float:left;"></ui-icon-button> {{error}}
             </div>
             `
