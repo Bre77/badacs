@@ -538,6 +538,9 @@
                 }
             },
             mounted() {
+                if(localStorage.badacs_setting_columns){
+                    this.$set(this, 'setting_columns', localStorage.badacs_setting_columns)
+                }
                 this.Request('config').then(resp => {
                     this.$set(this,'config',resp)
                 },reject =>{
@@ -545,7 +548,9 @@
                 })
             },
             watch: {
-
+                setting_columns(next,prev){
+                    localStorage.setItem('badacs_setting_columns', next)
+                },
             }
         })
     </script>
