@@ -240,9 +240,9 @@
                 <ui-checkbox label="Shared" v-model="addstack_shared"></ui-checkbox>
                 <ui-button @click="AddStack()" :disabled="!Boolean(addstack_host && addstack_auth)">Submit</button>
             </ui-tab>
-            <ui-tab id="netin" class="grid" title="Inbound Allowlists" :style="{'grid-template-columns': `repeat(${this.setting_columns}, 1fr)`}" @select="TabChange(NETINGet)">
+            <ui-tab id="netin" class="grid" title="Inbound Allowlists" :style="{'grid-template-columns': `repeat(${this.setting_columns}, 1fr)`}" @select="TabChange(NetInGet)">
                 <template v-for="(c,i) in acs_columns.slice(0,setting_columns)">
-                    <ui-select class="settings row1" :style="{'grid-column':i+1}" :options="acs_servers_options" :disabled="acs_servers_options.length == 0" placeholder="Please select a server" v-model="c.server" @change="NETINGet(c)" label="Server" :invalid="!c.server"></ui-select>
+                    <ui-select class="settings row1" :style="{'grid-column':i+1}" :options="acs_servers_options" :disabled="acs_servers_options.length == 0" placeholder="Please select a server" v-model="c.server" @change="NetInGet(c)" label="Server" :invalid="!c.server"></ui-select>
                     <div class="loading" :style="{'grid-column':i+1}"><ui-progress-linear v-show="c.loading"></ui-progress-linear></div>
                 </template>
                 <template v-for="aspect in Object.keys(ACS_NETWORK_ENDPOINTS)">
@@ -261,16 +261,16 @@
                     </template>
                 </template>
             </ui-tab>
-            <ui-tab id="netout" class="grid" title="Outbound Allowlists" :style="{'grid-template-columns': `repeat(${this.setting_columns}, 1fr)`}" @select="TabChange(NETOUTGet)">
+            <ui-tab id="netout" class="grid" title="Outbound Allowlists" :style="{'grid-template-columns': `repeat(${this.setting_columns}, 1fr)`}" @select="TabChange(NetOutGet)">
                 <template v-for="(c,i) in acs_columns.slice(0,setting_columns)">
-                    <ui-select class="settings row1" :style="{'grid-column':i+1}" :options="acs_servers_options" :disabled="acs_servers_options.length == 0" placeholder="Please select a server" v-model="c.server" @change="NETOUTGet(c)" label="Server" :invalid="!c.server"></ui-select>
+                    <ui-select class="settings row1" :style="{'grid-column':i+1}" :options="acs_servers_options" :disabled="acs_servers_options.length == 0" placeholder="Please select a server" v-model="c.server" @change="NetOutGet(c)" label="Server" :invalid="!c.server"></ui-select>
                     <div class="loading" :style="{'grid-column':i+1}"><ui-progress-linear v-show="c.loading"></ui-progress-linear></div>
                 </template>
                 
             </ui-tab>
-            <ui-tab id="hec" class="grid" title="HEC" :style="{'grid-template-columns': `repeat(${this.setting_columns}, 1fr)`}" @select="TabChange(HECGet)">
+            <ui-tab id="hec" class="grid" title="HEC" :style="{'grid-template-columns': `repeat(${this.setting_columns}, 1fr)`}" @select="TabChange(HecGet)">
                 <template v-for="(c,i) in acs_columns.slice(0,setting_columns)">
-                    <ui-select class="settings row1" :style="{'grid-column':i+1}" :options="acs_servers_options" :disabled="acs_servers_options.length == 0" placeholder="Please select a server" v-model="c.server" @change="HECGet(c)" label="Server" :invalid="!c.server"></ui-select>
+                    <ui-select class="settings row1" :style="{'grid-column':i+1}" :options="acs_servers_options" :disabled="acs_servers_options.length == 0" placeholder="Please select a server" v-model="c.server" @change="HecGet(c)" label="Server" :invalid="!c.server"></ui-select>
                     <div class="loading" :style="{'grid-column':i+1}"><ui-progress-linear v-show="c.loading"></ui-progress-linear></div>
                 </template>
 
@@ -288,9 +288,9 @@
                     </div>
                 </template>
             </ui-tab>
-            <ui-tab id="idx" class="grid" title="Indexes" :style="{'grid-template-columns': `repeat(${this.setting_columns}, 1fr)`}" @select="TabChange(IDXGet)">
+            <ui-tab id="idx" class="grid" title="Indexes" :style="{'grid-template-columns': `repeat(${this.setting_columns}, 1fr)`}" @select="TabChange(IdxGet)">
                 <template v-for="(c,i) in acs_columns.slice(0,setting_columns)">
-                    <ui-select class="settings row1" :style="{'grid-column':i+1}" :options="acs_servers_options" :disabled="acs_servers_options.length == 0" placeholder="Please select a server" v-model="c.server" @change="IDXGet(c)" label="Server" :invalid="!c.server"></ui-select>
+                    <ui-select class="settings row1" :style="{'grid-column':i+1}" :options="acs_servers_options" :disabled="acs_servers_options.length == 0" placeholder="Please select a server" v-model="c.server" @change="IdxGet(c)" label="Server" :invalid="!c.server"></ui-select>
                     <div class="loading" :style="{'grid-column':i+1}"><ui-progress-linear v-show="c.loading"></ui-progress-linear></div>
                 </template>
                 <template v-for="(c,i) in acs_columns.slice(0,setting_columns)" v-if="idx_data.hasOwnProperty(c.server)">
@@ -390,8 +390,8 @@
                 //
                 // NETIN Tab
                 //
-                NETINGet(c){
-                    console.log("NETINGet",c)
+                NetInGet(c){
+                    console.log("NetInGet",c)
                     //if(!this.config.hasOwnProperty(c.server)) return Promise.resolve()
                     if(!this.netin_data.hasOwnProperty(c.server)){
                         this.$set(this.netin_data,c.server,{})
@@ -414,8 +414,8 @@
                 //
                 // NETOUT Tab
                 //
-                NETOUTGet(c){
-                    console.log("NETOUTGet",c)
+                NetOutGet(c){
+                    console.log("NetOutGet",c)
                     //if(!this.config.hasOwnProperty(c.server)) return Promise.resolve()
                     if(!this.netout_data.hasOwnProperty(c.server)){
                         this.$set(this.netout_data,c.server,{})
@@ -433,10 +433,10 @@
                 //
                 // HEC
                 //
-                HECGet(c){
-                    console.log("HECGet",c)
+                HecGet(c){
+                    console.log("HecGet",c)
                     // HEC also needs the index list, so grab that first
-                    return this.IDXGet(c).then(()=>{
+                    return this.IdxGet(c).then(()=>{
                         // Check this is valid
                         //if(!this.config.hasOwnProperty(c.server)) return Promise.resolve()
                         if(this.hec_data.hasOwnProperty(c.server)) return Promise.resolve()
@@ -456,8 +456,8 @@
                 //
                 // Indexes
                 //
-                IDXGet(c){
-                    console.log("IDXGet",c)
+                IdxGet(c){
+                    console.log("IdxGet",c)
                     //if(!this.config.hasOwnProperty(c.server)) return Promise.resolve()
                     if(this.idx_data.hasOwnProperty(c.server)) return Promise.resolve()
                     c.loading += 1
