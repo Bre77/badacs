@@ -240,7 +240,7 @@
                 <ui-checkbox label="Shared" v-model="addstack_shared"></ui-checkbox>
                 <ui-button @click="AddStack()" :disabled="!Boolean(addstack_host && addstack_auth)">Submit</ui-button>
                 <h3>Options</h3>
-                <ui-select :options="setting_columns_options" v-model="setting_columns">Columns to display</ui-select>
+                <ui-select :options="setting_columns_options" v-model="setting_columns_option">Columns to display</ui-select>
             </ui-tab>
             <ui-tab id="netin" class="grid" title="Inbound Allowlists" :style="{'grid-template-columns': `repeat(${this.setting_columns}, 1fr)`}" @input="TabChange(NetInGet)">
                 <template v-for="(c,i) in acs_columns.slice(0,setting_columns)">
@@ -342,7 +342,7 @@
             data: {
                 context: {},
                 config: {},
-                setting_columns: 2,
+                setting_columns_option: "2",
                 addstack_host: "",
                 addstack_host_error: "",
                 addstack_auth: "",
@@ -364,6 +364,9 @@
             computed: {
                 acs_servers_options(){
                     return Object.keys(this.config)
+                },
+                setting_columns() {
+                    Number(this.setting_columns_option)
                 },
                 setting_columns_options() {
                     let start = 2
@@ -539,7 +542,7 @@
             },
             mounted() {
                 if(localStorage.badacs_setting_columns){
-                    this.$set(this, 'setting_columns', localStorage.badacs_setting_columns)
+                    this.$set(this, 'setting_columns_option', localStorage.badacs_setting_columns)
                 }
                 this.Request('config').then(resp => {
                     this.$set(this,'config',resp)
@@ -548,7 +551,7 @@
                 })
             },
             watch: {
-                setting_columns(next,prev){
+                setting_columns_option(next,prev){
                     localStorage.setItem('badacs_setting_columns', next)
                 },
             }
