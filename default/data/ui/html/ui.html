@@ -435,6 +435,7 @@
                     return this.Request('change',{'stack':c.server,'endpoint':endpoint})
                 },
                 NetInAdd(form){
+                    form.preventDefault();
                     console.log(form)
                     //return this.Request('change',{'stack':c.server,'endpoint':endpoint})
                 },
