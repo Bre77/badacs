@@ -504,6 +504,8 @@
             mounted() {
                 this.Request('config').then(resp => {
                     this.$set(this,'config',resp)
+                },reject =>{
+                    console.error("FATAL ERROR - COULDNT GET CONFIG")
                 })
             },
             watch: {
