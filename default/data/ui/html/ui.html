@@ -485,9 +485,11 @@
                     
                     return this.Request('get',{'stack':c.server,'endpoint':'indexes'})
                     .then(resp => {
+                        console.log("good",resp)
                         this.$set(this.idx_data,c.server,resp)
                         c.loading -= 1
                     }, reject => {
+                        console.log("bad",reject)
                         this.$set(this.idx_data,c.server,[])
                         c.loading -= 1
                     })
