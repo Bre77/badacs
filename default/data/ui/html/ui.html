@@ -486,15 +486,20 @@
                 },
                 NetOutAdd(name,port,subnets,stack){
                     console.log("NetOutAdd",name,port,subnets,stack)
+                    const subnets = subnets.split(',').map(s => s.trim())
                     const payload = {
                         'outboundPorts': [{
                             'port': port,
-                            'subnets': subnets.split(',').map(s => s.trim())
+                            'subnets': subnets
                         }],
                         'reason': name
                     }
                     return this.Request('change',{'method':'POST', 'stack':stack, 'endpoint':'access/outbound-ports', 'data':JSON.stringify(payload)}).then(()=>{
-                        this.netout_data[stack].push(payload)
+                        this.netout_data[stack].push({
+                            "destinationRanges": subnets,
+                            "name": name,
+                            "port": port
+                        })
                     },reject => {
                         return Promise.reject(reject.message)
                     })
