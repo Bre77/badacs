@@ -195,7 +195,7 @@
                     <div :style="{'grid-column':i+1}">
                         <template v-for="(port,x) in netout_data[c.server]">
                             <div><b>{{port.port}}</b></div>
-                            <removable v-for="(subnet) in port.destinationRanges" :value="subnet" :action="NetOutRemove" :args="[c.server]"></removable>
+                            <removable v-for="(subnet) in port.destinationRanges" :value="subnet" :action="NetOutRemove" :args="[c.server,port.port]"></removable>
                         </template>
                         <addport :action="NetOutAdd" :stack="c.server"></addport>
                     </div>
