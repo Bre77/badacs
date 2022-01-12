@@ -327,20 +327,21 @@
                 return {
                     name: "",
                     port: 0,
-                    subnets: [],
+                    subnets: "",
                     loading: false,
                     error: ""
                 }
             },
-            props: ['action','args','placeholder'],
+            props: ['action','args'],
             methods: {
                 handler() {
                     this.loading = true
                     this.error = ""
-                    console.log(this.action)
-                    this.action(this.value, ...this.args).then(()=>{
+                    this.action(this.name, this.port, this.subnets, ...this.args).then(()=>{
                         this.loading = false
                         this.value = ""
+                        this.port = 0
+                        this.subnets = ""
                     },reject=>{
                         console.log("REJECT",reject)
                         this.loading = false
