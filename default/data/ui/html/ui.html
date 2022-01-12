@@ -392,10 +392,13 @@
                         value,
                         loading: 0
                     }),
-                    props: ['method','invalid'],
+                    props: ['action','invalid'],
                     methods: {
                         handler() {
-
+                            this.loading = 1
+                            this.action().then(()=>{
+                                this.loading = 0
+                            })
                         }
                     },
                     template: `
