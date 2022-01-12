@@ -493,7 +493,7 @@
                         this.netin_data[c.server].subnets.push(value)
                     },reject => {
                         console.error("ABC",reject)
-                        return Promise.reject(reject.message)
+                        return Promise.reject(JSON.parse(reject).message)
                     })
                 },
                 //
