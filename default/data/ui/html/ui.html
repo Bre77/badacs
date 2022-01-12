@@ -404,6 +404,7 @@
                             this.action(this.value, ...this.args).then(()=>{
                                 this.loading = false
                             },reject=>{
+                                console.log("REJECT",reject)
                                 this.loading = false
                                 this.error = String(reject)
                             })
