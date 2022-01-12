@@ -478,6 +478,15 @@
                         c.loading -= 1
                     })
                 },
+                NetOutRemove(port,subnets,stack){
+                    const subnets = subnets.split(',').map(s => s.trim())
+                    console.log("NetOutRemove",port,subnets,stack)
+                    return this.Request('change',{'method':'POST', 'stack':stack, 'endpoint':f"access/outbound-ports/${port}", 'data':JSON.stringify({'subnets':[value]})}).then(()=>{
+                        this.netout_data[stack].push(payload)
+                    },reject => {
+                        return Promise.reject(reject.message)
+                    })
+                },
                 NetOutAdd(name,port,subnets,stack){
                     console.log("NetOutAdd",name,port,subnets,stack)
                     const payload = {
