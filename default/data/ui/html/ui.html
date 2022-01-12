@@ -477,21 +477,18 @@
                         console.warn(e)
                         return Promise.reject({ cause: 'local', message: e.message });
                     })
-                    .then(resp => resp.json())
-                    .catch(e => {
-                        console.error("JSON PARSE",e,resp)
-                        return Promise.reject({ cause: 'parse', message: e.message });
-                    })
                     .then(resp => {
-                        console.log(resp.status)
-                        if (resp.status == 200){
-                            return resp.json()
-                        } else {
-                            return resp.json().then(e => {
+                        resp.json().catch(e => {
+                            console.error("JSON PARSE",e,resp)
+                            return Promise.reject({ cause: 'parse', message: e.message });
+                        }).then(data=>{
+                            if (resp.status != 200){
                                 console.warn(resp.status, e.error, e.message)
                                 return Promise.reject({ cause: resp.status, message: e.message, error: e.error})
-                            })
-                        }
+                            }
+                            return data
+                        })
+                        
                     }, reject => reject)
                 },
                 GetChild(object, keys, def=false) {
