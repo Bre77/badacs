@@ -479,7 +479,7 @@
                 },
                 NetOutRemove(value,stack,port){
                     console.log("NetOutRemove",port,value,stack)
-                    return this.Request('change',{'method':'POST', 'stack':stack, 'endpoint':`access/outbound-ports/${port}`, 'data':JSON.stringify({'subnets':[value]})}).then(()=>{
+                    return this.Request('change',{'method':'DELETE', 'stack':stack, 'endpoint':`access/outbound-ports/${port}`, 'data':JSON.stringify({'subnets':[value]})}).then(()=>{
                         
                         
                     },reject => {
