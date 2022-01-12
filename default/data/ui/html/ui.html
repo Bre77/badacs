@@ -399,7 +399,7 @@
                     },
                     template: `
                     <div>
-                        <ui-textbox placeholder="Add New" class="half-input" :value="value" @input="$emit('input', $event.target.value)"></ui-textbox>
+                        <ui-textbox placeholder="Add New" class="half-input" v-model="value" @input="$emit('input', $event.target.value)"></ui-textbox>
                         <ui-icon-button size="mini" type="secondary" icon="add" color="green" :loading="loading" @click="handler"></ui-icon-button>
                     </div>
                     `
