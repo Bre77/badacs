@@ -397,7 +397,7 @@
                         .then(resp => {
                             this.$set(this.netw_data[server],key,resp)
                         }, reject =>{
-                            this.$set(this.netw_data[server],key,null)
+                            this.$set(this.netw_data[server],key,{}})
                         })
                     }))
                     .then(()=>{
