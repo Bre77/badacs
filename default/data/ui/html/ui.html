@@ -386,7 +386,7 @@
                             })
                         }
                     },
-                    template: `<div class="removable">{{value}} <ui-icon-button size="mini" type="secondary" icon="backspace" color="red" :loading="loading" @click="handler"></ui-icon-button></div>`
+                    template: `<div class="removable">{{value}} <ui-icon-button size="mini" type="secondary" icon="backspace" color="red" :loading="loading" @click="handler" title="Remove"></ui-icon-button></div>`
                 },
                 'addable': {
                     data: function(){
@@ -410,8 +410,8 @@
                     },
                     template: `
                     <div class="addable">
-                        
-                        <ui-icon-button size="mini" type="secondary" icon="add" color="green" :loading="loading" @click="handler"><ui-textbox placeholder="Add New" class="half-input" v-model="value" :error="error"></ui-textbox></ui-icon-button>
+                        <ui-textbox placeholder="Add New" class="half-input" v-model="value" :error="error"></ui-textbox>
+                        <ui-icon-button size="mini" type="secondary" icon="add" color="green" :loading="loading" @click="handler" title="Add"></ui-icon-button>
                     </div>
                     `
                 },
