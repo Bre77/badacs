@@ -239,6 +239,8 @@
                 <ui-textbox label="Auth Token" v-model="addstack_auth" help="This must be an auth token for a user with the sc-admin role" :error="addstack_auth_error"></ui-textbox>
                 <ui-checkbox label="Shared" v-model="addstack_shared"></ui-checkbox>
                 <ui-button @click="AddStack()" :disabled="!Boolean(addstack_host && addstack_auth)">Submit</button>
+                <h3>Options</h3>
+                <ui-select :options="setting_columns_options" v-model="setting_columns">Columns to display</ui-select>
             </ui-tab>
             <ui-tab id="netin" class="grid" title="Inbound Allowlists" :style="{'grid-template-columns': `repeat(${this.setting_columns}, 1fr)`}" @input="TabChange(NetInGet)">
                 <template v-for="(c,i) in acs_columns.slice(0,setting_columns)">
@@ -362,6 +364,11 @@
             computed: {
                 acs_servers_options(){
                     return Object.keys(this.config)
+                },
+                setting_columns_options() {
+                    let start = 2
+                    let end = COLUMNS_MAX
+                    return [...Array(end-start+1).keys()].map(i => String(i + start));
                 },
             },
             methods: {
