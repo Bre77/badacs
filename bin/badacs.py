@@ -96,7 +96,7 @@ class req(PersistentServerConnectionApplication):
                     r = requests.get(f"https://admin.splunk.com/{form['stack']}/adminconfig/v2/{form['endpoint']}", headers={'Authorization':f"Bearer {token}"})
                     if r.status_code != 200:
                         return self.errorhandle(r.json().message,r.reason,r.status_code)
-                    return {'payload': '"OK"', 'status': 200}
+                    return {'payload': r.text, 'status': 200}
                 except Exception as e:
                     return self.errorhandle(f"ACS get failed for {form['stack']}/adminconfig/v2/{form['endpoint']}",e)
 
