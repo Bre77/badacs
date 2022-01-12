@@ -524,6 +524,7 @@
                             console.error("JSON PARSE",e,resp)
                             return Promise.reject({ cause: 'parse', message: e.message });
                         }).then(data=>{
+                            console.log(resp.status)
                             if (resp.status > 500){
                                 console.error(resp.status, data.error, data.message)
                                 return Promise.reject({ cause: resp.status, message: "There was a server error, please report this on GitHub", error: data.message})
