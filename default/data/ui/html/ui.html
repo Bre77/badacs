@@ -82,90 +82,14 @@
             /*grid-auto-rows: 2rem;*/
             font-family: Consolas, ui-monospace, monospace;
         }
-        #conf > .ui-select{
-            margin-bottom: 0;
-        }
         .tight {
             margin-bottom: 0;
         }
-        .conf {
-            height: 1.5rem;
-            line-height: 1.5rem;
-            vertical-align: middle;
-            overflow: hidden;
-            white-space: nowrap;
-        }
-        .conf-sub-image {
-            height: 18px;
-            /*line-height: inherit;
-            vertical-align: middle;*/
-        }
-        .conf-sub-text {
-            height: inherit;
-            line-height: inherit;
-            vertical-align: middle;
-        }
 
-        .conf-hide {
-            grid-column-start: 1;
-            /*height: 1.25rem;
-            width: 1.25rem;*/
-        }
-        .conf-file-left {
-            grid-column: 2;
-            font-style: italics;
-        }
-        .conf-app-left {
-            grid-column: 2;
-            font-weight: bold;
-            /*height: 36px;*/
-            /*line-height: 36px;*/
-            margin-top: 0.5em;
-            overflow: hidden;
-            white-space: nowrap;
-        }
-        .conf-app-col {
-            /*height: 36px;
-            line-height: 36px;*/
-        }
-        .conf-stanza-left {
-            grid-column: 2;
-            font-weight:bold;
-            color: #E00000;
-            overflow: hidden;
-            white-space: nowrap;
-        }
-        .conf-stanza-col {
-            line-height: 1.5rem;
-            vertical-align: middle;
-            overflow: hidden;
-            white-space: nowrap;
-        }
-        .conf-attr-left {
-            grid-column: 2;
-            height: 2rem;
-            line-height: 2rem;
-            color: #863B00;
-            text-align: right;
-            padding: 0 0.5rem;
-            margin: 0 -0.5rem;
-            overflow: hidden;
-            white-space: nowrap;
-        }
-        .conf-attr-left > .ui-checkbox__label-text {
-            float:right;
-        }
-        .conf-attr-col {
-            height: 2rem;
-            padding: 0 0.5rem;
-            margin: 0 -0.5rem;
-            overflow: hidden;
-            white-space: nowrap;
-        }
-        .conf-same {
+        .same {
             background-color: #d1ffd1;
         }
-        .conf-diff {
+        .diff {
             background-color: #ffd1d1;
         }
 
@@ -255,10 +179,10 @@
                 </template>
                 <template v-for="aspect in Object.keys(ACS_NETWORK_ENDPOINTS)">
                     <div class="colall"><b>{{aspect}}</b></div>
-                    <template v-for="(c,i) in acs_columns.slice(0,setting_columns)" v-if="netin_data.hasOwnProperty(c.server)">
-                            <removable v-if="netin_data[c.server].hasOwnProperty(aspect)" v-for="(entry,x) in netin_data[c.server][aspect]"  v-model="netin_data[c.server][aspect][x]" :action="NetInRemove" :args="[c.server,aspect]" :style="{'grid-column':i+1}"></removable>
-                            <addable :action="NetInAdd" :args="[c.server,aspect]" :style="{'grid-column':i+1}" placeholder="Add CIDR">
-                    </template>
+                    <div v-for="(c,i) in acs_columns.slice(0,setting_columns)" v-if="netin_data.hasOwnProperty(c.server)" :style="{'grid-column':i+1}">
+                            <removable v-if="netin_data[c.server].hasOwnProperty(aspect)" v-for="(entry,x) in netin_data[c.server][aspect]"  v-model="netin_data[c.server][aspect][x]" :action="NetInRemove" :args="[c.server,aspect]"></removable>
+                            <addable :action="NetInAdd" :args="[c.server,aspect]" placeholder="Add CIDR">
+                    </div>
                 </template>
             </ui-tab>
             <ui-tab id="netout" class="grid" title="Outbound Allowlists" :style="{'grid-template-columns': `repeat(${this.setting_columns}, 1fr)`}" @select="TabChange(NetOutGet)" disabled>
