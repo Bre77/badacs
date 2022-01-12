@@ -479,7 +479,7 @@
                     })
                     .then(resp => resp.json())
                     .catch(e => {
-                        console.warn("JSON PARSE",e,resp)
+                        console.error("JSON PARSE",e,resp)
                         return Promise.reject({ cause: 'parse', message: e.message });
                     })
                     .then(resp => {
