@@ -488,16 +488,14 @@
                     return this.Request('change',{'method':'DELETE', 'stack':stack, 'endpoint':ACS_NETWORK_ENDPOINTS[aspect], 'data':JSON.stringify({'subnets':[value]})}).then(()=>{
                         this.$delete(this.netin_data[stack][aspect],this.netin_data[stack][aspect].indexOf(value))
                     },reject => {
-                        console.error(reject)
                         return Promise.reject(reject.message)
                     })
                 },
                 NetInAdd(value,stack,aspect){
                     console.log("NetInAdd",value,stack,aspect)
                     return this.Request('change',{'method':'POST', 'stack':stack, 'endpoint':ACS_NETWORK_ENDPOINTS[aspect], 'data':JSON.stringify({'subnets':[value]})}).then(()=>{
-                        this.netin_data[stack].subnets.push(value)
+                        this.netin_data[stack][aspect].push(value)
                     },reject => {
-                        console.error("ABC",reject)
                         return Promise.reject(reject.message)
                     })
                 },
