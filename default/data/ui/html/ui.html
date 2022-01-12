@@ -385,7 +385,8 @@
                     data: function(){
                         return {
                             value: "",
-                            loading: false
+                            loading: false,
+                            error: ""
                         }
                     },
                     props: ['action','args'],
@@ -395,12 +396,14 @@
                             console.log(this.action)
                             this.action(this.value, ...this.args).then(()=>{
                                 this.loading = false
+                            },reject=>{
+                                this.error = reject
                             })
                         }
                     },
                     template: `
                     <div>
-                        <ui-textbox placeholder="Add New" class="half-input" v-model="value"></ui-textbox>
+                        <ui-textbox placeholder="Add New" class="half-input" v-model="value" :error="error"></ui-textbox>
                         <ui-icon-button size="mini" type="secondary" icon="add" color="green" :loading="loading" @click="handler"></ui-icon-button>
                     </div>
                     `
@@ -468,15 +471,19 @@
                 },
                 NetInRemove(value,stack,aspect){
                     console.log("NetInRemove",value,stack,aspect)
-                    /*return this.Request('change',{'method':'DELETE','stack':stack,'endpoint':ACS_NETWORK_ENDPOINTS[aspect]})*/
-                    return Promise.resolve()
+                    return this.Request('change',{'method':'DELETE','stack':stack,'endpoint':ACS_NETWORK_ENDPOINTS[aspect]}).then(()=>{
+                        this.$delete(this.netin_data[stack][aspect],this.netin_data[stack][aspect].indexOf(value))
+                    },reject => {
+                        console.error(reject)
+                    })
                 },
                 NetInAdd(value,stack,aspect){
                     console.log("NetInAdd",value,stack,aspect)
-                    /*return this.Request('change',{'method':'POST','stack':stack,'endpoint':ACS_NETWORK_ENDPOINTS[aspect]},'data':JSON.stringify({'subnets':[value]})).then(()=>{
+                    return this.Request('change',{'method':'POST','stack':stack,'endpoint':ACS_NETWORK_ENDPOINTS[aspect]},'data':JSON.stringify({'subnets':[value]})).then(()=>{
                         this.netin_data[c.server].subnets.push(value)
-                    })*/
-                    return Promise.resolve()
+                    },reject => {
+                        console.error(reject)
+                    })
                 },
                 //
                 // NETOUT Tab
