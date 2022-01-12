@@ -385,14 +385,14 @@
                     },reject=>{
                         console.log("REJECT",reject)
                         this.loading = false
-                        this.error = reject
+                        this.error = String(reject)
                     })
                 }
             },
             template: `
             <div class="addable">
                 <ui-textbox :placeholder="placeholder" class="half-input" v-model="value" :error="error" style="float:left;"></ui-textbox>
-                <ui-icon-button size="mini" type="secondary" icon="add" color="green" :loading="loading" @click="handler" title="Add" style="float:left;"></ui-icon-button> {{error}}
+                <ui-icon-button size="mini" type="secondary" icon="add" color="green" :loading="loading" @click="handler" title="Add" style="float:left;"></ui-icon-button> {{error}} {{Typeof(error)}}
             </div>
             `
         })
@@ -495,7 +495,7 @@
                 NetInAdd(value,stack,aspect){
                     console.log("NetInAdd",value,stack,aspect)
                     return this.Request('change',{'method':'POST', 'stack':stack, 'endpoint':ACS_NETWORK_ENDPOINTS[aspect], 'data':JSON.stringify({'subnets':[value]})}).then(()=>{
-                        this.netin_data[c.server].subnets.push(value)
+                        this.netin_data[stack].subnets.push(value)
                     },reject => {
                         console.error("ABC",reject)
                         return Promise.reject(reject.message)
