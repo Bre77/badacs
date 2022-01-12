@@ -380,10 +380,12 @@
                     </div>`
                 },
                 'addable': {
-                    data: () => ({
-                        value: "",
-                        loading: false
-                    }),
+                    data: function(){
+                        return {
+                            value: "",
+                            loading: false
+                        }
+                    },
                     props: ['action','args'],
                     methods: {
                         handler() {
