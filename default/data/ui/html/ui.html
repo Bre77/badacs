@@ -484,7 +484,7 @@
                         this.$delete(this.netin_data[stack][aspect],this.netin_data[stack][aspect].indexOf(value))
                     },reject => {
                         console.error(reject)
-                        return Promise.reject(reject.message)
+                        return Promise.reject(JSON.parse(reject).message)
                     })
                 },
                 NetInAdd(value,stack,aspect){
