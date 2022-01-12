@@ -486,7 +486,7 @@
                 },
                 NetOutAdd(name,port,subnets,stack){
                     console.log("NetOutAdd",name,port,subnets,stack)
-                    const subnets = subnets.split(',').map(s => s.trim())
+                    subnets = subnets.split(',').map(s => s.trim())
                     const payload = {
                         'outboundPorts': [{
                             'port': Number(port),
