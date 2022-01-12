@@ -195,7 +195,7 @@
                     <div :style="{'grid-column':i+1}">
                         <template v-for="(port,x) in netout_data[c.server]">
                             <div><b>{{port.port}}</b></div>
-                            <removable v-for="(subnet,y) in port.destinationRanges" :id="i+x" :value="subnet" :action="NetOutRemove" :args="[c.server,port.port,y]"></removable>
+                            <removable v-for="(subnet,y) in port.destinationRanges" :id="i+x" :value="subnet" :action="NetOutRemove" :args="[c.server,port.port,x,y]"></removable>
                         </template>
                         <addport :action="NetOutAdd" :stack="c.server"></addport>
                     </div>
@@ -477,10 +477,13 @@
                         c.loading -= 1
                     })
                 },
-                NetOutRemove(value,stack,port,index){
+                NetOutRemove(value,stack,port,x,y){
                     console.log("NetOutRemove",port,value,stack)
                     return this.Request('change',{'method':'DELETE', 'stack':stack, 'endpoint':`access/outbound-ports/${port}`, 'data':JSON.stringify({'subnets':[value]})}).then(()=>{
-                        this.$delete(this.netout_data[stack],index)
+                        this.$delete(this.netout_data[stack][x].subnets,u)
+                        if(this.netout_data[stack][x].subnets.length == 0){
+                            this.$delete(this.netout_data[stack],x)
+                        }
                     },reject => {
                         return Promise.reject(reject.message)
                     })
