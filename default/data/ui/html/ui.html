@@ -205,6 +205,15 @@
         .half-input {
             width: 50%;
         }
+        .addable {
+            display: inline-block;
+        }
+
+        .removeable {
+            display: inline-block;
+            line-height: 1.125rem;
+            vertical-align: middle;
+        }
 
     </style>
 </head>
@@ -377,7 +386,7 @@
                             })
                         }
                     },
-                    template: `<div>{{value}} <ui-icon-button size="mini" type="secondary" icon="backspace" color="red" :loading="loading" @click="handler"></ui-icon-button></div>`
+                    template: `<div class="removable">{{value}} <ui-icon-button size="mini" type="secondary" icon="backspace" color="red" :loading="loading" @click="handler"></ui-icon-button></div>`
                 },
                 'addable': {
                     data: function(){
@@ -400,7 +409,7 @@
                         }
                     },
                     template: `
-                    <div>
+                    <div class="addable">
                         <ui-textbox placeholder="Add New" class="half-input" v-model="value" :error="error"></ui-textbox>
                         <ui-icon-button size="mini" type="secondary" icon="add" color="green" :loading="loading" @click="handler"></ui-icon-button>
                     </div>
