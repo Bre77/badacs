@@ -466,7 +466,7 @@
                 },
                 NetInAdd(value,stack,aspect){
                     return this.Request('change',{'method':'POST','stack':stack,'endpoint':ACS_NETWORK_ENDPOINTS[aspect]},'data':JSON.stringify({'subnets':[value]})).then(()=>{
-                        this.netin_data[c.server].subnets
+                        this.netin_data[c.server].subnets.push(value)
                     })
                 },
                 //
