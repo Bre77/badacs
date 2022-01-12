@@ -483,8 +483,8 @@
                             return Promise.reject({ cause: 'parse', message: e.message });
                         }).then(data=>{
                             if (resp.status != 200){
-                                console.warn(resp.status, e.error, e.message)
-                                return Promise.reject({ cause: resp.status, message: e.message, error: e.error})
+                                console.warn(resp.status, data.error, data.message)
+                                return Promise.reject({ cause: resp.status, message: data.message, error: data.error})
                             }
                             return data
                         })
