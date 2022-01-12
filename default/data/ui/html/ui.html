@@ -392,7 +392,7 @@
                 //
                 NetInGet(c){
                     console.log("NetInGet",c)
-                    if(!this.config.hasOwnProperty(c.server)) return Promise.reject()
+                    if(!this.config.hasOwnProperty(c.server)) return Promise.resolve()
                     if(!this.netin_data.hasOwnProperty(c.server)){
                         this.$set(this.netin_data,c.server,{})
                     }
@@ -416,7 +416,7 @@
                 //
                 NetOutGet(c){
                     console.log("NetOutGet",c)
-                    if(!this.config.hasOwnProperty(c.server)) return Promise.reject()
+                    if(!this.config.hasOwnProperty(c.server)) return Promise.resolve()
                     if(!this.netout_data.hasOwnProperty(c.server)){
                         this.$set(this.netout_data,c.server,{})
                     }
@@ -438,7 +438,7 @@
                     // HEC also needs the index list, so grab that first
                     return this.IdxGet(c).then(()=>{
                         // Check this is valid
-                        if(!this.config.hasOwnProperty(c.server)) return Promise.reject()
+                        if(!this.config.hasOwnProperty(c.server)) return Promise.resolve()
                         if(this.hec_data.hasOwnProperty(c.server)) return Promise.resolve()
 
                         c.loading += 1
@@ -458,7 +458,7 @@
                 //
                 IdxGet(c){
                     console.log("IdxGet",c)
-                    if(!this.config.hasOwnProperty(c.server)) return Promise.reject()
+                    if(!this.config.hasOwnProperty(c.server)) return Promise.resolve()
                     if(this.idx_data.hasOwnProperty(c.server)) return Promise.resolve()
                     c.loading += 1
                     
