@@ -240,9 +240,9 @@
                 <ui-checkbox label="Shared" v-model="addstack_shared"></ui-checkbox>
                 <ui-button @click="AddStack()" :disabled="!Boolean(addstack_host && addstack_auth)">Submit</button>
             </ui-tab>
-            <ui-tab id="netin" class="grid" title="Inbound Allowlists" :style="{'grid-template-columns': `repeat(${this.setting_columns}, 1fr)`}" @select="TabChange(NETGet)">
+            <ui-tab id="netin" class="grid" title="Inbound Allowlists" :style="{'grid-template-columns': `repeat(${this.setting_columns}, 1fr)`}" @select="TabChange(NETINGet)">
                 <template v-for="(c,i) in acs_columns.slice(0,setting_columns)">
-                    <ui-select class="settings row1" :style="{'grid-column':i+1}" :options="acs_servers_options" :disabled="acs_servers_options.length == 0" placeholder="Please select a server" v-model="c.server" @change="NETGet(c)" label="Server" :invalid="!c.server"></ui-select>
+                    <ui-select class="settings row1" :style="{'grid-column':i+1}" :options="acs_servers_options" :disabled="acs_servers_options.length == 0" placeholder="Please select a server" v-model="c.server" @change="NETINGet(c)" label="Server" :invalid="!c.server"></ui-select>
                     <div class="loading" :style="{'grid-column':i+1}"><ui-progress-linear v-show="c.loading"></ui-progress-linear></div>
                 </template>
                 <template v-for="aspect in Object.keys(ACS_NETWORK_ENDPOINTS)">
@@ -261,9 +261,9 @@
                     </template>
                 </template>
             </ui-tab>
-            <ui-tab id="netout" class="grid" title="Outbound Allowlists" :style="{'grid-template-columns': `repeat(${this.setting_columns}, 1fr)`}" @select="TabChange(PORTGet)">
+            <ui-tab id="netout" class="grid" title="Outbound Allowlists" :style="{'grid-template-columns': `repeat(${this.setting_columns}, 1fr)`}" @select="TabChange(NETOUTGet)">
                 <template v-for="(c,i) in acs_columns.slice(0,setting_columns)">
-                    <ui-select class="settings row1" :style="{'grid-column':i+1}" :options="acs_servers_options" :disabled="acs_servers_options.length == 0" placeholder="Please select a server" v-model="c.server" @change="PORTGet(c)" label="Server" :invalid="!c.server"></ui-select>
+                    <ui-select class="settings row1" :style="{'grid-column':i+1}" :options="acs_servers_options" :disabled="acs_servers_options.length == 0" placeholder="Please select a server" v-model="c.server" @change="NETOUTGet(c)" label="Server" :invalid="!c.server"></ui-select>
                     <div class="loading" :style="{'grid-column':i+1}"><ui-progress-linear v-show="c.loading"></ui-progress-linear></div>
                 </template>
                 
@@ -390,8 +390,8 @@
                 //
                 // NETIN Tab
                 //
-                NETGet(c){
-                    console.log("NETGet",c)
+                NETINGet(c){
+                    console.log("NETINGet",c)
                     //if(!this.config.hasOwnProperty(c.server)) return Promise.resolve()
                     if(!this.netin_data.hasOwnProperty(c.server)){
                         this.$set(this.netin_data,c.server,{})
@@ -414,8 +414,8 @@
                 //
                 // NETOUT Tab
                 //
-                PORTGet(c){
-                    console.log("PORTGet",c)
+                NETOUTGet(c){
+                    console.log("NETOUTGet",c)
                     //if(!this.config.hasOwnProperty(c.server)) return Promise.resolve()
                     if(!this.netout_data.hasOwnProperty(c.server)){
                         this.$set(this.netout_data,c.server,{})
