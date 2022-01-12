@@ -80,7 +80,7 @@ class req(PersistentServerConnectionApplication):
                 return self.errorhandle("Missing 'stack' parameter")
             else:
                 try:
-                    _, resPasswords = simpleRequest(f"/servicesNS/nobody/{APP_NAME}/storage/passwords/{APP_NAME}%3A{form['stack']}%3A?output_mode=json&count=1", sessionKey=self.AUTHTOKEN, method='GET', raiseAllErrors=True)
+                    _, resPasswords = simpleRequest(f"/servicesNS/{self.USER}/{APP_NAME}/storage/passwords/{APP_NAME}%3A{form['stack']}%3A?output_mode=json&count=1", sessionKey=self.AUTHTOKEN, method='GET', raiseAllErrors=True)
                     token = json.loads(resPasswords)['entry'][0]['content']['clear_password']
                 except Exception as e:
                     return self.errorhandle(f"Couldn't retrieve auth token for {form['stack']}",e)
