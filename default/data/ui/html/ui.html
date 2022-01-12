@@ -321,7 +321,7 @@
         Vue.component('addport', {
             data: function(){
                 return {
-                    name: "",
+                    reason: "",
                     port: 0,
                     subnets: "",
                     loading: false,
@@ -333,9 +333,9 @@
                 handler() {
                     this.loading = true
                     this.error = ""
-                    this.action(this.name, this.port, this.subnets, this.stack).then(()=>{
+                    this.action(this.reason, this.port, this.subnets, this.stack).then(()=>{
                         this.loading = false
-                        this.value = ""
+                        this.reason = ""
                         this.port = 0
                         this.subnets = ""
                         this.error = ""
@@ -347,7 +347,7 @@
             },
             template: `
             <div class="addable">
-                <ui-textbox v-model="name" style="float:left;">Name</ui-textbox>
+                <ui-textbox v-model="reason" style="float:left;">Reason</ui-textbox>
                 <ui-textbox type="number" v-model:number="port" :min="1" :max="65535" style="float:left;">Port</ui-textbox>
                 <ui-textbox help="Comma seperated list of CIDR subnets" v-model="subnets" :error="error" style="float:left;">Subnets</ui-textbox>
                 <ui-icon-button size="mini" type="secondary" icon="add" color="green" :loading="loading" @click="handler" title="Add" style="float:left;"></ui-icon-button> {{error}}
@@ -485,15 +485,15 @@
                         return Promise.reject(reject.message)
                     })
                 },
-                NetOutAdd(name,port,subnets,stack){
-                    console.log("NetOutAdd",name,port,subnets,stack)
+                NetOutAdd(reason,port,subnets,stack){
+                    console.log("NetOutAdd",reason,port,subnets,stack)
                     subnets = subnets.split(',').map(s => s.trim())
                     const payload = {
                         'outboundPorts': [{
                             'port': Number(port),
                             'subnets': subnets
                         }],
-                        'reason': name
+                        'reason': reason
                     }
                     return this.Request('change',{'method':'POST', 'stack':stack, 'endpoint':'access/outbound-ports', 'data':JSON.stringify(payload)}).then(()=>{
                         /*if(!Array.isArray(this.netout_data[stack])){
@@ -501,7 +501,7 @@
                         }*/
                         this.netout_data[stack].push({
                             "destinationRanges": subnets,
-                            "name": name,
+                            "name": port,
                             "port": port
                         })
                     },reject => {
