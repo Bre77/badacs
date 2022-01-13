@@ -71,7 +71,7 @@ class req(PersistentServerConnectionApplication):
                     return self.errorhandle(f"Connecting to ACS failed",e)
                 try:
                     user_context = "nobody" if form['shared'] == "true" else self.USER
-                    _, resPassword = simpleRequest(f"/servicesNS/{user_context}/{APP_NAME}/storage/passwords", sessionKey=self.AUTHTOKEN, postargs={'name': form['stack'], 'password': form['token']}, method='POST', raiseAllErrors=True)
+                    _, resPassword = simpleRequest(f"/servicesNS/{user_context}/{APP_NAME}/storage/passwords", sessionKey=self.AUTHTOKEN, postargs={'realm': APP_NAME, 'name': form['stack'], 'password': form['token']}, method='POST', raiseAllErrors=True)
                     _, resConfig = simpleRequest(f"/servicesNS/{user_context}/{APP_NAME}/configs/conf-badacs", sessionKey=self.AUTHTOKEN, postargs={'name': form['stack']}, method='POST', raiseAllErrors=True)
                     return {'payload': 'true', 'status': 200}
                 except Exception as e:
