@@ -71,8 +71,8 @@ class req(PersistentServerConnectionApplication):
                     return self.errorhandle(f"Connecting to ACS failed",e)
                 try:
                     user_context = "nobody" if form['shared'] == "true" else self.USER
-                    _, resPassword = simpleRequest(f"/servicesNS/{user_context}/{APP_NAME}/storage/passwords", sessionKey=self.AUTHTOKEN, postargs={'realm': APP_NAME, 'name': form['stack'], 'password': form['token']}, method='POST', raiseAllErrors=True)
-                    _, resConfig = simpleRequest(f"/servicesNS/{user_context}/{APP_NAME}/configs/conf-badacs", sessionKey=self.AUTHTOKEN, postargs={'name': form['stack']}, method='POST', raiseAllErrors=True)
+                    _, resPassword = simpleRequest(f"servicesNS/{user_context}/{APP_NAME}/storage/passwords", sessionKey=self.AUTHTOKEN, postargs={'realm': APP_NAME, 'name': form['stack'], 'password': form['token']}, raiseAllErrors=True)
+                    _, resConfig = simpleRequest(f"servicesNS/{user_context}/{APP_NAME}/configs/conf-badacs", sessionKey=self.AUTHTOKEN, postargs={'name': form['stack']}, raiseAllErrors=True)
                     return {'payload': 'true', 'status': 200}
                 except Exception as e:
                     return self.errorhandle(f"Failed to save stack {form['stack']}",e)
@@ -81,7 +81,7 @@ class req(PersistentServerConnectionApplication):
                 return self.errorhandle("Missing 'stack' parameter")
             else:
                 try:
-                    _, resPasswords = simpleRequest(f"/servicesNS/{self.USER}/{APP_NAME}/storage/passwords/{APP_NAME}%3A{form['stack']}%3A?output_mode=json&count=1", sessionKey=self.AUTHTOKEN, method='GET', raiseAllErrors=True)
+                    _, resPasswords = simpleRequest(f"servicesNS/{self.USER}/{APP_NAME}/storage/passwords/{APP_NAME}%3A{form['stack']}%3A?output_mode=json&count=1", sessionKey=self.AUTHTOKEN, raiseAllErrors=True)
                     token = json.loads(resPasswords)['entry'][0]['content']['clear_password']
                 except Exception as e:
                     return self.errorhandle(f"Couldn't retrieve auth token for {form['stack']}",e)
