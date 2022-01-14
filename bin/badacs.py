@@ -69,13 +69,49 @@ class req(PersistentServerConnectionApplication):
                         return self.errorhandle(message,r.reason,r.status_code)
                 except Exception as e:
                     return self.errorhandle(f"Connecting to ACS failed",e)
+
+                user_context = "nobody" if form['shared'] == "true" else self.USER
+                sharing = "app" if form['shared'] == "true" else "user"
+                logger.info(f"Adding {form['stack']} for user {user_context}")
+
+                # Config
                 try:
-                    user_context = "nobody" if form['shared'] == "true" else self.USER
-                    _, resPassword = simpleRequest(f"servicesNS/{user_context}/{APP_NAME}/storage/passwords", sessionKey=self.AUTHTOKEN, postargs={'realm': APP_NAME, 'name': form['stack'], 'password': form['token']}, raiseAllErrors=True)
-                    _, resConfig = simpleRequest(f"servicesNS/{user_context}/{APP_NAME}/configs/conf-badacs", sessionKey=self.AUTHTOKEN, postargs={'name': form['stack']}, raiseAllErrors=True)
-                    return {'payload': 'true', 'status': 200}
+                    resp, _ = simpleRequest(f"{self.LOCAL_URI}/servicesNS/{user_context}/{APP_NAME}/configs/conf-{APP_NAME}", sessionKey=self.AUTHTOKEN, postargs={'name': form['stack']})
+                    if resp.status not in [200,201,409]:
+                        return self.errorhandle(f"Adding new stack '{form['stack']}' failed", resp.reason, resp.status)
                 except Exception as e:
-                    return self.errorhandle(f"Failed to save stack {form['stack']}",e)
+                    return self.errorhandle(f"POST request to {self.LOCAL_URI}/servicesNS/{user_context}/{APP_NAME}/configs/conf-{APP_NAME} failed", e)
+                            
+                
+                # Password Storage
+                try:
+                    resp, _ = simpleRequest(f"{self.LOCAL_URI}/servicesNS/{user_context}/{APP_NAME}/storage/passwords", sessionKey=self.AUTHTOKEN, postargs={'realm': APP_NAME, 'name': form['stack'], 'password': form['token']})
+                    if resp.status not in [200,201,409]:
+                        return self.errorhandle(f"Adding token for  '{form['']}' failed", resp.reason, resp.status) 
+                    if resp.status == 409:
+                        resp, _ = simpleRequest(f"{self.LOCAL_URI}/servicesNS/{self.USER}/{APP_NAME}/storage/passwords/{APP_NAME}%3A{form['']}%3A?output_mode=json&count=1", sessionKey=self.AUTHTOKEN, postargs={'password': form['token']})
+                        if resp.status not in [200,201]:
+                            return self.errorhandle(f"Updating token for  '{form['']}' failed", resp.reason, resp.status) 
+                except Exception as e:
+                    return self.errorhandle(f"POST request to {self.LOCAL_URI}/servicesNS/{user_context}/{APP_NAME}/storage/passwords failed", e)  
+                
+                # Password ACL
+                try:
+                    resp, _ = simpleRequest(f"{self.LOCAL_URI}/servicesNS/{self.USER}/{APP_NAME}/storage/passwords/{APP_NAME}%3A{form['']}%3A/acl?output_mode=json", sessionKey=self.AUTHTOKEN, postargs={'owner': self.USER, 'sharing': sharing})
+                    if resp.status not in [200,201]:
+                        return self.errorhandle(f"Setting ACL sharing to {sharing} for token of '{form['']}' failed", resp.reason, resp.status) 
+                except Exception as e:
+                    return self.errorhandle(f"POST request to {self.LOCAL_URI}/servicesNS/{self.USER}/{APP_NAME}/storage/passwords/{APP_NAME}%3A{form['']}%3A/acl failed", e)    
+
+                return {'payload': 'true', 'status': 200}
+
+                #try:
+                #    
+                #    _, resPassword = simpleRequest(f"servicesNS/{user_context}/{APP_NAME}/storage/passwords", sessionKey=self.AUTHTOKEN, postargs={'realm': APP_NAME, 'name': form['stack'], 'password': form['token']}, raiseAllErrors=True)
+                #    _, resConfig = simpleRequest(f"servicesNS/{user_context}/{APP_NAME}/configs/conf-badacs", sessionKey=self.AUTHTOKEN, postargs={'name': form['stack']}, raiseAllErrors=True)
+                #    return {'payload': 'true', 'status': 200}
+                #except Exception as e:
+                #    return self.errorhandle(f"Failed to save stack {form['stack']}",e)
 
             if "stack" not in form:
                 return self.errorhandle("Missing 'stack' parameter")
