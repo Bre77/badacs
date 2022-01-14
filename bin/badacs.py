@@ -84,7 +84,7 @@ class req(PersistentServerConnectionApplication):
                 
                 # Password Storage
                 try:
-                    resp, _ = simpleRequest(f"{self.LOCAL_URI}/servicesNS/{user_context}/{APP_NAME}/storage/passwords", sessionKey=self.AUTHTOKEN, postargs={'realm': APP_NAME, 'name': form['stack'], 'password': form['token']})
+                    resp, _ = simpleRequest(f"{self.LOCAL_URI}/servicesNS/{self.USER}/{APP_NAME}/storage/passwords", sessionKey=self.AUTHTOKEN, postargs={'realm': APP_NAME, 'name': form['stack'], 'password': form['token']})
                     if resp.status not in [200,201,409]:
                         return self.errorhandle(f"Adding token for stack '{form['stack']}' failed", resp.reason, resp.status) 
                     if resp.status == 409:
@@ -92,7 +92,7 @@ class req(PersistentServerConnectionApplication):
                         if resp.status not in [200,201]:
                             return self.errorhandle(f"Updating token for stack '{form['stack']}' failed", resp.reason, resp.status) 
                 except Exception as e:
-                    return self.errorhandle(f"POST request to {self.LOCAL_URI}/servicesNS/{user_context}/{APP_NAME}/storage/passwords failed", e)  
+                    return self.errorhandle(f"POST request to {self.LOCAL_URI}/servicesNS/{self.USER}/{APP_NAME}/storage/passwords failed", e)  
                 
                 # Password ACL
                 try:
