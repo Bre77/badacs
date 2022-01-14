@@ -76,31 +76,31 @@ class req(PersistentServerConnectionApplication):
 
                 # Config
                 try:
-                    resp, _ = simpleRequest(f"{self.LOCAL_URI}/servicesNS/{user_context}/{APP_NAME}/configs/conf-{APP_NAME}", sessionKey=self.AUTHTOKEN, postargs={'name': form['stack']})
+                    resp, _ = simpleRequest(f"servicesNS/{user_context}/{APP_NAME}/configs/conf-{APP_NAME}", sessionKey=self.AUTHTOKEN, postargs={'name': form['stack']})
                     if resp.status not in [200,201,409]:
                         return self.errorhandle(f"Adding new stack '{form['stack']}' failed", resp.reason, resp.status)
                 except Exception as e:
-                    return self.errorhandle(f"POST request to {self.LOCAL_URI}/servicesNS/{user_context}/{APP_NAME}/configs/conf-{APP_NAME} failed", e)
+                    return self.errorhandle(f"POST request to servicesNS/{user_context}/{APP_NAME}/configs/conf-{APP_NAME} failed", e)
                 
                 # Password Storage
                 try:
-                    resp, _ = simpleRequest(f"{self.LOCAL_URI}/servicesNS/{self.USER}/{APP_NAME}/storage/passwords", sessionKey=self.AUTHTOKEN, postargs={'realm': APP_NAME, 'name': form['stack'], 'password': form['token']})
+                    resp, _ = simpleRequest(f"servicesNS/{self.USER}/{APP_NAME}/storage/passwords", sessionKey=self.AUTHTOKEN, postargs={'realm': APP_NAME, 'name': form['stack'], 'password': form['token']})
                     if resp.status not in [200,201,409]:
                         return self.errorhandle(f"Adding token for stack '{form['stack']}' failed", resp.reason, resp.status) 
                     if resp.status == 409:
-                        resp, _ = simpleRequest(f"{self.LOCAL_URI}/servicesNS/{self.USER}/{APP_NAME}/storage/passwords/{APP_NAME}%3A{form['stack']}%3A?output_mode=json&count=1", sessionKey=self.AUTHTOKEN, postargs={'password': form['token']})
+                        resp, _ = simpleRequest(f"servicesNS/{self.USER}/{APP_NAME}/storage/passwords/{APP_NAME}%3A{form['stack']}%3A?output_mode=json&count=1", sessionKey=self.AUTHTOKEN, postargs={'password': form['token']})
                         if resp.status not in [200,201]:
                             return self.errorhandle(f"Updating token for stack '{form['stack']}' failed", resp.reason, resp.status) 
                 except Exception as e:
-                    return self.errorhandle(f"POST request to {self.LOCAL_URI}/servicesNS/{self.USER}/{APP_NAME}/storage/passwords failed", e)  
+                    return self.errorhandle(f"POST request to servicesNS/{self.USER}/{APP_NAME}/storage/passwords failed", e)  
                 
                 # Password ACL
                 try:
-                    resp, _ = simpleRequest(f"{self.LOCAL_URI}/servicesNS/{self.USER}/{APP_NAME}/storage/passwords/{APP_NAME}%3A{form['stack']}%3A/acl?output_mode=json", sessionKey=self.AUTHTOKEN, postargs={'owner': self.USER, 'sharing': sharing})
+                    resp, _ = simpleRequest(f"servicesNS/{self.USER}/{APP_NAME}/storage/passwords/{APP_NAME}%3A{form['stack']}%3A/acl?output_mode=json", sessionKey=self.AUTHTOKEN, postargs={'owner': self.USER, 'sharing': sharing})
                     if resp.status not in [200,201]:
                         return self.errorhandle(f"Setting ACL sharing to {sharing} for token of stack '{form['stack']}' failed", resp.reason, resp.status) 
                 except Exception as e:
-                    return self.errorhandle(f"POST request to {self.LOCAL_URI}/servicesNS/{self.USER}/{APP_NAME}/storage/passwords/{APP_NAME}%3A{form['stack']}%3A/acl failed", e)    
+                    return self.errorhandle(f"POST request to servicesNS/{self.USER}/{APP_NAME}/storage/passwords/{APP_NAME}%3A{form['stack']}%3A/acl failed", e)    
 
                 return {'payload': 'true', 'status': 200}
 
