@@ -594,7 +594,7 @@
                                 this.$refs.errorbar.createSnackbar({
                                     message: text || resp.reason
                                 });
-                                return Promise.reject({ cause: 'parse', message: text });
+                                return Promise.reject({ cause: 'parse', message: text || resp.reason });
                             })
                             
                         })
