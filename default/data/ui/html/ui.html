@@ -237,8 +237,8 @@
                     <ui-select class="settings tight row1" :style="{'grid-column':i+1}" :options="acs_servers_options" :disabled="acs_servers_options.length == 0" placeholder="Please select a server" v-model="c.server" @dropdown-close="IdxGet(c)" label="Stack" :invalid="!c.server"></ui-select>
                     <div class="loading" :style="{'grid-column':i+1}"><ui-progress-linear v-show="c.loading"></ui-progress-linear></div>
                 </template>
-                <template v-for="(c,i) in acs_columns.slice(0,setting_columns)" v-if="idx_data.hasOwnProperty(c.server)">
-                    <div v-for="idx in idx_data[c.server]" :style="{'grid-column':i+1}">
+                <template v-for="idx in idx_list">
+                    <div v-for="(c,i) of acs_columns.slice(0,setting_columns)" :style="{'grid-column':i+1}" v-if="idx_data[c.server][idx]">
                         <div><span class="material-icons" :title="idx.datatype">{{IDX_ICON[idx.datatype]}}</span><span class="name">&nbsp;{{idx.name}}</span> (Events:&nbsp;{{idx.totalEventCount}}&nbsp;Size:&nbsp;{{idx.totalRawSizeMB}}MB)</div>
                         <div class="flex">
                             <ui-textbox class="grow tight" type="number" :min="1" v-model.number="idx.searchableDays">Searchable Days</ui-textbox>
@@ -408,8 +408,11 @@
                     let end = COLUMNS_MAX
                     return [...Array(end-start+1).keys()].map(i => String(i + start));
                 },
+                active_columns(){
+                    return this.acs_columns.slice(0,setting_columns)
+                },
                 active_stacks(){
-                    return Array.from(new Set(this.acs_columns.slice(0,this.setting_columns).map(c => c.server).filter(c => c)))
+                    return Array.from(new Set(this.active_columns.map(c => c.server).filter(c => c)))
                 },
                 idx_list(){
                     return this.Aus(this.active_stacks.map(s => this.idx_data[s].map(i => i.name)).flat())
