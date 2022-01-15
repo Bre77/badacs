@@ -220,7 +220,7 @@
 
                 <template v-for="(c,i) in active_columns" v-if="hec_data.hasOwnProperty(c.server)">
                     <div v-for="hec in hec_data[c.server]" :style="{'grid-column':i+1}">
-                        <div>{{hec.token}}</div>
+                        <div class="name">{{hec.token}}</div>
                         <ui-textbox class="tight" v-model="hec.spec.name">Name</ui-textbox>
                         <ui-select class="tight" multiple :options="Options(hec.spec.allowedIndexes, Object.keys(idx_data[c.server] || {}))" v-model="hec.spec.allowedIndexes">Allowed Indexes</ui-select>
                         <ui-textbox class="tight" v-model="hec.spec.defaultHost">Host</ui-textbox>
