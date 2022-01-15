@@ -225,8 +225,8 @@
                     <div v-for="idx in idx_data[c.server]" :style="{'grid-column':i+1}">
                         <div><span class="material-icons" :title="idx.datatype">{{IDX_ICON[idx.datatype]}}</span> <span class="name">{{idx.name}}</span></div>
                         <div>Events: {{idx.totalEventCount}} Size: {{idx.totalRawSizeMB}}MB</div>
-                        <ui-textbox type="number" class="tight" v-model.number="idx.searchableDays">Searchable Days</ui-textbox>
-                        <ui-textbox type="number" class="tight" v-model.number="idx.maxDataSizeMB">Max Data Size (MB)</ui-textbox>
+                        <ui-textbox type="number" :min="1" class="tight" v-model.number="idx.searchableDays">Searchable Days</ui-textbox>
+                        <ui-textbox type="number" :min="10" class="tight" v-model.number="idx.maxDataSizeMB">Max Data Size (MB)</ui-textbox>
                     </div>
                 </template>
             </ui-tab>
