@@ -409,7 +409,7 @@
                     return [...Array(end-start+1).keys()].map(i => String(i + start));
                 },
                 active_columns(){
-                    return this.acs_columns.slice(0,setting_columns)
+                    return this.acs_columns.slice(0,this.setting_columns)
                 },
                 active_stacks(){
                     return Array.from(new Set(this.active_columns.map(c => c.server).filter(c => c)))
