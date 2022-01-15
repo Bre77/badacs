@@ -396,8 +396,6 @@
                 IDX_ICON: {'event':'article','metric':'analytics'},
                 ACS_NETWORK_ENDPOINTS: ACS_NETWORK_ENDPOINTS
             },
-            components: {
-            },
             computed: {
                 acs_servers_options(){
                     return Object.keys(this.config)
@@ -410,6 +408,12 @@
                     let end = COLUMNS_MAX
                     return [...Array(end-start+1).keys()].map(i => String(i + start));
                 },
+                active_servers(){
+                    return Array.from(new Set(this.acs_columns.splice(0,this.setting_columns).filter(c => s.server)))
+                },
+                idx_list(){
+                    
+                }
             },
             methods: {
                 //
