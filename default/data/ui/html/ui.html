@@ -553,7 +553,11 @@
                         
                         return this.Request('get',{'stack':c.server,'endpoint':'inputs/http-event-collectors'})
                         .then(resp => {
-                            this.$set(this.hec_data,c.server,resp['http-event-collectors'])
+                            const data = resp['http-event-collectors'].reduce((x,a)=>{
+                                x[a.token] = a.spec
+                                return x
+                            },{})
+                            this.$set(this.hec_data,c.server,data)
                             c.loading -= 1
                         }, reject => {
                             this.$set(this.hec_data,c.server,[])
