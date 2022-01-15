@@ -415,7 +415,7 @@
                     return Array.from(new Set(this.active_columns.map(c => c.server).filter(c => c)))
                 },
                 idx_list(){
-                    return this.Aus(this.active_stacks.map(s => (this.idx_data[s] || []).map(i => i.name)).flat())
+                    return this.Aus(this.active_stacks.map(s => Object.keys(this.idx_data[s])).flat())
                 }
             },
             methods: {
