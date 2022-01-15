@@ -238,7 +238,7 @@
                     <div class="loading" :style="{'grid-column':i+1}"><ui-progress-linear v-show="c.loading"></ui-progress-linear></div>
                 </template>
                 <template v-for="idx in idx_list">
-                    <div v-for="(c,i) of active_columns" :style="{'grid-column':i+1}" v-if="idx_data[c.server][idx]">
+                    <div v-for="(c,i) of active_columns" :style="{'grid-column':i+1}" v-if="idx_data[c.server] && idx_data[c.server][idx]">
                         <div><span class="material-icons" :title="idx.datatype">{{IDX_ICON[idx.datatype]}}</span><span class="name">&nbsp;{{idx.name}}</span> (Events:&nbsp;{{idx.totalEventCount}}&nbsp;Size:&nbsp;{{idx.totalRawSizeMB}}MB)</div>
                         <div class="flex">
                             <ui-textbox class="grow tight" type="number" :min="1" v-model.number="idx.searchableDays">Searchable Days</ui-textbox>
