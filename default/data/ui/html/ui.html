@@ -223,7 +223,7 @@
                 </template>
                 <template v-for="(c,i) in acs_columns.slice(0,setting_columns)" v-if="idx_data.hasOwnProperty(c.server)">
                     <div v-for="idx in idx_data[c.server]" :style="{'grid-column':i+1}">
-                        <div><span class="material-icons" :title="idx.datatype">{{IDX_ICON[idx.datatype]}}</span> <b>{{idx.name}}</b></div>
+                        <div><span class="material-icons" :title="idx.datatype">{{IDX_ICON[idx.datatype]}}</span> <span class="name">{{idx.name}}</span></div>
                         <div>Events: {{idx.totalEventCount}} Size: {{idx.totalRawSizeMB}}MB</div>
                         <ui-textbox class="tight" v-model="idx.searchableDays">Searchable Days</ui-textbox>
                         <ui-textbox class="tight" v-model="idx.maxDataSizeMB">Max Data Size (MB)</ui-textbox>
