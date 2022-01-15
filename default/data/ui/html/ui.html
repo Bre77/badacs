@@ -200,14 +200,14 @@
                 <template v-for="(c,i) in acs_columns.slice(0,setting_columns)" v-if="hec_data.hasOwnProperty(c.server)">
                     <div v-for="hec in hec_data[c.server]" :style="{'grid-column':i+1}">
                         <div>{{hec.token}}</div>
-                        <ui-textbox v-model="hec.spec.name">Name</ui-textbox>
-                        <ui-select multiple :options="Options(hec.spec.allowedIndexes, (idx_data[c.server] || []).map(i=>i.name))" v-model="hec.spec.allowedIndexes">Allowed Indexes</ui-select>
-                        <ui-textbox v-model="hec.spec.defaultHost">Host</ui-textbox>
-                        <ui-textbox v-model="hec.spec.defaultSource">Source</ui-textbox>
-                        <ui-textbox v-model="hec.spec.defaultSourcetype">Sourcetype</ui-textbox>
-                        <ui-textbox v-model="hec.spec.defaultIndex">Index</ui-textbox>
-                        <ui-checkbox v-model="hec.spec.useAck">Use ACK</ui-checkbox>
-                        <ui-checkbox v-model="hec.spec.disabled">Disabled</ui-checkbox>
+                        <ui-textbox class="tight" v-model="hec.spec.name">Name</ui-textbox>
+                        <ui-select class="tight" multiple :options="Options(hec.spec.allowedIndexes, (idx_data[c.server] || []).map(i=>i.name))" v-model="hec.spec.allowedIndexes">Allowed Indexes</ui-select>
+                        <ui-textbox class="tight" v-model="hec.spec.defaultHost">Host</ui-textbox>
+                        <ui-textbox class="tight" v-model="hec.spec.defaultSource">Source</ui-textbox>
+                        <ui-textbox class="tight" v-model="hec.spec.defaultSourcetype">Sourcetype</ui-textbox>
+                        <ui-textbox class="tight" v-model="hec.spec.defaultIndex">Index</ui-textbox>
+                        <ui-checkbox class="tight" v-model="hec.spec.useAck">Use ACK</ui-checkbox>
+                        <ui-checkbox class="tight" v-model="hec.spec.disabled">Disabled</ui-checkbox>
                     </div>
                 </template>
             </ui-tab>
@@ -218,9 +218,9 @@
                 </template>
                 <template v-for="(c,i) in acs_columns.slice(0,setting_columns)" v-if="idx_data.hasOwnProperty(c.server)">
                     <div v-for="idx in idx_data[c.server]" :style="{'grid-column':i+1}">
-                        {{idx.name}} {{idx.datatype}} {{idx.totalEventCount}} {{idx.totalRawSizeMB}}MB
-                        <ui-textbox v-model="idx.searchableDays">Searchable Days</ui-textbox>
-                        <ui-textbox v-model="idx.maxDataSizeMB">Max Data Size (MB)</ui-textbox>
+                        <div>{{idx.name}} {{idx.datatype}} {{idx.totalEventCount}} {{idx.totalRawSizeMB}}MB</div>
+                        <ui-textbox class="tight" v-model="idx.searchableDays">Searchable Days</ui-textbox>
+                        <ui-textbox class="tight" v-model="idx.maxDataSizeMB">Max Data Size (MB)</ui-textbox>
                     </div>
                 </template>
             </ui-tab>
@@ -370,6 +370,7 @@
                 hec_data: {},
                 idx_data: {},
                 app_data: {},
+                IDX_ICON: {'event':'article','metric':'analytics'},
                 ACS_NETWORK_ENDPOINTS: ACS_NETWORK_ENDPOINTS
             },
             components: {
