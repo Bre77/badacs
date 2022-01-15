@@ -598,8 +598,9 @@
                         if (resp.status == 200) return json
                         return json.then(data => {
                             console.warn(resp.status, data)
+                            
                             this.$refs.errorbar.createSnackbar({
-                                message: data.message
+                                message: data.error ? `${data.message}<br>${data.error}` : data.message
                             });
                             return Promise.reject({ cause: resp.status, message: data.message})
                         })
