@@ -558,7 +558,7 @@
                 },
                 Options(){
                     console.log(arguments)
-                    return new Set([...arguments].map(a=>a.sort(ISORT)).flat())
+                    return new Set([...arguments].flat())
                 },
                 Request(action,data={}) {
                     let form = new URLSearchParams()
