@@ -209,7 +209,7 @@
                     <div v-for="hec in hec_data[c.server]" :style="{'grid-column':i+1}">
                         <div>{{hec.token}}</div>
                         <ui-textbox v-model="hec.spec.name">Name</ui-textbox>
-                        <ui-select multiple :options="(idx_data[c.server] || []).map(i=>i.name)" v-model="hec.spec.allowedIndexes">Allowed Indexes</ui-select> {{hec.spec.allowedIndexes}}
+                        <ui-select multiple :options="Afus([...hec.spec.allowedIndexes, (idx_data[c.server] || []).map(i=>i.name)])" v-model="hec.spec.allowedIndexes">Allowed Indexes</ui-select> {{hec.spec.allowedIndexes}}
                         <ui-textbox v-model="hec.spec.defaultHost">Host</ui-textbox>
                         <ui-textbox v-model="hec.spec.defaultSource">Source</ui-textbox>
                         <ui-textbox v-model="hec.spec.defaultSourcetype">Sourcetype</ui-textbox>
