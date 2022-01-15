@@ -412,7 +412,7 @@
                     return Array.from(new Set(this.acs_columns.splice(0,this.setting_columns).filter(c => c.server)))
                 },
                 idx_list(){
-                    return this.Aus(this.active_servers.map(s=>this.idx_data[s].map(i=>i.name)).flat())
+                    return this.Aus(this.active_servers.map(s => this.idx_data[s].map(i => i.name)).flat())
                 }
             },
             methods: {
