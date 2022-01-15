@@ -209,7 +209,7 @@
                     <div v-for="hec in hec_data[c.server]" :style="{'grid-column':i+1}">
                         <div>{{hec.token}}</div>
                         <ui-textbox v-model="hec.spec.name">Name</ui-textbox>
-                        <ui-select multiple :options="(idx_data[c.server] || []).map(i=>i.name)" v-model="hec.spec.allowedIndexes">Allowed Indexes</ui-textbox>
+                        <ui-select multiple :options="(idx_data[c.server] || []).map(i=>i.name)" v-model="hec.spec.allowedIndexes">Allowed Indexes</ui-select>
                         <ui-textbox v-model="hec.spec.defaultHost">Host</ui-textbox>
                         <ui-textbox v-model="hec.spec.defaultSource">Source</ui-textbox>
                         <ui-textbox v-model="hec.spec.defaultSourcetype">Sourcetype</ui-textbox>
@@ -227,8 +227,9 @@
                 <template v-for="(c,i) in acs_columns.slice(0,setting_columns)" v-if="idx_data.hasOwnProperty(c.server)">
                     <div v-for="idx in idx_data[c.server]" :style="{'grid-column':i+1}">
                         {{idx}}
-                        searchableDays
-                        maxDataSizeMB
+                        {{idx.name}}
+                        <ui-textbox v-model="idx.searchableDays">Searchable Days</ui-textbox>
+                        <ui-textbox v-model="idx.maxDataSizeMB">Max Data Size (MB)</ui-textbox>
                     </div>
                 </template>
             </ui-tab>
