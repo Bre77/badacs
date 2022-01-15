@@ -592,7 +592,7 @@
                             console.warn(e)
                             return resp.text().then(text =>{
                                 this.$refs.errorbar.createSnackbar({
-                                    message: text
+                                    message: text || resp.reason
                                 });
                                 return Promise.reject({ cause: 'parse', message: text });
                             })
