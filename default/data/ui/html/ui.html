@@ -250,6 +250,7 @@
             'idm-api':'access/idm-api/ipallowlists',
             
         }
+        const ISORT = function(a,b){return a.localeCompare(b, undefined, {sensitivity: 'base'}}
         
         function imgError(image){
             console.log(image)
@@ -553,7 +554,7 @@
                     return Array.from(new Set(a.flat())).sort() // Remove .flat() eventually
                 },
                 Aus(a){ //Arrays Unique Sorted 
-                    return Array.from(new Set(a)).sort((a,b)=> a.localeCompare(b, undefined, {sensitivity: 'base'}))
+                    return Array.from(new Set(a)).sort(ISORT)
                 },
                 Options(){
                     const s = new Set()
