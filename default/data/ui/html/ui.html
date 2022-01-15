@@ -600,7 +600,7 @@
                             console.warn(resp.status, data)
                             
                             this.$refs.errorbar.createSnackbar({
-                                message: data.error ? `${data.message}<br>${data.error}` : data.message
+                                message: data.error ? `${data.message}. ${data.error}` : data.message
                             });
                             return Promise.reject({ cause: resp.status, message: data.message})
                         })
