@@ -561,6 +561,9 @@
                 Afus(a){ //Arrays Flat Unique Sorted 
                     return Array.from(new Set(a.flat())).sort() // Remove .flat() eventually
                 },
+                Aus(a){ //Arrays Unique Sorted 
+                    return Array.from(new Set(a).sort()
+                },
                 Request(action,data={}) {
                     let form = new URLSearchParams()
                     form.append('a', action)
