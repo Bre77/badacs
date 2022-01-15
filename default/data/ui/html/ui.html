@@ -408,11 +408,11 @@
                     let end = COLUMNS_MAX
                     return [...Array(end-start+1).keys()].map(i => String(i + start));
                 },
-                active_servers(){
+                active_stacks(){
                     return Array.from(new Set(this.acs_columns.slice(0,this.setting_columns).map(c => c.server).filter(c => c)))
                 },
                 idx_list(){
-                    return this.Aus(this.active_servers.map(s => this.idx_data[s].map(i => i.name)).flat())
+                    return this.Aus(this.active_stacks.map(s => this.idx_data[s].map(i => i.name)).flat())
                 }
             },
             methods: {
