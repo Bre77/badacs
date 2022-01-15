@@ -97,7 +97,7 @@ class req(PersistentServerConnectionApplication):
                 try:
                     resp, _ = simpleRequest(f"{self.LOCAL_URI}/servicesNS/{self.USER}/{APP_NAME}/storage/passwords/{APP_NAME}%3A{form['stack']}%3A/acl?output_mode=json", sessionKey=self.AUTHTOKEN, postargs={'owner': self.USER, 'sharing': sharing})
                     if resp.status not in [200,201]:
-                        return self.errorhandle(f"Setting ACL sharing to {sharing} for token of stack '{form['stack']}' failed", resp.reason, resp.status) 
+                        return self.errorhandle(f"Failed to set ACL sharing to {sharing} for token of stack '{form['stack']}'", resp.reason, resp.status) 
                 except Exception as e:
                     return self.errorhandle(f"POST request to {self.LOCAL_URI}/servicesNS/{self.USER}/{APP_NAME}/storage/passwords/{APP_NAME}%3A{form['stack']}%3A/acl failed", e)    
 
