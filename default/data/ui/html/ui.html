@@ -248,7 +248,7 @@
     <script src="{{SPLUNKWEB_URL_PREFIX}}/static/app/badacs/vue.js"></script>
     <script src="{{SPLUNKWEB_URL_PREFIX}}/static/app/badacs/keen-ui.js"></script>
     <script>
-        const REST_ENDPOINT = `/${window.$C.LOCALE}/splunkd/__raw/services/badadm?output_mode=json`
+        const REST_ENDPOINT = `/${window.$C.LOCALE}/splunkd/__raw/services/badacs?output_mode=json`
         const CSRF = /splunkweb_csrf_token_\d+=(\d+)/.exec(document.cookie)[1]
         const COLUMNS_MAX = 8
         const DELIM = "\0"
