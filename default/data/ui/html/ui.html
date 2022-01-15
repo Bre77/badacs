@@ -555,6 +555,13 @@
                 Aus(a){ //Arrays Unique Sorted 
                     return Array.from(new Set(a)).sort((a,b)=> a.localeCompare(b, undefined, {sensitivity: 'base'}))
                 },
+                Options(){
+                    const s = new Set()
+                    for(const a in arguments){
+                        a.forEach(x => s.add(x))
+                    }
+                    return s
+                },
                 Request(action,data={}) {
                     let form = new URLSearchParams()
                     form.append('a', action)
