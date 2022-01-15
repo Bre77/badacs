@@ -569,6 +569,51 @@
                         form.append(x, data[x])
                     }
                     console.log(form.toString())
+                    return fetch(REST_ENDPOINT, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded',
+                            'X-Requested-With': 'XMLHttpRequest',
+                            'X-Splunk-Form-Key': CSRF,
+                        },
+                        body: form
+                    })
+                    .catch(e => {
+                        console.warn(e)
+                        this.$refs.errorbar.createSnackbar({
+                            message: e.message
+                        });
+                        return Promise.reject({ cause: 'local', message: e.message });
+                    })
+                    .then(resp => {
+                        console.log(resp.status)
+                        json = resp.json().catch(e => {
+                            console.warn(e)
+                            return resp.text().then(text =>{
+                                this.$refs.errorbar.createSnackbar({
+                                    message: text
+                                });
+                                return Promise.reject({ cause: 'parse', message: text });
+                            })
+                            
+                        })
+                        if (resp.status == 200) return json
+                        return json.then(data => {
+                            console.warn(resp.status, data)
+                            this.$refs.errorbar.createSnackbar({
+                                message: data.message
+                            });
+                            return Promise.reject({ cause: resp.status, message: data.message})
+                        })
+                    })
+                },
+                /*Request(action,data={}) {
+                    let form = new URLSearchParams()
+                    form.append('a', action)
+                    for (x in data){
+                        form.append(x, data[x])
+                    }
+                    console.log(form.toString())
                     return fetch(`/${window.$C.LOCALE}/splunkd/__raw/services/badacs?output_mode=json`, {
                         method: 'POST',
                         headers: {
@@ -600,7 +645,7 @@
                         })
                         
                     })
-                },
+                },*/
                 GetChild(object, keys, def=false) {
                     for (const key of keys){
                         if (object.hasOwnProperty(key)){
