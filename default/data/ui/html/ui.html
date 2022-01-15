@@ -570,7 +570,7 @@
                     return this.Request('get',{'stack':c.server,'endpoint':'indexes'})
                     .then(resp => {
                         console.log("good",resp)
-                        const data = resp.reduce((a,x)=>{
+                        const data = resp.reduce((x,a)=>{
                             x[a.name] = a
                             return x
                         },{})
