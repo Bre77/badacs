@@ -219,8 +219,8 @@
                     <div class="loading" :style="{'grid-column':i+1}"><ui-progress-linear v-show="c.loading"></ui-progress-linear></div>
                 </template>
 
-                <template v-for="(c,i) in active_columns" v-if="hec_data.hasOwnProperty(c.server)">
-                    <div v-for="hec in hec_data[c.server]" :style="{'grid-column':i+1}">
+                <div v-for="(c,i) in active_columns" v-if="hec_data.hasOwnProperty(c.server)" :style="{'grid-column':i+1}">
+                    <div v-for="hec in hec_data[c.server]" >
                         <div class="name">{{hec.token}}</div>
                         <ui-textbox class="tight" v-model="hec.spec.name">Name</ui-textbox>
                         <ui-textbox class="tight" v-model="hec.spec.defaultHost">Host</ui-textbox>
@@ -233,7 +233,7 @@
                         <ui-checkbox class="tight" v-model="hec.spec.disabled">Disabled</ui-checkbox>
                         </div>
                     </div>
-                </template>
+                </div>
             </ui-tab>
             <ui-tab id="idx" class="grid" title="Indexes" :style="{'grid-template-columns': `repeat(${this.setting_columns}, 1fr)`}" @select="TabChange(IdxGet)">
                 <template v-for="(c,i) in active_columns">
