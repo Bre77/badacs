@@ -557,11 +557,8 @@
                     return Array.from(new Set(a)).sort(ISORT)
                 },
                 Options(){
-                    const s = new Set()
-                    for(const a in arguments){
-                        a.forEach(x => s.add(x))
-                    }
-                    return s
+                    console.log(arguments)
+                    return new Set([...arguments].map(a=>a.sort(ISORT)).flat())
                 },
                 Request(action,data={}) {
                     let form = new URLSearchParams()
