@@ -242,8 +242,8 @@
                         <div class="name"><span class="material-icons" :title="idx.datatype">{{IDX_ICON[idx.datatype]}}</span> {{idx.name}}</div>
                         <div>Events: {{idx.totalEventCount}} Size: {{idx.totalRawSizeMB}}MB</div>
                         <div class="flex">
-                            <ui-textbox type="number" :min="1" class="tight" v-model.number="idx.searchableDays">Searchable Days</ui-textbox>
-                            <ui-textbox type="number" :min="10" class="tight" v-model.number="idx.maxDataSizeMB">Max Data Size (MB)</ui-textbox>
+                            <ui-textbox class="grow tight" type="number" :min="1" v-model.number="idx.searchableDays">Searchable Days</ui-textbox>
+                            <ui-textbox class="grow tight" type="number" :min="10" v-model.number="idx.maxDataSizeMB">Max Data Size (MB)</ui-textbox>
                         </div>
                     </div>
                 </template>
