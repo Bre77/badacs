@@ -567,7 +567,7 @@
                 },
                 HecGetChange(c,token,key){
                     data = key ? {[key]: data[key]} : data
-                    this.Request('change',{'stack':c.server,'endpoint':`inputs/http-event-collectors/${token.name}`, data: JSON.stringify(token)})
+                    this.Request('change',{'stack':c.server,'endpoint':`inputs/http-event-collectors/${token.name}`, data: JSON.stringify(data)})
                 },
                 //
                 // Indexes
