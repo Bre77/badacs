@@ -565,6 +565,9 @@
                             c.loading -= 1
                         })
                 },
+                HecGetChange(c,token){
+                    this.Request('change',{'stack':c.server,'endpoint':`inputs/http-event-collectors/${token.name}`, data: JSON.stringify(token)})
+                },
                 //
                 // Indexes
                 //
