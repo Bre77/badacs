@@ -593,7 +593,7 @@
 
                 },
                 HecChange(stack,hec){
-                    this.Request('change',{'stack':stack, 'method':'PUT', 'endpoint':`inputs/http-event-collectors/${hec.name}`, data: JSON.stringify(hec)})
+                    return this.Request('change',{'stack':stack, 'method':'PUT', 'endpoint':`inputs/http-event-collectors/${hec.name}`, data: JSON.stringify(hec)})
                 },
                 //
                 // Indexes
@@ -620,8 +620,7 @@
                     })
                 },
                 IdxChange(stack,idx){
-                    console.log("IDX",idx)
-                    this.Request('change',{'stack':stack, 'method':'PATCH', 'endpoint':`indexes/${idx.name}`, data: JSON.stringify({'searchableDays': idx.searchableDays, 'maxDataSizeMB': idx.maxDataSizeMB})})
+                    return this.Request('change',{'stack':stack, 'method':'PATCH', 'endpoint':`indexes/${idx.name}`, data: JSON.stringify({'searchableDays': idx.searchableDays, 'maxDataSizeMB': idx.maxDataSizeMB})})
                 },
                 //
                 // Generic Helpers
