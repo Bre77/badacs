@@ -565,8 +565,7 @@
                             c.loading -= 1
                         })
                 },
-                HecChange(c,hec,test,key){
-                    console.log(test)
+                HecChange(c,hec,key){
                     const data = key ? {[key]: hec[key]} : token
                     this.Request('change',{'stack':c.server, 'method':'PUT', 'endpoint':`inputs/http-event-collectors/${hec.name}`, data: JSON.stringify(data)})
                 },
@@ -609,6 +608,9 @@
                 },
                 Options(){
                     return Array.from(new Set([...arguments].flat()))
+                },
+                Loading(e){
+                    console.log(e)
                 },
                 Request(action,data={}) {
                     let form = new URLSearchParams()
