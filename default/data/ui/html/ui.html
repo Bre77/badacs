@@ -663,11 +663,13 @@
                         console.log(resp.status)
                         json = resp.json().catch(e => {
                             console.warn(e)
-                            const message = resp.body || resp.reason
-                            this.$refs.errorbar.createSnackbar({
-                                message: message
-                            });
-                            return Promise.reject({ cause: 'parse', message: message });
+                            resp.text().then(text => {
+                                const message = text || resp.reason
+                                this.$refs.errorbar.createSnackbar({
+                                    message: message
+                                });
+                                return Promise.reject({ cause: 'parse', message: message });
+                            })
                         })
                         if (resp.status == 200) return json
                         return json.then(data => {
