@@ -229,7 +229,7 @@
                         <ui-textbox class="tight" v-model="hec.defaultSource" @blur="HecGetChange(c,hec,'defaultSource')">Source</ui-textbox>
                         <ui-textbox class="tight" v-model="hec.defaultSourcetype" @blur="HecGetChange(c,hec,'defaultSourcetype')">Sourcetype</ui-textbox>
                         <ui-textbox class="tight" v-model="hec.defaultIndex" @blur="HecGetChange(c,hec,'defaultIndex')">Index</ui-textbox>
-                        <ui-select class="tight" multiple :options="Options(hec.allowedIndexes, Object.keys(idx_data[c.server] || {}))" v-model="hec.allowedIndexes" @blur="HecGetChange(c,hec,'allowedIndexes')">Allowed Indexes</ui-select>
+                        <ui-select class="tight" has-search multiple :options="Options(hec.allowedIndexes, Object.keys(idx_data[c.server] || {}))" v-model="hec.allowedIndexes" @blur="HecGetChange(c,hec,'allowedIndexes')">Allowed Indexes</ui-select>
                         <div class="flex">
                             <ui-checkbox class="tight" v-model="hec.useAck" @blur="HecGetChange(c,hec,'useAck')">Use ACK</ui-checkbox>
                             <ui-checkbox class="tight" v-model="hec.disabled" @blur="HecGetChange(c,hec,'disabled')">Disabled</ui-checkbox>
@@ -632,13 +632,11 @@
                         console.log(resp.status)
                         json = resp.json().catch(e => {
                             console.warn(e)
-                            return resp.text().then(text =>{
-                                this.$refs.errorbar.createSnackbar({
-                                    message: text || resp.reason
-                                });
-                                return Promise.reject({ cause: 'parse', message: text || resp.reason });
-                            })
-                            
+                            const message = resp.body || resp.reason
+                            this.$refs.errorbar.createSnackbar({
+                                message: message
+                            });
+                            return Promise.reject({ cause: 'parse', message: message });
                         })
                         if (resp.status == 200) return json
                         return json.then(data => {
