@@ -231,7 +231,7 @@
                         <div class="flex">
                             <ui-checkbox class="tight" v-model="hec.useAck">Use ACK</ui-checkbox>
                             <ui-checkbox class="tight" v-model="hec.disabled">Disabled</ui-checkbox>
-                            <loadable :action="HecChange" :args="[c,hec]"></loadable>
+                            <saveable :action="HecChange" :args="[c,hec]"></saveable>
                         </div>
                     </div>
                 </div>
@@ -247,7 +247,7 @@
                         <div class="flex">
                             <ui-textbox class="grow tight" type="number" :min="1" v-model.number="idx_data[c.server][idx].searchableDays">Searchable Days</ui-textbox>
                             <ui-textbox class="grow tight" type="number" :min="10" v-model.number="idx_data[c.server][idx].maxDataSizeMB">Max Data Size (MB)</ui-textbox>
-                            <loadable :action="IdxChange" :args="[c,idx]"></loadable>
+                            <saveable :action="IdxChange" :args="[c,idx]"></saveable>
                         </div>
                     </div>
                 </template>
@@ -339,7 +339,7 @@
             `
         })
 
-        Vue.component('loadable', {
+        Vue.component('saveable', {
             data: function(){
                 return {
                     loading: false,
