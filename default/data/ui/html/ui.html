@@ -663,7 +663,7 @@
                         console.log(resp.status)
                         json = resp.json().catch(e => {
                             console.warn(e)
-                            resp.text().catch(()=>{
+                            return resp.text().catch(()=>{
                                 return resp.reason
                             }).then(text => {
                                 this.$refs.errorbar.createSnackbar({
