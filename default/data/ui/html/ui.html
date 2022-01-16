@@ -565,9 +565,8 @@
                             c.loading -= 1
                         })
                 },
-                HecChange(c,hec,event){
+                HecChange(c,hec){
                     //const data = key ? {[key]: hec[key]} : token
-                    console.log(event)
                     this.Request('change',{'stack':c.server, 'method':'PUT', 'endpoint':`inputs/http-event-collectors/${hec.name}`, data: JSON.stringify(hec)})
                 },
                 //
@@ -595,7 +594,6 @@
                     })
                 },
                 IdxChange(c,idx,key,event){
-                    console.log(event)
                     this.Request('change',{'stack':c.server, 'method':'PATCH', 'endpoint':`indexes/${idx.name}`, data: JSON.stringify({searchableDays: idx.searchableDays, maxDataSizeMB: idx.maxDataSizeMB})})
                 },
                 //
