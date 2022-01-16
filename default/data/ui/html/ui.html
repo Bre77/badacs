@@ -362,7 +362,7 @@
                     })
                 }
             },
-            template: `<ui-icon-button icon="save" :color="error ? 'red' : 'primary'" :loading="loading" @click="handler"></ui-icon-button>`
+            template: `<ui-icon-button icon="save" :color="error ? 'red' : 'primary'" :loading="loading" :tooltip="tooltip" @click="handler"></ui-icon-button>`
         })
 
         Vue.component('addport', {
