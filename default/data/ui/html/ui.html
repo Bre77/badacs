@@ -543,16 +543,15 @@
                 HecGet(c){
                     console.log("HecGet",c)
                     // HEC also needs the index list, so grab that first
-                    return this.IdxGet(c).then(()=>{
-                        // Check this is valid
+                    
                         if(!this.config.hasOwnProperty(c.server)) return Promise.resolve()
                         if(this.hec_data.hasOwnProperty(c.server)) return Promise.resolve()
 
                         c.loading += 1
                         
-                        return this.Request('get',{'stack':c.server,'endpoint':'inputs/http-event-collectors'})
+                        return Promise.all([this.IdxGet(c),this.Request('get',{'stack':c.server,'endpoint':'inputs/http-event-collectors'})])
                         .then(resp => {
-                            const data = resp['http-event-collectors'].reduce((x,a)=>{
+                            const data = resp[1]['http-event-collectors'].reduce((x,a)=>{
                                 x[a.token] = a.spec
                                 return x
                             },{})
@@ -562,7 +561,6 @@
                             this.$set(this.hec_data,c.server,[])
                             c.loading -= 1
                         })
-                    })
                 },
                 //
                 // Indexes
