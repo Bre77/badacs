@@ -229,7 +229,7 @@
                         <ui-textbox class="tight" v-model="hec.defaultSource">Source</ui-textbox>
                         <ui-textbox class="tight" v-model="hec.defaultSourcetype">Sourcetype</ui-textbox>
                         <ui-textbox class="tight" v-model="hec.defaultIndex">Index</ui-textbox>
-                        <ui-select class="tight" multiple :options="Options(hec.allowedIndexes, Object.keys(idx_data[c.server] || {}))" v-model="hec.spec.allowedIndexes">Allowed Indexes</ui-select>
+                        <ui-select class="tight" multiple :options="Options(hec.allowedIndexes, Object.keys(idx_data[c.server] || {}))" v-model="hec.allowedIndexes">Allowed Indexes</ui-select>
                         <div class="flex">
                         <ui-checkbox class="tight" v-model="hec.useAck">Use ACK</ui-checkbox>
                         <ui-checkbox class="tight" v-model="hec.disabled">Disabled</ui-checkbox>
