@@ -589,6 +589,9 @@
                             c.loading -= 1
                         })
                 },
+                HecNew(stack,hec){
+
+                },
                 HecChange(stack,hec){
                     this.Request('change',{'stack':stack, 'method':'PUT', 'endpoint':`inputs/http-event-collectors/${hec.name}`, data: JSON.stringify(hec)})
                 },
