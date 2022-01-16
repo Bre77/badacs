@@ -231,7 +231,7 @@
                         <div class="flex">
                             <ui-checkbox class="tight" v-model="hec.useAck">Use ACK</ui-checkbox>
                             <ui-checkbox class="tight" v-model="hec.disabled">Disabled</ui-checkbox>
-                            <ui-button color="primary" icon="save" @click="HecChange(c,hec,this);Loading">Save</ui-button>
+                            <ui-button color="primary" icon="save" @click="HecChange(c,hec,this)">Save</ui-button>
                         </div>
                     </div>
                 </div>
@@ -247,7 +247,7 @@
                         <div class="flex">
                             <ui-textbox class="grow tight" type="number" :min="1" v-model.number="idx_data[c.server][idx].searchableDays">Searchable Days</ui-textbox>
                             <ui-textbox class="grow tight" type="number" :min="10" v-model.number="idx_data[c.server][idx].maxDataSizeMB">Max Data Size (MB)</ui-textbox>
-                            <ui-icon-button icon="save" @click="IdxChange(c,idx)"></ui-icon-button>
+                            <ui-icon-button icon="save" @click="Loading"></ui-icon-button>
                         </div>
                     </div>
                 </template>
