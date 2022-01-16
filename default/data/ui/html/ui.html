@@ -381,7 +381,6 @@
             data: {
                 context: {},
                 config: {},
-                loading: {},
                 setting_columns_option: "2",
                 addstack_host: "",
                 addstack_host_error: "",
@@ -566,7 +565,7 @@
                             c.loading -= 1
                         })
                 },
-                HecChange(c,hec,id){
+                HecChange(c,hec){
                     this.Request('change',{'stack':c.server, 'method':'PUT', 'endpoint':`inputs/http-event-collectors/${hec.name}`, data: JSON.stringify(hec)})
                 },
                 //
@@ -593,7 +592,7 @@
                         c.loading -= 1
                     })
                 },
-                IdxChange(c,idx,key,event){
+                IdxChange(c,idx){
                     this.Request('change',{'stack':c.server, 'method':'PATCH', 'endpoint':`indexes/${idx.name}`, data: JSON.stringify({searchableDays: idx.searchableDays, maxDataSizeMB: idx.maxDataSizeMB})})
                 },
                 //
