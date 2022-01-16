@@ -549,9 +549,9 @@
 
                         c.loading += 1
                         
-                        return Promise.all([this.IdxGet(c),this.Request('get',{'stack':c.server,'endpoint':'inputs/http-event-collectors'})])
+                        return Promise.all([this.Request('get',{'stack':c.server,'endpoint':'inputs/http-event-collectors'}),this.IdxGet(c)])
                         .then(resp => {
-                            const data = resp[1]['http-event-collectors'].reduce((x,a)=>{
+                            const data = resp[0]['http-event-collectors'].reduce((x,a)=>{
                                 x[a.token] = a.spec
                                 return x
                             },{})
