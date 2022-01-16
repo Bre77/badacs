@@ -231,7 +231,7 @@
                         <div class="flex">
                             <ui-checkbox class="tight" v-model="hec.useAck">Use ACK</ui-checkbox>
                             <ui-checkbox class="tight" v-model="hec.disabled">Disabled</ui-checkbox>
-                            <ui-button color="primary" icon="save" @click="HecChange(c,hec,this)">Save</ui-button>
+                            <ui-button color="primary" icon="save" @click="HecChange(c,hec,$event)">Save</ui-button>
                         </div>
                     </div>
                 </div>
@@ -247,7 +247,7 @@
                         <div class="flex">
                             <ui-textbox class="grow tight" type="number" :min="1" v-model.number="idx_data[c.server][idx].searchableDays">Searchable Days</ui-textbox>
                             <ui-textbox class="grow tight" type="number" :min="10" v-model.number="idx_data[c.server][idx].maxDataSizeMB">Max Data Size (MB)</ui-textbox>
-                            <ui-icon-button icon="save" @click="Loading"></ui-icon-button>
+                            <ui-icon-button icon="save" @click="IdxChange(c,idx,$event)"></ui-icon-button>
                         </div>
                     </div>
                 </template>
@@ -565,9 +565,10 @@
                             c.loading -= 1
                         })
                 },
-                HecChange(c,hec,key){
-                    const data = key ? {[key]: hec[key]} : token
-                    this.Request('change',{'stack':c.server, 'method':'PUT', 'endpoint':`inputs/http-event-collectors/${hec.name}`, data: JSON.stringify(data)})
+                HecChange(c,hec,event){
+                    //const data = key ? {[key]: hec[key]} : token
+                    console.log(event)
+                    this.Request('change',{'stack':c.server, 'method':'PUT', 'endpoint':`inputs/http-event-collectors/${hec.name}`, data: JSON.stringify(hec)})
                 },
                 //
                 // Indexes
@@ -593,9 +594,9 @@
                         c.loading -= 1
                     })
                 },
-                IdxChange(c,idx,key){
-                    const data = key ? {[key]: idx[key]} : {searchableDays: idx.searchableDays, maxDataSizeMB: idx.maxDataSizeMB}
-                    this.Request('change',{'stack':c.server, 'method':'PATCH', 'endpoint':`indexes/${idx.name}`, data: JSON.stringify(data)})
+                IdxChange(c,idx,key,event){
+                    console.log(event)
+                    this.Request('change',{'stack':c.server, 'method':'PATCH', 'endpoint':`indexes/${idx.name}`, data: JSON.stringify({searchableDays: idx.searchableDays, maxDataSizeMB: idx.maxDataSizeMB})})
                 },
                 //
                 // Generic Helpers
