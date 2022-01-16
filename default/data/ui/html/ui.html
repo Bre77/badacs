@@ -218,7 +218,7 @@
             <ui-tab id="hec" class="grid" title="HEC" :style="{'grid-template-columns': `repeat(${this.setting_columns}, 1fr)`}" @select="TabChange(HecGet)">
                 <ui-select v-for="(c,i) in active_columns" class="settings tight row1" :style="{'grid-column':i+1}" :options="acs_servers_options" :disabled="acs_servers_options.length == 0" placeholder="Please select a server" v-model="c.server" @dropdown-close="HecGet(c)" label="Stack" :invalid="!c.server"></ui-select>
                 <div v-for="(c,i) in active_columns" class="loading row2" :style="{'grid-column':i+1}"><ui-progress-linear v-show="c.loading"></ui-progress-linear></div>
-                <div v-for="(c,i) in active_columns" class="row3" :style="{'grid-column':i+1}"><addable :action="console.log" :args="[c.server]" placeholder="New Token"></addable></div>
+                <div v-for="(c,i) in active_columns" class="row3" :style="{'grid-column':i+1}"><addable :action="Promise.resolve" :args="[c.server]" placeholder="New Token"></addable></div>
                 <div v-for="(c,i) in active_columns" class="row4" v-if="hec_data.hasOwnProperty(c.server)" :style="{'grid-column':i+1}">
                     <div v-for="hec,token in hec_data[c.server]" style="margin: .5rem 0">
                         <div class="name">{{token}}</div>
