@@ -595,7 +595,7 @@
                 },
                 IdxChange(c,idx,key){
                     const data = key ? {[key]: idx[key]} : {searchableDays: idx.searchableDays, maxDataSizeMB: idx.maxDataSizeMB}
-                    this.Request('change',{'stack':c.server, 'method':'PUT', 'endpoint':`PATCH/${idx.name}`, data: JSON.stringify(data)})
+                    this.Request('change',{'stack':c.server, 'method':'PATCH', 'endpoint':`indexes/${idx.name}`, data: JSON.stringify(data)})
                 },
                 //
                 // Generic Helpers
