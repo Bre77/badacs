@@ -618,7 +618,7 @@
                 },
                 IdxChange(stack,idx){
                     console.log("IDX",idx)
-                    this.Request('change',{'stack':stack, 'method':'PATCH', 'endpoint':`indexes/${idx.name}`, data: JSON.stringify({searchableDays: idx.searchableDays, maxDataSizeMB: idx.maxDataSizeMB})})
+                    this.Request('change',{'stack':stack, 'method':'PATCH', 'endpoint':`indexes/${idx.name}`, data: JSON.stringify({'searchableDays': idx.searchableDays, 'maxDataSizeMB': idx.maxDataSizeMB})})
                 },
                 //
                 // Generic Helpers
