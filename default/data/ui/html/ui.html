@@ -231,7 +231,7 @@
                         <div class="flex">
                             <ui-checkbox class="tight" v-model="hec.useAck">Use ACK</ui-checkbox>
                             <ui-checkbox class="tight" v-model="hec.disabled">Disabled</ui-checkbox>
-                            <ui-button color="primary" icon="save" @click="HecChange(c,hec,this)">Save</ui-button>
+                            <ui-button color="primary" icon="save" @click="HecChange(c,hec,this);Loading">Save</ui-button>
                         </div>
                     </div>
                 </div>
