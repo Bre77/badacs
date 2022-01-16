@@ -247,7 +247,7 @@
                         <div class="flex">
                             <ui-textbox class="grow tight" type="number" :min="1" v-model.number="idx_data[c.server][idx].searchableDays">Searchable Days</ui-textbox>
                             <ui-textbox class="grow tight" type="number" :min="10" v-model.number="idx_data[c.server][idx].maxDataSizeMB">Max Data Size (MB)</ui-textbox>
-                            <saveable :action="IdxChange" :args="[c.server,idx]"></saveable>
+                            <saveable :action="IdxChange" :args="[c.server,idx_data[c.server][idx]]"></saveable>
                         </div>
                     </div>
                 </template>
