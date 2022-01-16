@@ -339,6 +339,35 @@
             `
         })
 
+        Vue.component('loadable', {
+            data: function(){
+                return {
+                    loading: false,
+                    error: false
+                }
+            },
+            props: ['action','args'],
+            methods: {
+                handler() {
+                    this.loading = true
+                    this.error = false
+                    this.action(...this.args).then(()=>{
+                        this.loading = false
+                        this.error = false
+                    },reject=>{
+                        this.loading = false
+                        this.error = true
+                    })
+                }
+            },
+            template: `
+            <div class="addable">
+                <ui-textbox :placeholder="placeholder" v-model="value" :error="error" style="float:left;"></ui-textbox>
+                <ui-icon-button size="mini" type="secondary" icon="add" color="green" :loading="loading" @click="handler" title="Add" style="float:left;"></ui-icon-button> {{error}}
+            </div>
+            `
+        })
+
         Vue.component('addport', {
             data: function(){
                 return {
