@@ -343,7 +343,8 @@
             data: function(){
                 return {
                     loading: false,
-                    error: false
+                    error: false,
+                    tooltip: ""
                 }
             },
             props: ['action','args'],
@@ -351,12 +352,13 @@
                 handler() {
                     this.loading = true
                     this.error = false
+                    this.tooltip = ""
                     this.action(...this.args).then(()=>{
                         this.loading = false
-                        this.error = false
                     },reject=>{
                         this.loading = false
                         this.error = true
+                        this.tooltip = reject
                     })
                 }
             },
