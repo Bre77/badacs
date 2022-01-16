@@ -565,29 +565,26 @@
                 // HEC
                 //
                 HecGet(c){
-                    console.log("HecGet",c)
-                    // HEC also needs the index list, so grab that first
-                    
-                        if(!this.config.hasOwnProperty(c.server)) return Promise.resolve()
-                        if(this.hec_data.hasOwnProperty(c.server)) return Promise.resolve()
+                    if(!this.config.hasOwnProperty(c.server)) return Promise.resolve()
+                    if(this.hec_data.hasOwnProperty(c.server)) return Promise.resolve()
 
-                        c.loading += 1
-                        
-                        return Promise.all([
-                            this.Request('get',{'stack':c.server,'endpoint':'inputs/http-event-collectors'}),
-                            this.IdxGet(c)
-                        ])
-                        .then(resp => {
-                            const data = resp[0]['http-event-collectors'].reduce((x,a)=>{
-                                x[a.token] = a.spec
-                                return x
-                            },{})
-                            this.$set(this.hec_data,c.server,data)
-                            c.loading -= 1
-                        }, reject => {
-                            this.$set(this.hec_data,c.server,[])
-                            c.loading -= 1
-                        })
+                    c.loading += 1
+                    
+                    return Promise.all([ // HEC also needs the index list, so grab that first
+                        this.Request('get',{'stack':c.server,'endpoint':'inputs/http-event-collectors'}),
+                        this.IdxGet(c)
+                    ])
+                    .then(resp => {
+                        const data = resp[0]['http-event-collectors'].reduce((x,a)=>{
+                            x[a.token] = a.spec
+                            return x
+                        },{})
+                        this.$set(this.hec_data,c.server,data)
+                        c.loading -= 1
+                    }, reject => {
+                        this.$set(this.hec_data,c.server,[])
+                        c.loading -= 1
+                    })
                 },
                 HecNew(stack,hec){
 
