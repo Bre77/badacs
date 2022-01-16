@@ -566,7 +566,7 @@
                         })
                 },
                 HecGetChange(c,token,key){
-                    data = key ? {[key]: token[key]} : token
+                    const data = key ? {[key]: token[key]} : token
                     this.Request('change',{'stack':c.server,'endpoint':`inputs/http-event-collectors/${token.name}`, data: JSON.stringify(data)})
                 },
                 //
