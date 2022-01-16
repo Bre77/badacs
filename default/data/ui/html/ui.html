@@ -371,7 +371,7 @@
                 <ui-textbox class=".grow" v-model="reason">Reason</ui-textbox>
                 <ui-textbox class=".grow" type="number" v-model:number="port" :min="1" :max="65535">Port</ui-textbox>
                 <ui-textbox class=".grow" help="Comma seperated list of CIDR subnets" v-model="subnets" :error="error">Subnets</ui-textbox>
-                <ui-icon-button size="mini" type="secondary" icon="add" color="green" :loading="loading" @click="handler" title="Add"></ui-icon-button> {{error}}
+                <ui-icon-button size="mini" type="secondary" icon="add" color="green" :loading="loading" @click="handler" title="Add"></ui-icon-button>
             </div>
             `
         })
