@@ -169,7 +169,9 @@
                 <h3>Disclaimer</h3>
                 <p>This application is offered under the Splunk general terms for third party applications avaliable at <a href="https://www.splunk.com/en_us/legal/splunk-general-terms.html#third-party" target="_blank"/>https://www.splunk.com/en_us/legal/splunk-general-terms.html#third-party</a>.</p>
                 <h3>Current Stacks</h3>
-                    <p v-for="stack in Object.keys(config)"><a :href="`https://${stack}.splunkcloud.com`" target="_blank">{{stack}}</a></p>
+                <ul>
+                    <li v-for="stack in Object.keys(config)"><a :href="`https://${stack}.splunkcloud.com`" target="_blank">{{stack}}</a></li>
+                </ul>
                 </table>
                 <h3>Add Stack</h3>
                 <div class="flex">
