@@ -472,7 +472,13 @@
                 // Add Server Tab
                 //
                 AddStack(){
-                    this.Request('addstack',{stack:this.addstack_host,token:this.addstack_auth,shared:this.addstack_shared}).then(resp => {
+                    const values = {
+                        stack:this.addstack_host,
+                        token:this.addstack_auth,
+                        shared:this.addstack_shared,
+                        service:this.addstack_service_options[this.addstack_service]
+                    }
+                    this.Request('addstack',values).then(resp => {
                         console.log(resp)
                         this.addstack_host = ""
                         this.addstack_host_error = ""
