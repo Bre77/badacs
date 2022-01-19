@@ -60,7 +60,7 @@ class req(PersistentServerConnectionApplication):
 
             # Handle Staging
             if form['stack'].endswith('/staging'):
-                service = "stg.admin"
+                service = "staging.admin"
                 stack = form['stack'][0:-8]
             else:
                 service = "admin"
