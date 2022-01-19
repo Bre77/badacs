@@ -90,7 +90,7 @@ class req(PersistentServerConnectionApplication):
                 try:
                     resp, _ = simpleRequest(f"{self.LOCAL_URI}/servicesNS/{user_context}/{APP_NAME}/configs/conf-{APP_NAME}", sessionKey=self.AUTHTOKEN, postargs={'name': form['stack']})
                     if resp.status not in [200,201,409]:
-                        return self.errorhandle(f"Failed to add config for stack '{stack}'", resp.reason, resp.status)
+                        return self.errorhandle(f"Failed to add config for stack '{form['stack']}'", resp.reason, resp.status)
                 except Exception as e:
                     return self.errorhandle(f"POST request to {self.LOCAL_URI}/servicesNS/{user_context}/{APP_NAME}/configs/conf-{APP_NAME} failed", e)
                 
@@ -98,21 +98,21 @@ class req(PersistentServerConnectionApplication):
                 try:
                     resp, _ = simpleRequest(f"{self.LOCAL_URI}/servicesNS/{self.USER}/{APP_NAME}/storage/passwords", sessionKey=self.AUTHTOKEN, postargs={'realm': APP_NAME, 'name': form['stack'], 'password': form['token']})
                     if resp.status not in [200,201,409]:
-                        return self.errorhandle(f"Failed to add token for stack '{stack}'", resp.reason, resp.status) 
+                        return self.errorhandle(f"Failed to add token for stack '{form['stack']}'", resp.reason, resp.status) 
                     if resp.status == 409:
-                        resp, _ = simpleRequest(f"{self.LOCAL_URI}/servicesNS/{self.USER}/{APP_NAME}/storage/passwords/{APP_NAME}%3A{stack}%3A?output_mode=json&count=1", sessionKey=self.AUTHTOKEN, postargs={'password': form['token']})
+                        resp, _ = simpleRequest(f"{self.LOCAL_URI}/servicesNS/{self.USER}/{APP_NAME}/storage/passwords/{APP_NAME}%3A{form['stack']}%3A?output_mode=json&count=1", sessionKey=self.AUTHTOKEN, postargs={'password': form['token']})
                         if resp.status not in [200,201]:
-                            return self.errorhandle(f"Failed to update token for stack '{stack}'", resp.reason, resp.status) 
+                            return self.errorhandle(f"Failed to update token for stack '{form['stack']}'", resp.reason, resp.status) 
                 except Exception as e:
                     return self.errorhandle(f"POST request to {self.LOCAL_URI}/servicesNS/{self.USER}/{APP_NAME}/storage/passwords failed", e)  
                 
                 # Password ACL
                 try:
-                    resp, _ = simpleRequest(f"{self.LOCAL_URI}/servicesNS/{self.USER}/{APP_NAME}/storage/passwords/{APP_NAME}%3A{stack}%3A/acl?output_mode=json", sessionKey=self.AUTHTOKEN, postargs={'owner': self.USER, 'sharing': sharing})
+                    resp, _ = simpleRequest(f"{self.LOCAL_URI}/servicesNS/{self.USER}/{APP_NAME}/storage/passwords/{APP_NAME}%3A{form['stack']}%3A/acl?output_mode=json", sessionKey=self.AUTHTOKEN, postargs={'owner': self.USER, 'sharing': sharing})
                     if resp.status not in [200,201]:
-                        return self.errorhandle(f"Failed to set ACL sharing to {sharing} for token of stack '{stack}'", resp.reason, resp.status) 
+                        return self.errorhandle(f"Failed to set ACL sharing to {sharing} for token of stack '{form['stack']}'", resp.reason, resp.status) 
                 except Exception as e:
-                    return self.errorhandle(f"POST request to {self.LOCAL_URI}/servicesNS/{self.USER}/{APP_NAME}/storage/passwords/{APP_NAME}%3A{stack}%3A/acl failed", e)    
+                    return self.errorhandle(f"POST request to {self.LOCAL_URI}/servicesNS/{self.USER}/{APP_NAME}/storage/passwords/{APP_NAME}%3A{form['stack']}%3A/acl failed", e)    
 
                 return {'payload': 'true', 'status': 200}
 
@@ -126,12 +126,12 @@ class req(PersistentServerConnectionApplication):
 
             # Get Token
             try:
-                resp, resPasswords = simpleRequest(f"{self.LOCAL_URI}/servicesNS/{self.USER}/{APP_NAME}/storage/passwords/{APP_NAME}%3A{stack}%3A?output_mode=json&count=1", sessionKey=self.AUTHTOKEN)
+                resp, resPasswords = simpleRequest(f"{self.LOCAL_URI}/servicesNS/{self.USER}/{APP_NAME}/storage/passwords/{APP_NAME}%3A{form['stack']}%3A?output_mode=json&count=1", sessionKey=self.AUTHTOKEN)
                 if resp.status != 200:
-                    return self.errorhandle(f"Failed to get '{stack}' auth token", resp.reason, resp.status) 
+                    return self.errorhandle(f"Failed to get '{form['stack']}' auth token", resp.reason, resp.status) 
                 token = json.loads(resPasswords)['entry'][0]['content']['clear_password']
             except Exception as e:
-                return self.errorhandle(f"Exception getting {stack} auth token",e)
+                return self.errorhandle(f"Exception getting {form['stack']} auth token",e)
 
             # ACS Endpoints
             if form['a'] == "get":
