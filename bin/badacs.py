@@ -41,6 +41,8 @@ class req(PersistentServerConnectionApplication):
         if form['a'] == "crash":
             raise(Exception("Force Restart"))
 
+        SERVICE = form.get('service','admin')
+
         try:
             # Dump the args
             if form['a'] == "args":
@@ -58,7 +60,7 @@ class req(PersistentServerConnectionApplication):
                     if x not in form:
                         return self.errorhandle(f"Request to 'addstack' was missing '{x}' parameter")
                 try:
-                    r = requests.get(f"https://admin.splunk.com/{form['stack']}/adminconfig/v2/status", headers={'Authorization':f"Bearer {form['token']}"})
+                    r = requests.get(f"https://{SERVICE}.splunk.com/{form['stack']}/adminconfig/v2/status", headers={'Authorization':f"Bearer {form['token']}"})
                     if r.status_code != 200:
                         try:
                             data = r.json()
@@ -130,7 +132,7 @@ class req(PersistentServerConnectionApplication):
                         return self.errorhandle(f"Request to 'get' was missing '{x}' parameter")
                 
                 try:
-                    r = requests.get(f"https://admin.splunk.com/{form['stack']}/adminconfig/v2/{form['endpoint']}", headers={'Authorization':f"Bearer {token}"})
+                    r = requests.get(f"https://{SERVICE}.splunk.com/{form['stack']}/adminconfig/v2/{form['endpoint']}", headers={'Authorization':f"Bearer {token}"})
                     if r.status_code != 200:
                         return self.errorhandle(r.json()['messages'][0]['text'],r.reason,r.status_code)
                     return {'payload': r.text, 'status': 200}
@@ -143,7 +145,7 @@ class req(PersistentServerConnectionApplication):
                         return self.errorhandle(f"Request to 'change' was missing '{x}' parameter")
                 
                 try:
-                    r = requests.request(form['method'], f"https://admin.splunk.com/{form['stack']}/adminconfig/v2/{form['endpoint']}", headers={'Authorization':f"Bearer {token}", "Content-Type":"application/json"}, data=form['data'])
+                    r = requests.request(form['method'], f"https://{SERVICE}.splunk.com/{form['stack']}/adminconfig/v2/{form['endpoint']}", headers={'Authorization':f"Bearer {token}", "Content-Type":"application/json"}, data=form['data'])
                     if r.status_code not in [200,201,202]:
                         return self.errorhandle(r.json()['messages'][0]['text'],r.reason,r.status_code)
                     return {'payload': '"OK"', 'status': r.status_code}
