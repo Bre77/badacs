@@ -1,2 +1,2 @@
 [global]
-staging = <boolean>
+service = <string>
