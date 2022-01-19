@@ -59,9 +59,9 @@ class req(PersistentServerConnectionApplication):
                 return self.errorhandle("Missing 'stack' parameter")
 
             # Handle Staging
-            if form['stack'].endswith('/staging'):
+            if form['stack'].endswith('.stg'):
                 service = "staging.admin"
-                stack = form['stack'][0:-8]
+                stack = form['stack'][0:-4]
             else:
                 service = "admin"
                 stack = form['stack']
