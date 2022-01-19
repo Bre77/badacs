@@ -190,7 +190,8 @@
                 </div>
                 <div class="flex">
                     <ui-button @click="AddStack()" :disabled="!Boolean(addstack_host && addstack_auth)">Submit</ui-button>
-                    <ui-checkbox label="Shared" v-model="addstack_shared"></ui-checkbox>
+                    <ui-checkbox v-model="addstack_shared">Shared</ui-checkbox>
+                    <ui-select v-model="addstack_service" :options="Object.keys(addstack_service_options)" help="Dont change this unless you know what your doing">Service</ui-checkbox>
                 </div>
                 <h3>Options</h3>
                 <ui-select :options="setting_columns_options" v-model="setting_columns_option">Columns to display</ui-select>
@@ -412,6 +413,11 @@
             `
         })
 
+        const SERVICES = {
+                'Production': 'admin',
+                'Staging': 'staging.admin',
+            }
+
         const vue = new Vue({
             el: '#vue',
             data: {
@@ -422,6 +428,8 @@
                 addstack_host_error: "",
                 addstack_auth: "",
                 addstack_auth_error: "",
+                addstack_service_options: SERVICES,
+                addstack_service: Object.keys(SERVICES)[0],
                 addstack_shared: true,
                 valid_line: RegExp('^[^#=]+=[^=]+$'),
                 SPLUNKD_PATH: `/${window.$C.LOCALE}/splunkd/__raw/servicesNS/${window.$C.USERNAME}`,
