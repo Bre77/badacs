@@ -667,7 +667,7 @@
                         form.append(x, data[x])
                     }
 
-                    if(this.config[data.stack]){
+                    if(this.config[data.stack] && this.config[data.stack].service){
                         form.append('service', this.config[data.stack].service)
                     }
 
