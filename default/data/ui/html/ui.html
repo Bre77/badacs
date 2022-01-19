@@ -666,6 +666,11 @@
                     for (x in data){
                         form.append(x, data[x])
                     }
+
+                    if(this.config[data.stack]){
+                        form.append('service', this.config[data.stack].service)
+                    }
+
                     console.log(form.toString())
                     return fetch(REST_ENDPOINT, {
                         method: 'POST',
