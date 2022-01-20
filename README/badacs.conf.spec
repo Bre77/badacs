@@ -1,2 +1,2 @@
 @placement search-head
-[<server>]
+[<stack>]
