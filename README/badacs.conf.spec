@@ -1,3 +1,2 @@
 @placement search-head
-[global]
-service = <string>
+[<server>]
