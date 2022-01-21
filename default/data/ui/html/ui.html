@@ -230,8 +230,8 @@
                 <div v-for="(c,i) in active_columns" class="loading row2" :style="{'grid-column':i+1}"><ui-progress-linear v-show="c.loading"></ui-progress-linear></div>
                 <div v-for="(c,i) in active_columns" class="row3" :style="{'grid-column':i+1}"><addable :action="HecNew" :args="[c.server]" placeholder="New Token"></addable></div>
                 <div v-for="(c,i) in active_columns" class="row4" v-if="hec_data.hasOwnProperty(c.server)" :style="{'grid-column':i+1}">
-                    <div v-if="hec_data[c.server] == null && !c.loading"><
-                        p>HEC data wasnt avalible from ACS.</p>
+                    <div v-if="hec_data[c.server] == null && !c.loading">
+                        <p>HEC data wasnt avalible from ACS.</p>
                         <p>If this is a classic stack, HEC cannot be managed using ACS. <a href="https://docs.splunk.com/Documentation/SplunkCloud/8.2.2111/Config/ACSreqs#ACS_compatibility_matrix">(docs)</a></p>
                         <p>Splunk Cloud classic HEC will be avaliable in a future release of <a href="https://splunkbase.splunk.com/app/6277/">BADRCS</a></p>
                     </div>
