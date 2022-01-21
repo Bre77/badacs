@@ -425,6 +425,7 @@
         const vue = new Vue({
             el: '#vue',
             data: {
+                badrcm: null,
                 context: {},
                 config: {},
                 setting_columns_option: "2",
@@ -773,6 +774,15 @@
                 },reject =>{
                     console.error("FATAL ERROR - COULDNT GET CONFIG",reject)
                 })
+
+                fetch(`/${window.$C.LOCALE}/splunkd/__raw/services/badrcm`, {
+                        method: 'GET',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded',
+                            'X-Requested-With': 'XMLHttpRequest',
+                            'X-Splunk-Form-Key': CSRF,
+                        }
+                    })
             },
             watch: {
                 setting_columns_option(next,prev){
