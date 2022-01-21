@@ -261,8 +261,8 @@
                             <ui-textbox class="grow tight" type="number" :min="10" v-model.number="idx_data[c.server][idx].maxDataSizeMB">Max Data Size (MB)</ui-textbox>
                             <saveable :action="IdxChange" :args="[c.server,idx_data[c.server][idx]]"></saveable>
                         </div>
-                    </div>
-                </template>
+                    </template>
+                </div>
             </ui-tab>
         </ui-tabs>
         <ui-snackbar-container ref="errorbar" position="center"></ui-snackbar-container>
