@@ -776,13 +776,17 @@
                 })
 
                 fetch(`/${window.$C.LOCALE}/splunkd/__raw/services/badrcm`, {
-                        method: 'GET',
-                        headers: {
-                            'Content-Type': 'application/x-www-form-urlencoded',
-                            'X-Requested-With': 'XMLHttpRequest',
-                            'X-Splunk-Form-Key': CSRF,
-                        }
-                    })
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'X-Splunk-Form-Key': CSRF,
+                    }
+                }).catch(()=>{
+                    this.badrcm = false
+                }).then(()=>{
+                    this.badrcm = true
+                })
             },
             watch: {
                 setting_columns_option(next,prev){
