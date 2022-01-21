@@ -233,7 +233,7 @@
                     <div v-if="hec_data[c.server] == null && !c.loading">
                         <p>HEC data wasnt avalible from ACS.</p>
                         <p>If this is a classic stack, HEC cannot be managed using ACS. <a href="https://docs.splunk.com/Documentation/SplunkCloud/8.2.2111/Config/ACSreqs#ACS_compatibility_matrix">(docs)</a></p>
-                        <p>Splunk Cloud classic HEC will be avaliable in a future release of <a href="https://splunkbase.splunk.com/app/6277/">BADRCS</a></p>
+                        <p>Splunk Cloud classic HEC will be avaliable in a future release of <a :href="badrcm ? '/app/badrcm' : 'https://splunkbase.splunk.com/app/6277/'">BADRCS</a></p>
                     </div>
                     <div v-else v-for="hec,token in hec_data[c.server]" style="margin: .5rem 0;" class="two">
                         <div class="name" style="grid-column: 1 / 3;">{{token}}</div>
