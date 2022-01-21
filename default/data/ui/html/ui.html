@@ -230,7 +230,7 @@
                 <div v-for="(c,i) in active_columns" class="loading row2" :style="{'grid-column':i+1}"><ui-progress-linear v-show="c.loading"></ui-progress-linear></div>
                 <div v-for="(c,i) in active_columns" class="row3" :style="{'grid-column':i+1}"><addable :action="HecNew" :args="[c.server]" placeholder="New Token"></addable></div>
                 <div v-for="(c,i) in active_columns" class="row4" v-if="hec_data.hasOwnProperty(c.server)" :style="{'grid-column':i+1}">
-                    <div v-if="hec_data[c.server] == {} && !c.loading"><p>HEC data wasnt avalible from ACS.</p><p>If this is a classic stack, HEC cannot be managed using ACS. <a href="https://docs.splunk.com/Documentation/SplunkCloud/8.2.2111/Config/ACSreqs#ACS_compatibility_matrix">(docs)</a></p><p>Splunk Cloud classic HEC will be avaliable in a future release of <a href="https://splunkbase.splunk.com/app/6277/">BADRCS</a></p></div>
+                    <div v-if="hec_data[c.server] == null && !c.loading"><p>HEC data wasnt avalible from ACS.</p><p>If this is a classic stack, HEC cannot be managed using ACS. <a href="https://docs.splunk.com/Documentation/SplunkCloud/8.2.2111/Config/ACSreqs#ACS_compatibility_matrix">(docs)</a></p><p>Splunk Cloud classic HEC will be avaliable in a future release of <a href="https://splunkbase.splunk.com/app/6277/">BADRCS</a></p></div>
                     <div v-for="hec,token in hec_data[c.server]" style="margin: .5rem 0;" class="two">
                         <div class="name" style="grid-column: 1 / 3;">{{token}}</div>
                         <ui-textbox class="tight" v-model="hec.name">Name</ui-textbox>
@@ -253,7 +253,7 @@
                     <div class="loading" :style="{'grid-column':i+1}"><ui-progress-linear v-show="c.loading"></ui-progress-linear></div>
                 </template>
                 <div v-for="(c,i) of active_columns" v-if="idx_data[c.server]" :style="{'grid-column':i+1}">
-                    <div v-if="idx_data[c.server] == {} && !c.loading"><p>Index data wasnt avalible from ACS.</p><p>If this is a classic stack, Indexes cannot be managed using ACS. <a href="https://docs.splunk.com/Documentation/SplunkCloud/8.2.2111/Config/ACSreqs#ACS_compatibility_matrix">(docs)</a></p><p>Splunk Cloud classic index management will be avaliable in a future release of <a href="https://splunkbase.splunk.com/app/6277/">BADRCS</a></p></div>
+                    <div v-if="idx_data[c.server] == null && !c.loading"><p>Index data wasnt avalible from ACS.</p><p>If this is a classic stack, Indexes cannot be managed using ACS. <a href="https://docs.splunk.com/Documentation/SplunkCloud/8.2.2111/Config/ACSreqs#ACS_compatibility_matrix">(docs)</a></p><p>Splunk Cloud classic index management will be avaliable in a future release of <a href="https://splunkbase.splunk.com/app/6277/">BADRCS</a></p></div>
                     <template v-for="idx in idx_list" v-if="idx_data[c.server][idx]">
                         <div><span class="material-icons" :title="idx.datatype">{{IDX_ICON[idx_data[c.server][idx].datatype]}}</span><span class="name">&nbsp;{{idx}}</span> (Events:&nbsp;{{idx_data[c.server][idx].totalEventCount}}&nbsp;Size:&nbsp;{{idx_data[c.server][idx].totalRawSizeMB}}MB)</div>
                         <div class="flex">
@@ -601,7 +601,7 @@
                         this.$set(this.hec_data,c.server,data)
                         c.loading -= 1
                     }, reject => {
-                        this.$set(this.hec_data,c.server,{})
+                        this.$set(this.hec_data,c.server,null)
                         c.loading -= 1
                     })
                 },
@@ -631,7 +631,7 @@
                         c.loading -= 1
                     }, reject => {
                         console.log("bad",reject)
-                        this.$set(this.idx_data,c.server,{})
+                        this.$set(this.idx_data,c.server,null)
                         c.loading -= 1
                     })
                 },
