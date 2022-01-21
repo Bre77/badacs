@@ -631,7 +631,7 @@
                         c.loading -= 1
                     }, reject => {
                         console.log("bad",reject)
-                        this.$set(this.idx_data,c.server,[])
+                        this.$set(this.idx_data,c.server,{})
                         c.loading -= 1
                     })
                 },
