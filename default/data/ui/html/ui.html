@@ -775,10 +775,10 @@
                     console.error("FATAL ERROR - COULDNT GET CONFIG",reject)
                 })
 
+                // Check if BADRCM is installed
                 fetch(`/${window.$C.LOCALE}/splunkd/__raw/services/badrcm`, {
                     method: 'GET',
                     headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded',
                         'X-Requested-With': 'XMLHttpRequest',
                         'X-Splunk-Form-Key': CSRF,
                     }
