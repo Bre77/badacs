@@ -601,7 +601,7 @@
                         this.$set(this.hec_data,c.server,data)
                         c.loading -= 1
                     }, reject => {
-                        this.$set(this.hec_data,c.server,[])
+                        this.$set(this.hec_data,c.server,{})
                         c.loading -= 1
                     })
                 },
