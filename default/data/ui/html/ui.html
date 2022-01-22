@@ -252,10 +252,8 @@
                 </div>
             </ui-tab>
             <ui-tab id="idx" class="grid" title="Indexes" :style="{'grid-template-columns': `repeat(${this.setting_columns}, 1fr)`}" @select="TabChange(IdxGet)">
-                <template v-for="(c,i) in active_columns">
-                    <ui-select class="settings tight row1" :style="{'grid-column':i+1}" :options="acs_servers_options" :disabled="acs_servers_options.length == 0" placeholder="Please select a server" v-model="c.server" @dropdown-close="IdxGet(c)" label="Stack" :invalid="!c.server"></ui-select>
-                    <div class="loading" :style="{'grid-column':i+1}"><ui-progress-linear v-show="c.loading"></ui-progress-linear></div>
-                </template>
+                <ui-select v-for="(c,i) in active_columns" class="settings tight row1" :style="{'grid-column':i+1}" :options="acs_servers_options" :disabled="acs_servers_options.length == 0" placeholder="Please select a server" v-model="c.server" @dropdown-close="IdxGet(c)" label="Stack" :invalid="!c.server"></ui-select>
+                <div v-for="(c,i) in active_columns" class="loading" :style="{'grid-column':i+1}"><ui-progress-linear v-show="c.loading"></ui-progress-linear></div>
                 <div v-for="(c,i) of active_columns" v-if="idx_data[c.server]" :style="{'grid-column':i+1}">
                     <div v-if="idx_data[c.server] == null && !c.loading">
                         <p>Index data wasnt avalible from ACS.</p>
