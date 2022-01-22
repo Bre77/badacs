@@ -232,7 +232,7 @@
                     <div v-if="hec_data[c.server] == null">
                         <p>HEC data wasnt avalible from ACS.</p>
                         <p>If this is a classic stack, HEC cannot be managed using ACS. <a href="https://docs.splunk.com/Documentation/SplunkCloud/8.2.2111/Config/ACSreqs#ACS_compatibility_matrix">(docs)</a></p>
-                        <p>Splunk Cloud classic HEC will be avaliable in a future release of <a :href="badrcm ? '/app/badrcm' : 'https://splunkbase.splunk.com/app/6277/'">BADRCS</a></p>
+                        <p>Splunk Cloud classic HEC will be avaliable in a future release of <a :href="badrcm ? '/app/badrcm' : 'https://splunkbase.splunk.com/app/6277/'">BADRCS</a>.</p>
                     </div>
                     <template v-else>
                         <addable :action="HecNew" :args="[c.server]" placeholder="New Token"></addable>
@@ -260,7 +260,7 @@
                     <div v-if="idx_data[c.server] == null">
                         <p>Index data wasnt avalible from ACS.</p>
                         <p>If this is a classic stack, Indexes cannot be managed using ACS. <a href="https://docs.splunk.com/Documentation/SplunkCloud/8.2.2111/Config/ACSreqs#ACS_compatibility_matrix">(docs)</a></p>
-                        <p>Splunk Cloud classic index management will be avaliable in a future release of <a :href="badrcm ? '/app/badrcm' : 'https://splunkbase.splunk.com/app/6277/'">BADRCS</a></p>
+                        <p>Splunk Cloud classic index management will be avaliable in a future release of <a :href="badrcm ? '/app/badrcm' : 'https://splunkbase.splunk.com/app/6277/'">BADRCS</a>.</p>
                     </div>
                     <template v-else v-for="idx in idx_list" v-if="idx_data[c.server][idx]">
                         <div><span class="material-icons" :title="idx.datatype">{{IDX_ICON[idx_data[c.server][idx].datatype]}}</span><span class="name">&nbsp;{{idx}}</span> (Events:&nbsp;{{idx_data[c.server][idx].totalEventCount}}&nbsp;Size:&nbsp;{{idx_data[c.server][idx].totalRawSizeMB}}MB)</div>
