@@ -1,45 +1,51 @@
 {
-  "schemaVersion": "1.0.0",
+  "schemaVersion": "2.0.0",
   "info": {
-    "title": "BADACS",
+    "title": "TA_iapply",
     "id": {
       "group": null,
-      "name": "badacs",
-      "version": "0.2.0"
+      "name": "TA_iapply",
+      "version": "1.0.1"
     },
     "author": [
       {
-        "name": "Brett Adams",
-        "email": "brett.whynot@gmail.com",
-        "company": null
+        "name": "ADHA",
+        "email": "none@none.com",
+        "company": "ADHA"
       }
     ],
     "releaseDate": null,
-    "description": "Brett Adams' Dangerous Admin Configuration Service",
+    "description": "Splunk TA for iapply",
     "classification": {
       "intendedAudience": null,
-      "categories": [],
-      "developmentStatus": null
+      "categories": [
+        "Security, Fraud & Compliance"
+      ],
+      "developmentStatus": "Production/Stable"
     },
     "commonInformationModels": null,
-    "license": {
-      "name": null,
-      "text": null,
-      "uri": null
-    },
     "privacyPolicy": {
       "name": null,
       "text": null,
       "uri": null
     },
     "releaseNotes": {
-      "name": null,
-      "text": "./README.md",
-      "uri": null
+      "name": "TA_iapply",
+      "text": null,
+      "uri": "https://none.com"
     }
   },
+  "dependencies": null,
   "tasks": null,
   "inputGroups": null,
   "incompatibleApps": null,
-  "platformRequirements": null
+  "supportedDeployments": [
+    "_standalone",
+    "_distributed",
+    "_search_head_clustering"
+  ],
+  "targetWorkloads": [
+    "_search_heads",
+    "_forwarders"
+  ]
 }
