@@ -2,4 +2,4 @@
 # Application-level permissions
 
 []
-access = read : [ * ], write : [ admin, sc_admin ]
+access = read : [ admin, sc_admin ], write : [ admin, sc_admin ]
