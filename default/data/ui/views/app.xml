@@ -1,0 +1,4 @@
+<?xml version="1.0"?>
+<view template="badacs:/templates/app.html" type="html">
+	<label>Brett Adams' Dangerous Admin Configuration Service</label>
+</view>
