@@ -322,7 +322,7 @@ const vue = new Vue({
         HecAdd(token,stack){
             const payload = {
                 'name': `New Token created by BADACS (${Math.floor(Math.random() * 1000)})`,
-                'token': token
+                'token': token == "" ? null : token
             }
             return this.Request('change',{'stack':stack, 'method':'POST', 'endpoint':'inputs/http-event-collectors', 'data':JSON.stringify(payload)}).then((resp)=>{
                 console.log(data)
