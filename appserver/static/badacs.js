@@ -360,10 +360,8 @@ const vue = new Vue({
         },
         IdxAdd(name,stack){
             const payload = {
-                'spec':{
-                    'name': `Create by BADACS ${Math.floor(Math.random() * 1000)}`
-                },
-                'token': token
+                'name': name,
+                'datatype': 'event'
             }
             return this.Request('change',{'stack':stack, 'method':'POST', 'endpoint':'inputs/http-event-collectors', 'data':JSON.stringify(payload)}).then((resp)=>{
                 console.log(data)
