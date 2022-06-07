@@ -360,7 +360,7 @@ const vue = new Vue({
                 c.loading -= 1
             })
         },
-        IdxAdd(token,stack){
+        IdxAdd(name,stack){
             const payload = {
                 'spec':{
                     'name': `Create by BADACS ${Math.floor(Math.random() * 1000)}`
