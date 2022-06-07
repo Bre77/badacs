@@ -425,7 +425,7 @@ const vue = new Vue({
                         return Promise.reject({ cause: 'parse', message: text });
                     })
                 })
-                if (resp.status == 200) return json
+                if (resp.status <= 299) return json
                 return json.then(data => {
                     console.warn(resp.status, data)
                     
