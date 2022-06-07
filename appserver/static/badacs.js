@@ -319,14 +319,14 @@ const vue = new Vue({
                 c.loading -= 1
             })
         },
-        HecAdd(stack,token){
+        HecAdd(token,stack){
             const payload = {
                 'spec':{
                     'name': `Create by BADACS ${Math.floor(Math.random() * 1000)}`
                 },
                 'token': token
             }
-            return this.Request('change',{'method':'POST', 'stack':stack, 'endpoint':'inputs/http-event-collectors', 'data':JSON.stringify(payload)}).then((resp)=>{
+            return this.Request('change',{'stack':stack, 'method':'POST', 'endpoint':'inputs/http-event-collectors', 'data':JSON.stringify(payload)}).then((resp)=>{
                 console.log(data)
                 this.$set(this.hec_data[stack],token,resp["http-event-collector"]["spec"])
             },reject => {
