@@ -151,6 +151,8 @@ const vue = new Vue({
         addhec_name: "",
         addhec_token: "",
         idx_data: {},
+        addidx_name: "",
+        addidx_type: "event",
         app_data: {},
         IDX_ICON: {'event':'article','metric':'analytics'},
         ACS_NETWORK_ENDPOINTS: ACS_NETWORK_ENDPOINTS
