@@ -148,6 +148,8 @@ const vue = new Vue({
         netin_data: {},
         netout_data: {},
         hec_data: {},
+        addhec_name: "",
+        addhec_token: "",
         idx_data: {},
         app_data: {},
         IDX_ICON: {'event':'article','metric':'analytics'},
