@@ -358,10 +358,10 @@ const vue = new Vue({
                 c.loading -= 1
             })
         },
-        IdxAdd(name,stack){
+        IdxAdd(name,stack,type){
             const payload = {
                 'name': name,
-                'datatype': 'event'
+                'datatype': type
             }
             return this.Request('change',{'stack':stack, 'method':'POST', 'endpoint':'indexes', 'data':JSON.stringify(payload)}).then((resp)=>{
                 console.log(resp)
