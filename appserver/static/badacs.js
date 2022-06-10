@@ -42,7 +42,7 @@ Vue.component('addable', {
             error: ""
         }
     },
-    props: ['action','args','placeholder'],
+    props: ['action','args','placeholder','label'],
     methods: {
         handler() {
             this.loading = true
@@ -59,7 +59,7 @@ Vue.component('addable', {
     },
     template: `
     <div class="addable">
-        <ui-textbox :placeholder="placeholder" v-model="value" :error="error" style="float:left;"></ui-textbox>
+        <ui-textbox :placeholder="placeholder" :label="label" v-model="value" :error="error" style="float:left;"></ui-textbox>
         <ui-icon-button size="mini" type="secondary" icon="add" color="green" :loading="loading" @click="handler" title="Add" style="float:left;"></ui-icon-button> {{error}}
     </div>
     `
