@@ -264,7 +264,7 @@
                         <p>Splunk Cloud classic index management will be avaliable in a future release of <a :href="badrcm ? '/app/badrcm' : 'https://splunkbase.splunk.com/app/6277/'">BADRCS</a>.</p>
                     </div>
                     <template v-else-if="idx_data[c.server]">
-                        <div>Add Event Index: <addable :action="IdxAdd" label="Event" :args="[c.server,'event']" placeholder="Index Name"></addable> Add Metric Index: <addable :action="IdxAdd" label="Metric" :args="[c.server,'metric']" placeholder="Index Name"></addable></div>
+                        <div><addable :action="IdxAdd" label="Add Event Index" :args="[c.server,'event']" placeholder="Index Name"></addable><addable :action="IdxAdd" label="Add Metric Index" :args="[c.server,'metric']" placeholder="Index Name"></addable></div>
                         <template v-for="idx in idx_list" v-if="idx_data[c.server][idx]">
                             <div><span class="material-icons" :title="idx.datatype">{{IDX_ICON[idx_data[c.server][idx].datatype]}}</span><span class="name">&nbsp;{{idx}}</span> (Events:&nbsp;{{idx_data[c.server][idx].totalEventCount}}&nbsp;Size:&nbsp;{{idx_data[c.server][idx].totalRawSizeMB}}MB)</div>
                             <div class="flex">
