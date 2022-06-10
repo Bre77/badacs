@@ -148,11 +148,7 @@ const vue = new Vue({
         netin_data: {},
         netout_data: {},
         hec_data: {},
-        addhec_name: "",
-        addhec_token: "",
         idx_data: {},
-        addidx_name: "",
-        addidx_type: "event",
         app_data: {},
         IDX_ICON: {'event':'article','metric':'analytics'},
         ACS_NETWORK_ENDPOINTS: ACS_NETWORK_ENDPOINTS
@@ -368,7 +364,7 @@ const vue = new Vue({
                 'datatype': 'event'
             }
             return this.Request('change',{'stack':stack, 'method':'POST', 'endpoint':'indexes', 'data':JSON.stringify(payload)}).then((resp)=>{
-                console.log(data)
+                console.log(resp)
                 this.$set(this.idx_data[stack],name,resp)
             },reject => {
                 return Promise.reject(reject.message)
