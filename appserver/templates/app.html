@@ -269,8 +269,8 @@
                     </div>
                     <template v-else-if="idx_data[c.server]">
                         <div>
-                            <addable class="half-input" :action="IdxAdd" label="Add Event Index" :args="[c.server,'event']" placeholder="Index Name"></addable>
-                            <addable class="half-input" :action="IdxAdd" label="Add Metric Index" :args="[c.server,'metric']" placeholder="Index Name"></addable>
+                            <addable class="half-input" :action="IdxAdd" label="Add Event Index" :args="[c,'event']" placeholder="Index Name"></addable>
+                            <addable class="half-input" :action="IdxAdd" label="Add Metric Index" :args="[c,'metric']" placeholder="Index Name"></addable>
                         </div>
                         <template v-for="idx in idx_list" v-if="idx_data[c.server][idx]">
                             <div><span class="material-icons" :title="idx.datatype">{{IDX_ICON[idx_data[c.server][idx].datatype]}}</span><span class="name">&nbsp;{{idx}}</span> (Events:&nbsp;{{idx_data[c.server][idx].totalEventCount}}&nbsp;Size:&nbsp;{{idx_data[c.server][idx].totalRawSizeMB}}MB)</div>
