@@ -319,17 +319,17 @@ const vue = new Vue({
                 c.loading -= 1
             })
         },
-        HecAdd(token,stack){
+        HecAdd(token,c){
             const payload = {
                 'name': `New Token created by BADACS (${Math.floor(Math.random() * 1000)})`,
                 'token': token == "" ? null : token
             }
-            return this.Request('change',{'stack':stack, 'method':'POST', 'endpoint':'inputs/http-event-collectors', 'data':JSON.stringify(payload)}).then((resp)=>{
+            return this.Request('change',{'stack':c.server, 'method':'POST', 'endpoint':'inputs/http-event-collectors', 'data':JSON.stringify(payload)}).then((resp)=>{
                 console.log(resp)
-                this.$set(this.hec_data[stack],token,{})
+                this.$set(this.hec_data[c.server],token,{})
             },reject => {
                 return Promise.reject(reject.message)
-            })
+            }).then(()=>HecGet(c))
         },
         HecChange(stack,hec){
             return this.Request('change',{'stack':stack, 'method':'PUT', 'endpoint':`inputs/http-event-collectors/${hec.name}`, data: JSON.stringify(hec)})
