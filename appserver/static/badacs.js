@@ -325,7 +325,7 @@ const vue = new Vue({
                 'token': token == "" ? null : token
             }
             return this.Request('change',{'stack':stack, 'method':'POST', 'endpoint':'inputs/http-event-collectors', 'data':JSON.stringify(payload)}).then((resp)=>{
-                console.log(data)
+                console.log(resp)
                 this.$set(this.hec_data[stack],token,resp["http-event-collector"]["spec"])
             },reject => {
                 return Promise.reject(reject.message)
