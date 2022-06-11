@@ -370,7 +370,7 @@ const vue = new Vue({
                 })
             },reject => {
                 return Promise.reject(reject.message)
-            }).then(this.IdxAdd(c))
+            }).then(()=>this.IdxAdd(c))
         },
         IdxChange(stack,idx){
             return this.Request('change',{'stack':stack, 'method':'PATCH', 'endpoint':`indexes/${idx.name}`, data: JSON.stringify({'searchableDays': idx.searchableDays, 'maxDataSizeMB': idx.maxDataSizeMB})})
