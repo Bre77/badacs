@@ -365,7 +365,9 @@ const vue = new Vue({
             }
             return this.Request('change',{'stack':stack, 'method':'POST', 'endpoint':'indexes', 'data':JSON.stringify(payload)}).then((resp)=>{
                 console.log(resp)
-                this.$set(this.idx_data[stack],name,resp)
+                this.$set(this.idx_data[stack],name,{
+                    'datatype': type
+                })
             },reject => {
                 return Promise.reject(reject.message)
             })
