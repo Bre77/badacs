@@ -358,19 +358,19 @@ const vue = new Vue({
                 c.loading -= 1
             })
         },
-        IdxAdd(name,stack,type){
+        IdxAdd(name,c,type){
             const payload = {
                 'name': name,
                 'datatype': type
             }
-            return this.Request('change',{'stack':stack, 'method':'POST', 'endpoint':'indexes', 'data':JSON.stringify(payload)}).then((resp)=>{
+            return this.Request('change',{'stack':c.server, 'method':'POST', 'endpoint':'indexes', 'data':JSON.stringify(payload)}).then((resp)=>{
                 console.log(resp)
-                this.$set(this.idx_data[stack],name,{
+                this.$set(this.idx_data[c.server],name,{
                     'datatype': type
                 })
             },reject => {
                 return Promise.reject(reject.message)
-            })
+            }).then(this.IdxAdd(c))
         },
         IdxChange(stack,idx){
             return this.Request('change',{'stack':stack, 'method':'PATCH', 'endpoint':`indexes/${idx.name}`, data: JSON.stringify({'searchableDays': idx.searchableDays, 'maxDataSizeMB': idx.maxDataSizeMB})})
